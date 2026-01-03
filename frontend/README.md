@@ -15,6 +15,7 @@ The frontend is implemented using Angular.
 ```text
 frontend/
 ├── .vscode              # Shared VS Code configuration for this project
+├── docs/                # frontend documentation
 ├── public/              # Static assets
 ├── src/                 # Source code
 │   ├── app/             # Application components
