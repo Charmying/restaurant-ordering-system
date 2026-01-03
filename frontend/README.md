@@ -12,6 +12,7 @@ The frontend is implemented using Angular.
 
 ## Structure
 
+```text
 frontend/
 ├── .vscode              # Shared VS Code configuration for this project
 ├── public/              # Static assets
@@ -30,3 +31,4 @@ frontend/
 ├── tsconfig.json        # TypeScript base config
 ├── tsconfig.spec.json   # TypeScript test config
 └── README.md
+```
