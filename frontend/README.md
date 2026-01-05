@@ -4,9 +4,26 @@ This directory represents the frontend boundary of the system.
 
 ---
 
-## Implementation
+## Technology Stack
 
-The frontend is implemented using Angular.
+- Framework: Angular
+- Language: TypeScript
+- Styling: Tailwind CSS
+
+---
+
+## Architecture Concerns
+
+### Internationalization (i18n)
+
+The frontend uses `@ngx-translate/core` for internationalization.
+
+- Translation files are stored under `public/assets/i18n`
+- Structural keys are used instead of text-based keys
+- Language state is managed via a shared `LanguageService`
+- Default language: `zh`
+
+See `docs/i18n.md` for details.
 
 ---
 
@@ -14,25 +31,28 @@ The frontend is implemented using Angular.
 
 ```text
 frontend/
-├── .vscode                      # Shared VS Code configuration for this project
-├── docs/                        # frontend documentation
-├── public/                      # Static assets
+├── docs/                        # Frontend documentation
+│   ├── dependencies.md          # npm packages and their purposes
+│   └── i18n.md                  # i18n usage guide
+├── public/                      # Static assets (copied to dist/)
+│   └── assets/                  # Asset files
+│       └── i18n/                # Translation files (en.json, zh.json)
 ├── src/                         # Source code
 │   ├── app/                     # Application components
-│   │   └── core/                # Application shell (layout, guards, core services)
-│   │       └── normal-layout/   # Default application layout
-│   │           └── header/      # Layout-specific header component
+│   │   ├── core/                # Application shell (layout, guards, core services)
+│   │   │   ├── normal-layout/   # Default application layout
+│   │   │   │   └── header/      # Layout-specific header component
+│   │   │   └── services/        # Core services (LanguageService)
+│   │   ├── features/            # Feature modules
+│   │   │   └── home/            # Home page component
+│   │   ├── app.config.ts        # Application configuration
+│   │   ├── app.routes.ts        # Route definitions
+│   │   └── app.ts               # Root component
 │   ├── index.html               # Main HTML template
 │   ├── main.ts                  # Application entry point
 │   └── styles.css               # Global styles
-├── .editorconfig                # Editor configuration
-├── .gitignore                   # Git ignore rules
-├── .postcssrc.json              # PostCSS configuration
-├── angular.json                 # Angular configuration
-├── package-lock.json            # Dependency lock file
-├── package.json                 # Dependencies
-├── tsconfig.app.json            # TypeScript app config
-├── tsconfig.json                # TypeScript base config
-├── tsconfig.spec.json           # TypeScript test config
+├── angular.json                 # Angular CLI configuration
+├── package.json                 # Dependencies and scripts
+├── tsconfig.json                # TypeScript configuration
 └── README.md
 ```
