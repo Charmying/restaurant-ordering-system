@@ -1,0 +1,36 @@
+{
+  "layout": {
+    "header": {
+      "title": "餐廳點餐系統",
+      "subtitle": "訂單管理平台"
+    },
+    "footer": {
+      "copyright": "© 2026 餐廳點餐系統。保留所有權利。"
+    }
+  },
+  "page": {
+    "home": {
+      "title": "歡迎",
+      "description": "選擇您的入口",
+      "entry": {
+        "customer": "顧客點餐",
+        "admin": "管理後台",
+        "customer.comingSoon": "即將推出",
+        "admin.comingSoon": "即將推出"
+      }
+    }
+  },
+  "feature": {
+    "order": {
+      "start": "開始點餐",
+      "empty": "購物車是空的",
+      "submit": "送出訂單"
+    },
+    "admin": {
+      "login": {
+        "title": "管理員登入",
+        "submit": "登入"
+      }
+    }
+  }
+}
