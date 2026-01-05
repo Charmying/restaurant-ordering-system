@@ -1,8 +1,15 @@
 <section>
-  <div>Home Component</div>
+  <h1>{{ 'page.home.title' | translate }}</h1>
+  <p>{{ 'page.home.description' | translate }}</p>
 
   <div>
-    <button disabled>Customer Ordering <small>(Coming Soon)</small></button>
-    <button disabled>Admin Login <small>(Coming Soon)</small></button>
+    <button disabled>
+      {{ 'page.home.entry.customer' | translate }}
+      <small>({{ 'page.home.entry.customer.comingSoon' | translate }})</small>
+    </button>
+    <button disabled>
+      {{ 'page.home.entry.admin' | translate }}
+      <small>({{ 'page.home.entry.admin.comingSoon' | translate }})</small>
+    </button>
   </div>
 </section>

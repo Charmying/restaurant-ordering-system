@@ -1,3 +1,6 @@
 <header>
-  <div>App Header</div>
+  <div class="flex">
+    <div>{{ 'layout.header.title' | translate }}</div>
+    <button (click)="lang.switch()">{{ lang.current === 'zh' ? 'EN' : '中' }}</button>
+  </div>
 </header>
