@@ -1,6 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LanguageService } from './core/services/language.service';
+import { LanguageService, ThemeService } from './core/services';
 
 @Component({
   selector: 'app-root',
@@ -14,5 +14,6 @@ export class App {
 
   constructor() {
     this.lang.init();
+    inject(ThemeService);
   }
 }
