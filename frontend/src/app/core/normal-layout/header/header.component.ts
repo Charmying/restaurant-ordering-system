@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../services/language.service';
+import { LanguageService, ThemeService } from '../../services';
 
 @Component({
   selector: 'app-header',
@@ -11,4 +11,5 @@ import { LanguageService } from '../../services/language.service';
 })
 export class HeaderComponent {
   protected lang = inject(LanguageService);
+  protected theme = inject(ThemeService);
 }

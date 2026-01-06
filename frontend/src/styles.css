@@ -1,3 +1,58 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import "tailwindcss";
+
+:root {
+  /* Background */
+  --bg-primary: 255 255 255;
+  --bg-secondary: 249 250 251;
+
+  /* Surface */
+  --surface: 255 255 255;
+  --surface-elevated: 243 244 246;
+
+  /* Border */
+  --border: 229 231 235;
+  --border-subtle: 209 213 219;
+
+  /* Text */
+  --text-primary: 17 24 39;
+  --text-secondary: 107 114 128;
+  --text-tertiary: 156 163 175;
+
+  /* Buttons */
+  --btn-primary-bg: 29 29 31;
+  --btn-primary-fg: 255 255 255;
+  --btn-primary-hover: 55 65 81;
+
+  --btn-secondary-bg: 243 244 246;
+  --btn-secondary-hover: 229 231 235;
+}
+
+.dark {
+  --bg-primary: 0 0 0;
+  --bg-secondary: 28 28 30;
+
+  --surface: 28 28 30;
+  --surface-elevated: 44 44 46;
+
+  --border: 56 56 58;
+  --border-subtle: 72 72 74;
+
+  --text-primary: 255 255 255;
+  --text-secondary: 152 152 157;
+  --text-tertiary: 110 110 115;
+
+  --btn-primary-bg: 245 245 247;
+  --btn-primary-fg: 0 0 0;
+  --btn-primary-hover: 255 255 255;
+
+  --btn-secondary-bg: 44 44 46;
+  --btn-secondary-hover: 58 58 60;
+}
+
+body {
+  background: rgb(var(--bg-primary));
+  color: rgb(var(--text-primary));
+  transition:
+    background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+    color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
