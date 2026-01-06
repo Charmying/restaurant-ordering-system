@@ -1,14 +1,23 @@
 {
   "layout": {
     "header": {
-      "title": "Restaurant Ordering System",
-      "subtitle": "Order Management Platform"
-    },
-    "footer": {
-      "copyright": "© 2026 Restaurant Ordering System. All rights reserved."
+      "title": "Restaurant Ordering System"
     }
   },
-  "page": {
+  "language": {
+    "switch": "Switch language",
+    "current": {
+      "en": "EN",
+      "zh": "中"
+    }
+  },
+  "theme": {
+    "icon": {
+      "light": "🌙",
+      "dark": "☀️"
+    }
+  },
+  "features": {
     "home": {
       "title": "Welcome",
       "description": "Choose your entry point",
@@ -17,19 +26,6 @@
         "admin": "Admin Portal",
         "customer.comingSoon": "Coming Soon",
         "admin.comingSoon": "Coming Soon"
-      }
-    }
-  },
-  "feature": {
-    "order": {
-      "start": "Start Order",
-      "empty": "No items in cart",
-      "submit": "Submit Order"
-    },
-    "admin": {
-      "login": {
-        "title": "Admin Login",
-        "submit": "Sign In"
       }
     }
   }

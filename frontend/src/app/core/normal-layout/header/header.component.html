@@ -1,7 +1,15 @@
 <header>
-  <div class="flex">
+  <div class="flex items-center gap-4">
     <div>{{ 'layout.header.title' | translate }}</div>
-    <button (click)="lang.switch()">{{ lang.current === 'zh' ? 'EN' : '中' }}</button>
-    <button (click)="theme.toggle()">{{ theme.theme() === 'light' ? '🌙' : '☀️' }}</button>
+
+    <!-- Language toggle -->
+    <button type="button" (click)="lang.switch()">
+      {{ lang.current === 'zh' ? ('language.current.en' | translate) : ('language.current.zh' | translate) }}
+    </button>
+
+    <!-- Theme toggle -->
+    <button type="button" (click)="theme.toggle()">
+      {{ (theme.theme() === 'light' ? 'theme.icon.light' : 'theme.icon.dark') | translate }}
+    </button>
   </div>
 </header>
