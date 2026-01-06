@@ -2,5 +2,6 @@
   <div class="flex">
     <div>{{ 'layout.header.title' | translate }}</div>
     <button (click)="lang.switch()">{{ lang.current === 'zh' ? 'EN' : '中' }}</button>
+    <button (click)="theme.toggle()">{{ theme.theme() === 'light' ? '🌙' : '☀️' }}</button>
   </div>
 </header>

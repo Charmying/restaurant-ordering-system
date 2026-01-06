@@ -25,6 +25,16 @@ The frontend uses `@ngx-translate/core` for internationalization.
 
 See `docs/i18n.md` for details.
 
+### Theming (Light / Dark)
+
+The application supports light and dark themes via CSS variables and a shared `ThemeService`.
+
+- Theme state is stored in localStorage
+- Initial theme respects system preference
+- Theme is applied at the document root level
+
+See `docs/color-system.md` for details.
+
 ---
 
 ## Structure
