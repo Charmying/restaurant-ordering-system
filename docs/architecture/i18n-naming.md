@@ -34,26 +34,16 @@ feature.{domain}.{action|state}
 ### Layout (Shared across pages)
 ```
 layout.header.title
-layout.header.subtitle
-layout.footer.copyright
 ```
 
-### Page (Entry points)
+### Feature
 ```
-page.home.title
-page.home.description
-page.home.entry.customer
-page.home.entry.admin
-page.home.entry.customer.comingSoon
-```
-
-### Feature (Domain logic)
-```
-feature.order.start
-feature.order.empty
-feature.order.submit
-feature.admin.login.title
-feature.admin.login.submit
+features.home.title
+features.home.description
+features.home.entry.customer
+features.home.entry.admin
+features.home.entry.customer.comingSoon
+features.home.entry.admin.comingSoon
 ```
 
 ---
