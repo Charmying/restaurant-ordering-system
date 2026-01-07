@@ -12,4 +12,6 @@ import { LanguageService, ThemeService } from '../../services';
 export class HeaderComponent {
   protected lang = inject(LanguageService);
   protected theme = inject(ThemeService);
+  protected hoverLang = false;
+  protected hoverTheme = false;
 }
