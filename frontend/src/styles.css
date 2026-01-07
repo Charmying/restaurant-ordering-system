@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+/* ========================= Design Tokens (Base) ========================= */
+
 :root {
   /* Background */
   --bg-primary: 255 255 255;
@@ -49,10 +51,20 @@
   --btn-secondary-hover: 58 58 60;
 }
 
+/* ========================= Global Base ========================= */
+
+* {
+  box-sizing: border-box;
+  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
+  margin: 0;
   background: rgb(var(--bg-primary));
   color: rgb(var(--text-primary));
-  transition:
-    background 0.2s cubic-bezier(0.4, 0, 0.2, 1),
-    color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
