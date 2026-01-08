@@ -24,10 +24,16 @@
     "home": {
       "title": "歡迎",
       "description": "選擇您的入口",
+      "hero": {
+        "title": "智慧點餐系統",
+        "subtitle": "簡單、快速、優雅"
+      },
       "entry": {
         "customer": "顧客點餐",
-        "admin": "管理後台",
+        "customer.description": "掃描 QR Code 開始點餐",
         "customer.comingSoon": "即將推出",
+        "admin": "管理後台",
+        "admin.description": "管理菜單與訂單系統",
         "admin.comingSoon": "即將推出"
       }
     }
