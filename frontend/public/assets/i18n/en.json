@@ -21,10 +21,16 @@
     "home": {
       "title": "Welcome",
       "description": "Choose your entry point",
+      "hero": {
+        "title": "Smart Ordering System",
+        "subtitle": "Simple. Fast. Elegant."
+      },
       "entry": {
         "customer": "Customer Ordering",
-        "admin": "Admin Portal",
+        "customer.description": "Scan QR code to start ordering",
         "customer.comingSoon": "Coming Soon",
+        "admin": "Admin Portal",
+        "admin.description": "Manage menus and order system",
         "admin.comingSoon": "Coming Soon"
       }
     }
