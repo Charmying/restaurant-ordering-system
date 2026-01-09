@@ -35,6 +35,14 @@ The application supports light and dark themes via CSS variables and a shared `T
 
 See `docs/color-system.md` for details.
 
+### Layout Strategy
+
+The application uses multiple layout components to separate concerns between marketing pages and transactional flows.
+
+- `normal-layout`: used for landing and informational pages
+- `order-layout`: used for customer ordering flow
+- Layouts are defined under `core` and composed via routing
+
 ---
 
 ## Structure
@@ -53,12 +61,15 @@ frontend/
 │   │   ├── core/                         # Application shell (layout, guards, core services)
 │   │   │   ├── normal-layout/            # Default application layout
 │   │   │   │   └── header/               # Layout-specific header component
+│   │   │   ├── order-layout/             # Ordering flow layout
+│   │   │   │   └── header/               # Header for ordering pages
 │   │   │   └── services/                 # Core services
 │   │   │       ├── index.ts              # Public service exports
 │   │   │       ├── language.service.ts   # Manage active language and persistence
 │   │   │       └── theme.service.ts      # Manage theme state (light/dark) and persistence
 │   │   ├── features/                     # Feature modules
 │   │   │   └── home/                     # Home page component
+│   │   │   └── order/                    # Ordering feature  (customer flow)
 │   │   ├── app.config.ts                 # Application configuration
 │   │   ├── app.routes.ts                 # Route definitions
 │   │   └── app.ts                        # Root component
