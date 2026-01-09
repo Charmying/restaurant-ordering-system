@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
 import { NormalLayoutComponent } from './core/normal-layout/normal-layout.component';
 import { HomeComponent } from './features/home/home.component';
+import { OrderLayoutComponent } from './core/order-layout/order-layout.component';
+import { OrderComponent } from './features/order/order.component';
 
 export const routes: Routes = [
   {
@@ -10,6 +12,16 @@ export const routes: Routes = [
       {
         path: '',
         component: HomeComponent
+      }
+    ]
+  },
+  {
+    path: 'order',
+    component: OrderLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: OrderComponent
       }
     ]
   }
