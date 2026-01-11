@@ -3,6 +3,7 @@ import { NormalLayoutComponent } from './core/normal-layout/normal-layout.compon
 import { HomeComponent } from './features/home/home.component';
 import { OrderLayoutComponent } from './core/order-layout/order-layout.component';
 import { OrderComponent } from './features/order/order.component';
+import { LoginComponent } from './features/login/login.component';
 
 export const routes: Routes = [
   {
@@ -24,5 +25,15 @@ export const routes: Routes = [
         component: OrderComponent
       }
     ]
-  }
+  },
+  {
+    path: 'login',
+    component: NormalLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: LoginComponent
+      }
+    ]
+  },
 ];
