@@ -10,13 +10,20 @@ export class ThemeService {
   constructor() {
     effect(() => {
       const t = this.theme();
-      document.documentElement.classList.toggle('dark', t === 'dark');
+      document.body.setAttribute('data-theme', t);
       localStorage.setItem(KEY, t);
     });
   }
 
   toggle() {
-    this.theme.update((t) => (t === 'light' ? 'dark' : 'light'));
+    if (!document.startViewTransition) {
+      this.theme.update((t) => (t === 'light' ? 'dark' : 'light'));
+      return;
+    }
+
+    document.startViewTransition(() => {
+      this.theme.update((t) => (t === 'light' ? 'dark' : 'light'));
+    });
   }
 
   #load(): Theme {
