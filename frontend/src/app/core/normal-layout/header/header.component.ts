@@ -1,16 +1,13 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
-import { LanguageService } from '../../services';
+import { LanguageToggleComponent } from '../../components/language-toggle/language-toggle.component';
 import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [TranslateModule, ThemeToggleComponent],
+  imports: [TranslateModule, LanguageToggleComponent, ThemeToggleComponent],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent {
-  protected lang = inject(LanguageService);
-  protected hoverLang = false;
-}
+export class HeaderComponent {}
