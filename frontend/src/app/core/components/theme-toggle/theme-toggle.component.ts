@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { useTheme } from '../composables/use-theme';
+import { useTheme } from '../../composables/use-theme';
 
 @Component({
   selector: 'app-theme-toggle',
