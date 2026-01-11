@@ -1,63 +1,47 @@
 <div class="flex flex-col items-center justify-center px-6 py-16">
   <div class="max-w-5xl w-full text-center space-y-20">
     <div class="space-y-6">
-      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight"
-        [style.color]="theme.theme() === 'light' ? '#111827' : '#f5f5f7'">
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight" style="color: var(--home-title);">
         {{ 'features.home.hero.title' | translate }}
       </h1>
-      <p class="text-xl sm:text-2xl font-light max-w-2xl mx-auto"
-        [style.color]="theme.theme() === 'light' ? '#4b5563' : '#98989d'">
+      <p class="text-xl sm:text-2xl font-light max-w-2xl mx-auto" style="color: var(--home-subtitle);">
         {{ 'features.home.hero.subtitle' | translate }}
       </p>
     </div>
     <div class="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
-      <button routerLink="/order" class="group rounded-3xl p-12 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-60 border"
-        [style.background]="theme.theme() === 'light' ? '#f9fafb' : '#1c1c1e'"
-        [style.border-color]="theme.theme() === 'light' ? '#e5e7eb' : '#38383a'">
+      <button routerLink="/order" class="rounded-3xl p-12 opacity-60 border" style="background: var(--home-card-bg); border-color: var(--home-card-border);">
         <div class="space-y-4">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg mx-auto bg-gradient-to-br"
-            [style.background]="theme.theme() === 'light' ? 'linear-gradient(to bottom right, #1f2937, #111827)' : 'linear-gradient(to bottom right, #e5e7eb, #ffffff)'">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              [style.color]="theme.theme() === 'light' ? '#ffffff' : '#111827'">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg mx-auto" style="background: var(--home-icon-gradient);">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--home-icon-color);">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"></path>
             </svg>
           </div>
-          <h2 class="text-2xl font-semibold"
-            [style.color]="theme.theme() === 'light' ? '#111827' : '#f5f5f7'">
+          <h2 class="text-2xl font-semibold" style="color: var(--home-text);">
             {{ 'features.home.entry.customer' | translate }}
           </h2>
-          <p class="leading-relaxed"
-            [style.color]="theme.theme() === 'light' ? '#4b5563' : '#98989d'">
+          <p class="leading-relaxed" style="color: var(--home-desc);">
             {{ 'features.home.entry.customer.description' | translate }}
           </p>
-          <span class="inline-block text-sm"
-            [style.color]="theme.theme() === 'light' ? '#6b7280' : '#86868b'">
+          <span class="inline-block text-sm" style="color: var(--home-hint);">
             {{ 'features.home.entry.customer.comingSoon' | translate }}
           </span>
         </div>
       </button>
-      <button disabled class="group rounded-3xl p-12 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-60 cursor-not-allowed border"
-        [style.background]="theme.theme() === 'light' ? '#f9fafb' : '#1c1c1e'"
-        [style.border-color]="theme.theme() === 'light' ? '#e5e7eb' : '#38383a'">
+      <button disabled class="rounded-3xl p-12 opacity-60 cursor-not-allowed border" style="background: var(--home-card-bg); border-color: var(--home-card-border);">
         <div class="space-y-4">
-          <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg mx-auto bg-gradient-to-br"
-            [style.background]="theme.theme() === 'light' ? 'linear-gradient(to bottom right, #374151, #111827)' : 'linear-gradient(to bottom right, #d1d5db, #ffffff)'">
-            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-              [style.color]="theme.theme() === 'light' ? '#ffffff' : '#111827'">
+          <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg mx-auto" style="background: var(--home-icon-gradient);">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: var(--home-icon-color);">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
             </svg>
           </div>
-          <h2 class="text-2xl font-semibold"
-            [style.color]="theme.theme() === 'light' ? '#111827' : '#f5f5f7'">
+          <h2 class="text-2xl font-semibold" style="color: var(--home-text);">
             {{ 'features.home.entry.admin' | translate }}
           </h2>
-          <p class="leading-relaxed"
-            [style.color]="theme.theme() === 'light' ? '#4b5563' : '#98989d'">
+          <p class="leading-relaxed" style="color: var(--home-desc);">
             {{ 'features.home.entry.admin.description' | translate }}
           </p>
-          <span class="inline-block text-sm"
-            [style.color]="theme.theme() === 'light' ? '#6b7280' : '#86868b'">
+          <span class="inline-block text-sm" style="color: var(--home-hint);">
             {{ 'features.home.entry.admin.comingSoon' | translate }}
           </span>
         </div>
