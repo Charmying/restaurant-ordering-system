@@ -2,7 +2,8 @@
 
 /* ========================= Design Tokens (Base) ========================= */
 
-:root {
+:root,
+body {
   /* Background */
   --bg-primary: 255 255 255;
   --bg-secondary: 249 250 251;
@@ -27,9 +28,26 @@
 
   --btn-secondary-bg: 243 244 246;
   --btn-secondary-hover: 229 231 235;
+
+  /* Header */
+  --header-bg: rgba(245, 245, 247, 0.8);
+  --header-border: #d1d1d6;
+  --header-text: #1d1d1f;
+  --hover-bg: rgba(0, 0, 0, 0.04);
+
+  /* Home */
+  --home-title: #111827;
+  --home-subtitle: #4b5563;
+  --home-card-bg: #f9fafb;
+  --home-card-border: #e5e7eb;
+  --home-icon-gradient: linear-gradient(to bottom right, #1f2937, #111827);
+  --home-icon-color: #ffffff;
+  --home-text: #111827;
+  --home-desc: #4b5563;
+  --home-hint: #6b7280;
 }
 
-.dark {
+body[data-theme="dark"] {
   --bg-primary: 0 0 0;
   --bg-secondary: 28 28 30;
 
@@ -49,13 +67,27 @@
 
   --btn-secondary-bg: 44 44 46;
   --btn-secondary-hover: 58 58 60;
+
+  --header-bg: rgba(28, 28, 30, 0.95);
+  --header-border: #38383a;
+  --header-text: #f5f5f7;
+  --hover-bg: #2c2c2e;
+
+  --home-title: #f5f5f7;
+  --home-subtitle: #98989d;
+  --home-card-bg: #1c1c1e;
+  --home-card-border: #38383a;
+  --home-icon-gradient: linear-gradient(to bottom right, #e5e7eb, #ffffff);
+  --home-icon-color: #111827;
+  --home-text: #f5f5f7;
+  --home-desc: #98989d;
+  --home-hint: #86868b;
 }
 
 /* ========================= Global Base ========================= */
 
 * {
   box-sizing: border-box;
-  transition: background-color 0.2s cubic-bezier(0.4, 0, 0.2, 1), color 0.2s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 html {
@@ -67,4 +99,12 @@ body {
   background: rgb(var(--bg-primary));
   color: rgb(var(--text-primary));
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* ========================= View Transitions ========================= */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: ease;
 }

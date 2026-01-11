@@ -1,7 +1,6 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
-import { ThemeService } from '../../core/services/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -10,6 +9,4 @@ import { ThemeService } from '../../core/services/theme.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent {
-  protected theme = inject(ThemeService);
-}
+export class HomeComponent {}
