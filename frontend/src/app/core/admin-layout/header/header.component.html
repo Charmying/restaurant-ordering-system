@@ -1,0 +1,13 @@
+<header class="sticky top-0 z-50 border-b" style="backdrop-filter: blur(24px); border-color: var(--header-border); background: var(--header-bg); color: var(--header-text);">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
+    <div class="flex items-center justify-between gap-4">
+      <h1 class="text-xl font-semibold">
+        {{ 'layout.header.title' | translate }}
+      </h1>
+      <div class="flex items-center gap-2 sm:gap-3">
+        <app-language-toggle />
+        <app-theme-toggle />
+      </div>
+    </div>
+  </div>
+</header>
