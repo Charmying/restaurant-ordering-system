@@ -36,6 +36,17 @@
         "admin.description": "管理菜單與訂單系統",
         "admin.comingSoon": "即將推出"
       }
+    },
+    "login": {
+      "title": "管理後台",
+      "subtitle": "請登入以繼續",
+      "form": {
+        "username": "帳號",
+        "password": "密碼",
+        "usernamePlaceholder": "請輸入帳號",
+        "passwordPlaceholder": "請輸入密碼",
+        "submit": "登入"
+      }
     }
   }
 }
