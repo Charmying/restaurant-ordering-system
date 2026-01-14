@@ -18,6 +18,17 @@
     }
   },
   "features": {
+    "login": {
+      "title": "Admin Portal",
+      "subtitle": "Please login to continue",
+      "form": {
+        "username": "Username",
+        "password": "Password",
+        "usernamePlaceholder": "Enter your username",
+        "passwordPlaceholder": "Enter your password",
+        "submit": "Login"
+      }
+    },
     "home": {
       "title": "Welcome",
       "description": "Choose your entry point",

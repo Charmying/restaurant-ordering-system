@@ -1,1 +1,39 @@
-login.component
+<div class="flex items-center justify-center px-6 relative" style="background: rgb(var(--bg-primary)); min-height: calc(100vh - 73px);">
+  <div class="w-full max-w-md space-y-8">
+    <div class="text-center space-y-2">
+      <h1 class="text-4xl font-semibold" style="color: rgb(var(--text-primary));">
+        {{ 'features.login.title' | translate }}
+      </h1>
+      <p style="color: rgb(var(--text-secondary));">
+        {{ 'features.login.subtitle' | translate }}
+      </p>
+    </div>
+    <form (submit)="login(); $event.preventDefault()" class="space-y-8">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: rgb(var(--text-secondary));">
+            {{ 'features.login.form.username' | translate }}
+          </label>
+          <input type="text" 
+            class="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            style="border-color: rgb(var(--border)); background: rgb(var(--surface)); color: rgb(var(--text-primary));"
+            [placeholder]="'features.login.form.usernamePlaceholder' | translate">
+        </div>
+        <div>
+          <label class="block text-sm font-medium mb-2" style="color: rgb(var(--text-secondary));">
+            {{ 'features.login.form.password' | translate }}
+          </label>
+          <input type="password" 
+            class="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500" 
+            style="border-color: rgb(var(--border)); background: rgb(var(--surface)); color: rgb(var(--text-primary));"
+            [placeholder]="'features.login.form.passwordPlaceholder' | translate">
+        </div>
+      </div>
+      <button type="submit"
+        class="w-full py-4 rounded-2xl font-semibold transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)] active:scale-[0.97] shadow-lg hover:shadow-xl"
+        style="background: rgb(var(--btn-primary-bg)); color: rgb(var(--btn-primary-fg));">
+        {{ 'features.login.form.submit' | translate }}
+      </button>
+    </form>
+  </div>
+</div>
