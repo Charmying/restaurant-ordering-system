@@ -4,6 +4,8 @@ import { HomeComponent } from './features/home/home.component';
 import { OrderLayoutComponent } from './core/order-layout/order-layout.component';
 import { OrderComponent } from './features/order/order.component';
 import { LoginComponent } from './features/login/login.component';
+import { AdminLayoutComponent } from './core/admin-layout/admin-layout.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -33,6 +35,16 @@ export const routes: Routes = [
       {
         path: '',
         component: LoginComponent
+      }
+    ]
+  },
+  {
+    path: 'dashboard',
+    component: AdminLayoutComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardComponent
       }
     ]
   },
