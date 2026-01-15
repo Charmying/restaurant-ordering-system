@@ -5,7 +5,7 @@ import { OrderLayoutComponent } from './core/order-layout/order-layout.component
 import { OrderComponent } from './features/order/order.component';
 import { LoginComponent } from './features/login/login.component';
 import { AdminLayoutComponent } from './core/admin-layout/admin-layout.component';
-import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { DashboardShell } from './features/dashboard/dashboard.shell';
 
 export const routes: Routes = [
   {
@@ -44,7 +44,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardComponent,
+        component: DashboardShell,
         children: [
           {
             path: '',

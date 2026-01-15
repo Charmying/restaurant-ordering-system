@@ -2,7 +2,20 @@
   "layout": {
     "header": {
       "title": "餐廳點餐系統"
+    },
+    "sidebar": {
+      "menu": "選單"
     }
+  },
+  "nav": {
+    "tables": "桌位管理",
+    "orders": "訂單管理",
+    "menu": "菜單管理",
+    "categories": "分類管理",
+    "storeInfo": "店家資訊",
+    "messages": "留言板",
+    "reports": "營業報表",
+    "users": "使用者管理"
   },
   "language": {
     "switch": "切換語言",
