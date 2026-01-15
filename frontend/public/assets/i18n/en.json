@@ -2,7 +2,20 @@
   "layout": {
     "header": {
       "title": "Restaurant Ordering System"
+    },
+    "sidebar": {
+      "menu": "Menu"
     }
+  },
+  "nav": {
+    "tables": "Table Management",
+    "orders": "Order Management",
+    "menu": "Menu Management",
+    "categories": "Category Management",
+    "storeInfo": "Store Information",
+    "messages": "Message Board",
+    "reports": "Business Reports",
+    "users": "User Management"
   },
   "language": {
     "switch": "Switch language",
