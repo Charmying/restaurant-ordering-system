@@ -44,7 +44,47 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        component: DashboardComponent
+        component: DashboardComponent,
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'tables',
+          },
+          {
+            path: 'tables',
+            loadComponent: () => import('./features/table-management/table-management.component').then((m) => m.TableManagementComponent),
+          },
+          {
+            path: 'orders',
+            loadComponent: () => import('./features/order-management/order-management.component').then((m) => m.OrderManagementComponent),
+          },
+          
+          {
+            path: 'menu',
+            loadComponent: () => import('./features/menu-management/menu-management.component').then((m) => m.MenuManagementComponent),
+          },
+          {
+            path: 'categories',
+            loadComponent: () => import('./features/category-management/category-management.component').then((m) => m.CategoryManagementComponent),
+          },
+          {
+            path: 'store-info',
+            loadComponent: () => import('./features/store-info/store-info.component').then((m) => m.StoreInfoComponent),
+          },
+          {
+            path: 'messages',
+            loadComponent: () => import('./features/message-board/message-board.component').then((m) => m.MessageBoardComponent),
+          },
+          {
+            path: 'reports',
+            loadComponent: () => import('./features/business-reports/business-reports.component').then((m) => m.BusinessReportsComponent),
+          },
+          {
+            path: 'users',
+            loadComponent: () => import('./features/user-management/user-management.component').then((m) => m.UserManagementComponent),
+          },
+        ]
       }
     ]
   },
