@@ -47,6 +47,12 @@
         "admin.comingSoon": "即將推出"
       }
     },
+    "order": {
+      "menu": "菜單",
+      "remark": "備註",
+      "remarkPlaceholder": "有什麼特殊需求嗎？",
+      "addToCart": "加入購物車"
+    },
     "login": {
       "title": "管理後台",
       "subtitle": "請登入以繼續",
