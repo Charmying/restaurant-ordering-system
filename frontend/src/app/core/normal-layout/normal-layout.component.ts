@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { HeaderComponent } from './header/header.component';
+import { NormalHeaderComponent } from './normal-header/normal-header.component';
 
 @Component({
   selector: 'app-normal-layout',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
+  imports: [RouterOutlet, NormalHeaderComponent],
   templateUrl: './normal-layout.component.html',
   styleUrls: ['./normal-layout.component.scss'],
 })
