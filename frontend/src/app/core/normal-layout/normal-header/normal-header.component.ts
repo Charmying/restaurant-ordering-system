@@ -4,10 +4,10 @@ import { LanguageToggleComponent } from '../../components/language-toggle/langua
 import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-normal-header',
   standalone: true,
   imports: [TranslateModule, LanguageToggleComponent, ThemeToggleComponent],
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  templateUrl: './normal-header.component.html',
+  styleUrls: ['./normal-header.component.scss'],
 })
-export class HeaderComponent {}
+export class NormalHeaderComponent {}
