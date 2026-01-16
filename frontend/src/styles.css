@@ -2,86 +2,62 @@
 
 /* ========================= Design Tokens (Base) ========================= */
 
-:root,
-body {
-  /* Background */
-  --bg-primary: 255 255 255;
-  --bg-secondary: 249 250 251;
-
-  /* Surface */
+/* Light theme (default) */
+:root {
+  /* Surfaces */
   --surface: 255 255 255;
-  --surface-elevated: 243 244 246;
-
-  /* Border */
-  --border: 229 231 235;
-  --border-subtle: 209 213 219;
+  --surface-elevated: 245 245 247;
+  --surface-muted: 235 235 238;
 
   /* Text */
-  --text-primary: 17 24 39;
-  --text-secondary: 107 114 128;
-  --text-tertiary: 156 163 175;
+  --text-primary: 17 17 17;
+  --text-secondary: 85 85 85;
 
-  /* Buttons */
-  --btn-primary-bg: 29 29 31;
-  --btn-primary-fg: 255 255 255;
-  --btn-primary-hover: 55 65 81;
+  /* Border */
+  --border: 220 220 224;
 
-  --btn-secondary-bg: 243 244 246;
-  --btn-secondary-hover: 229 231 235;
-
-  /* Header */
-  --header-bg: rgba(245, 245, 247, 0.8);
-  --header-border: #d1d1d6;
-  --header-text: #1d1d1f;
-  --hover-bg: rgba(0, 0, 0, 0.04);
-
-  /* Home */
-  --home-title: #111827;
-  --home-subtitle: #4b5563;
-  --home-card-bg: #f9fafb;
-  --home-card-border: #e5e7eb;
-  --home-icon-gradient: linear-gradient(to bottom right, #1f2937, #111827);
-  --home-icon-color: #ffffff;
-  --home-text: #111827;
-  --home-desc: #4b5563;
-  --home-hint: #6b7280;
+  /* Brand */
+  --primary: 17 24 39;
+  --primary-contrast: 255 255 255;
+  --accent: 59 130 246;
 }
 
-body[data-theme="dark"] {
-  --bg-primary: 0 0 0;
-  --bg-secondary: 28 28 30;
-
+/* Dark theme */
+[data-theme='dark'] {
   --surface: 28 28 30;
   --surface-elevated: 44 44 46;
+  --surface-muted: 58 58 60;
 
-  --border: 56 56 58;
-  --border-subtle: 72 72 74;
+  --text-primary: 245 245 247;
+  --text-secondary: 180 180 185;
 
-  --text-primary: 255 255 255;
-  --text-secondary: 152 152 157;
-  --text-tertiary: 110 110 115;
+  --border: 60 60 67;
 
-  --btn-primary-bg: 245 245 247;
-  --btn-primary-fg: 0 0 0;
-  --btn-primary-hover: 255 255 255;
+  --primary: 245 245 247;
+  --primary-contrast: 0 0 0;
+  --accent: 96 165 250;
+}
 
-  --btn-secondary-bg: 44 44 46;
-  --btn-secondary-hover: 58 58 60;
+/* ========================= Semantic Utility Classes ========================= */
 
-  --header-bg: rgba(28, 28, 30, 0.95);
-  --header-border: #38383a;
-  --header-text: #f5f5f7;
-  --hover-bg: #2c2c2e;
+.bg-surface { background-color: rgb(var(--surface)); }
+.bg-surface-elevated { background-color: rgb(var(--surface-elevated)); }
+.bg-surface-muted { background-color: rgb(var(--surface-muted)); }
 
-  --home-title: #f5f5f7;
-  --home-subtitle: #98989d;
-  --home-card-bg: #1c1c1e;
-  --home-card-border: #38383a;
-  --home-icon-gradient: linear-gradient(to bottom right, #e5e7eb, #ffffff);
-  --home-icon-color: #111827;
-  --home-text: #f5f5f7;
-  --home-desc: #98989d;
-  --home-hint: #86868b;
+.text-primary { color: rgb(var(--text-primary)); }
+.text-secondary { color: rgb(var(--text-secondary)); }
+
+.border-default { border: 1px solid rgb(var(--border)); }
+
+/* ========================= Layout / Shape ========================= */
+
+.rounded-lg { border-radius: 12px; }
+.rounded-md { border-radius: 8px; }
+
+.shadow-card {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
 /* ========================= Global Base ========================= */
@@ -96,15 +72,22 @@ html {
 
 body {
   margin: 0;
-  background: rgb(var(--bg-primary));
+  background-color: rgb(var(--surface));
   color: rgb(var(--text-primary));
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* ========================= View Transitions ========================= */
+/* ========================= Effects / Animations ========================= */
 
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.3s;
-  animation-timing-function: ease;
+.modal-backdrop {
+  backdrop-filter: blur(8px);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.25s ease-out;
 }
