@@ -9,8 +9,12 @@
   <script>
     (function() {
       const t = localStorage.getItem('app_theme');
-      const theme = t === 'light' || t === 'dark' ? t : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-      document.body.setAttribute('data-theme', theme);
+      const theme =
+        t === 'light' || t === 'dark'
+          ? t
+          : (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+
+      document.documentElement.setAttribute('data-theme', theme);
     })();
   </script>
 </head>
