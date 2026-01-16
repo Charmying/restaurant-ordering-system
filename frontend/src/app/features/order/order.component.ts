@@ -1,6 +1,7 @@
 import { Component, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { MockMenu } from './order.mock';
 import {
@@ -13,7 +14,7 @@ import {
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [CommonModule, FormsModule, ModalComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, ModalComponent],
   templateUrl: './order.component.html',
 })
 export class OrderComponent {
