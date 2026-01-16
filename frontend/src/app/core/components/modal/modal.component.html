@@ -1,0 +1,10 @@
+<div (click)="onBackdropClick()"
+  role="dialog"
+  aria-modal="true"
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
+  <div (click)="$event.stopPropagation()"
+    class="bg-[rgb(var(--surface-elevated))] w-full sm:max-w-lg rounded-3xl overflow-hidden shadow-2xl border border-[rgb(var(--border))] flex flex-col animate-scale-in"
+    [style.max-height]="maxHeight">
+    <ng-content></ng-content>
+  </div>
+</div>
