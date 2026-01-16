@@ -20,7 +20,7 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     importProvidersFrom(
       TranslateModule.forRoot({
-        defaultLanguage: 'zh',
+        fallbackLang: 'zh',
         loader: {
           provide: TranslateLoader,
           useClass: JsonTranslateLoader,
