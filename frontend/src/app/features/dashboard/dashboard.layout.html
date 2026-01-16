@@ -16,8 +16,8 @@
     </div>
     <nav class="flex-1 px-2.5 py-5 space-y-0.5 overflow-y-auto overscroll-contain">
       @for (item of navItems; track item.route) {
-        <a (click)="closeSidebar()" [routerLink]="item.route" routerLinkActive="active"
-          class="group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium text-[rgb(var(--text-secondary))] transition-all duration-200 hover:bg-[rgb(var(--surface-elevated))] hover:text-[rgb(var(--text-primary))] hover:shadow-sm active:scale-[0.97] [&.active]:bg-[rgb(var(--btn-primary-bg))] [&.active]:text-[rgb(var(--btn-primary-fg))] [&.active]:shadow-lg [&.active]:shadow-black/5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--btn-primary-bg))]">
+        <button (click)="closeSidebar()" [routerLink]="item.route" routerLinkActive="active"
+          class="group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium text-[rgb(var(--text-secondary))] transition-all duration-200 hover:bg-[rgb(var(--surface-elevated))] hover:text-[rgb(var(--text-primary))] [&.active]:bg-[rgb(var(--btn-primary-bg))] [&.active]:text-[rgb(var(--btn-primary-fg))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--btn-primary-bg))]">
           <svg class="w-[18px] h-[18px] flex-shrink-0 transition-transform group-hover:scale-110" fill="none" stroke="currentColor"  viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="item.icon"/>
           </svg>
