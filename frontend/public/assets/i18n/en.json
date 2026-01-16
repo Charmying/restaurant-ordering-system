@@ -2,20 +2,7 @@
   "layout": {
     "header": {
       "title": "Restaurant Ordering System"
-    },
-    "sidebar": {
-      "menu": "Menu"
     }
-  },
-  "nav": {
-    "tables": "Table Management",
-    "orders": "Order Management",
-    "menu": "Menu Management",
-    "categories": "Category Management",
-    "storeInfo": "Store Information",
-    "messages": "Message Board",
-    "reports": "Business Reports",
-    "users": "User Management"
   },
   "language": {
     "switch": "Switch language",
@@ -31,17 +18,6 @@
     }
   },
   "features": {
-    "login": {
-      "title": "Admin Portal",
-      "subtitle": "Please login to continue",
-      "form": {
-        "username": "Username",
-        "password": "Password",
-        "usernamePlaceholder": "Enter your username",
-        "passwordPlaceholder": "Enter your password",
-        "submit": "Login"
-      }
-    },
     "home": {
       "title": "Welcome",
       "description": "Choose your entry point",
@@ -63,6 +39,32 @@
       "remark": "Remark",
       "remarkPlaceholder": "Are there any special requests?",
       "addToCart": "Add to Cart"
+    },
+    "login": {
+      "title": "Admin Portal",
+      "subtitle": "Please login to continue",
+      "form": {
+        "username": "Username",
+        "password": "Password",
+        "usernamePlaceholder": "Enter your username",
+        "passwordPlaceholder": "Enter your password",
+        "submit": "Login"
+      }
+    },
+    "dashboard": {
+      "sidebar": {
+        "menu": "Menu"
+      },
+      "nav": {
+        "tables": "Table Management",
+        "orders": "Order Management",
+        "menu": "Menu Management",
+        "categories": "Category Management",
+        "storeInfo": "Store Information",
+        "messages": "Message Board",
+        "reports": "Business Reports",
+        "users": "User Management"
+      }
     }
   }
 }
