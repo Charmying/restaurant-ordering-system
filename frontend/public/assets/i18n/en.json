@@ -57,6 +57,12 @@
         "admin.description": "Manage menus and order system",
         "admin.comingSoon": "Coming Soon"
       }
+    },
+    "order": {
+      "menu": "Menu",
+      "remark": "Remark",
+      "remarkPlaceholder": "Are there any special requests?",
+      "addToCart": "Add to Cart"
     }
   }
 }
