@@ -16,6 +16,7 @@ import {
   standalone: true,
   imports: [CommonModule, FormsModule, TranslateModule, ModalComponent],
   templateUrl: './order.component.html',
+  styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent {
   /* ========================= State ========================= */
