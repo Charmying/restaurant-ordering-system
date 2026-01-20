@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* ========================= Design Tokens (Base) ========================= */
+/* ========================= Design Tokens (Foundation) ========================= */
 
 /* Light theme (default) */
 :root {
@@ -38,29 +38,7 @@
   --accent: 96 165 250;
 }
 
-/* ========================= Semantic Utility Classes ========================= */
-
-.bg-surface { background-color: rgb(var(--surface)); }
-.bg-surface-elevated { background-color: rgb(var(--surface-elevated)); }
-.bg-surface-muted { background-color: rgb(var(--surface-muted)); }
-
-.text-primary { color: rgb(var(--text-primary)); }
-.text-secondary { color: rgb(var(--text-secondary)); }
-
-.border-default { border: 1px solid rgb(var(--border)); }
-
-/* ========================= Layout / Shape ========================= */
-
-.rounded-lg { border-radius: 12px; }
-.rounded-md { border-radius: 8px; }
-
-.shadow-card {
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.04),
-    0 4px 12px rgba(0, 0, 0, 0.06);
-}
-
-/* ========================= Global Base ========================= */
+/* ========================= Base / Reset ========================= */
 
 * {
   box-sizing: border-box;
@@ -77,17 +55,38 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* ========================= Effects / Animations ========================= */
+/* ========================= Semantic Utility Classes ========================= */
 
-.modal-backdrop {
-  backdrop-filter: blur(8px);
-}
+.text-primary { color: rgb(var(--text-primary)); }
+.text-secondary { color: rgb(var(--text-secondary)); }
 
+/* ========================= Layout / Shape ========================= */
+
+.rounded-lg { border-radius: 12px; }
+
+/* ========================= Effects ========================= */
+
+/* ========================= Animations – Keyframes ========================= */
+
+/* Fade */
 @keyframes fade-in {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-.animate-fade-in {
-  animation: fade-in 0.25s ease-out;
+/* Scale */
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
+
+/* ========================= Animation Utilities ========================= */
+
+.animate-fade-in { animation: fade-in 0.3s ease-out; }
+.animate-scale-in { animation: scale-in 0.3s ease-out; }
+
+/* ========================= Transitions & Performance ========================= */
+
+.transition-smooth { transition: background-color 200ms ease-in-out, color 200ms ease-in-out, border-color 200ms ease-in-out; }
+
+.will-animate { will-change: transform, opacity; }
