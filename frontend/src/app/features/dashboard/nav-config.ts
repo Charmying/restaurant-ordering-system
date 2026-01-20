@@ -1,4 +1,3 @@
-// nav-config.ts
 export interface NavItem {
   labelKey: string;
   route: string;
