@@ -4,6 +4,7 @@ import { useTheme } from '../../composables/use-theme';
 @Component({
   selector: 'app-theme-toggle',
   standalone: true,
+  imports: [],
   templateUrl: './theme-toggle.component.html',
   styleUrls: ['./theme-toggle.component.scss'],
 })
