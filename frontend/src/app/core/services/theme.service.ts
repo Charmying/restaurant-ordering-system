@@ -8,11 +8,17 @@ export class ThemeService {
   readonly theme = signal<Theme>(this.#load());
 
   constructor() {
+    this.#applyTheme(this.theme());
+
     effect(() => {
       const t = this.theme();
-      document.body.setAttribute('data-theme', t);
-      localStorage.setItem(KEY, t);
+      this.#applyTheme(t);
     });
+  }
+
+  #applyTheme(theme: Theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem(KEY, theme);
   }
 
   toggle() {
