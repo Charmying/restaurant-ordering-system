@@ -9,10 +9,13 @@ import { Component, EventEmitter, HostListener, Input, Output } from '@angular/c
 })
 export class ModalComponent {
   @Input() maxHeight = '90vh';
+  @Input() closeOnBackdropClick: boolean = false;
   @Output() close = new EventEmitter<void>();
 
   onBackdropClick() {
-    this.close.emit();
+    if (this.closeOnBackdropClick) {
+      this.close.emit();
+    }
   }
 
   @HostListener('document:keydown.escape')
