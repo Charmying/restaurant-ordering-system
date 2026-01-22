@@ -4,6 +4,10 @@
       "title": "Restaurant Ordering System"
     }
   },
+  "common": {
+    "cancel": "Cancel",
+    "delete": "Delete"
+  },
   "language": {
     "switch": "Switch language",
     "current": {
@@ -38,7 +42,18 @@
       "menu": "Menu",
       "remark": "Remark",
       "remarkPlaceholder": "Are there any special requests?",
-      "addToCart": "Add to Cart"
+      "addToCart": "Add to Cart",
+      "item": "item",
+      "items": "items",
+      "quantity": "Quantity",
+      "total": "Total",
+      "cart": "Shopping Cart",
+      "emptyCart": "Your cart is empty",
+      "emptyCartMessage": "Add some delicious items to get started",
+      "continueShopping": "Continue Shopping",
+      "checkout": "Checkout",
+      "removeItem": "Remove Item",
+      "removeItemConfirm": "Are you sure you want to remove this item?"
     },
     "login": {
       "title": "Admin Portal",
