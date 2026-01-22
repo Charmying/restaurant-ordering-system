@@ -107,10 +107,38 @@
             [placeholder]="'features.order.remarkPlaceholder' | translate"
           ></textarea>
         </div>
+        <!-- Quantity Control -->
+        <div>
+          <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-3">
+            {{ 'features.order.quantity' | translate }}
+          </label>
+          <div class="flex items-center gap-4">
+            <button (click)="decrementQuantity()"
+              class="w-12 h-12 rounded-full bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] font-semibold transition-all hover:bg-[rgb(var(--surface-elevated))] active:scale-[0.95]">
+              −
+            </button>
+            <span class="text-2xl font-semibold text-[rgb(var(--text-primary))] min-w-[3rem] text-center">
+              {{ quantity() }}
+            </span>
+            <button (click)="incrementQuantity()"
+              class="w-12 h-12 rounded-full bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] font-semibold transition-all hover:bg-[rgb(var(--surface-elevated))] active:scale-[0.95]">
+              +
+            </button>
+          </div>
+        </div>
       </div>
       <!-- Footer -->
       <div class="p-6 border-t border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface))]">
-        <button class="w-full bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] py-4 rounded-2xl font-semibold transition active:scale-[0.97]">
+        <div class="flex items-center justify-between mb-4">
+          <span class="text-sm text-[rgb(var(--text-secondary))]">
+            {{ 'features.order.total' | translate }}
+          </span>
+          <span class="text-2xl font-semibold text-[rgb(var(--primary))]">
+            NT$ {{ calculateItemTotal() | number:'1.0-0' }}
+          </span>
+        </div>
+        <button (click)="addToCart()"
+          class="w-full bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] py-4 rounded-2xl font-semibold transition-all active:scale-[0.97] hover:shadow-lg">
           {{ 'features.order.addToCart' | translate }}
         </button>
       </div>
