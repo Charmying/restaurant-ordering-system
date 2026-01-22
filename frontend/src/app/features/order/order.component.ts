@@ -4,12 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { MockMenu } from './order.mock';
-import {
-  MenuItem,
-  CustomizationState,
-  CustomField,
-  CustomOption,
-} from './order.types';
+import { MenuItem, CustomizationState, CustomField, CustomOption } from './order.types';
 import { CartService } from './cart.service';
 
 @Component({
@@ -23,6 +18,7 @@ export class OrderComponent {
   private cartService = inject(CartService);
 
   /* ========================= State ========================= */
+
   selectedCategory = signal<string>('全部');
   selectedItem = signal<MenuItem | null>(null);
   showCustomizeModal = signal(false);
@@ -34,16 +30,16 @@ export class OrderComponent {
   });
 
   /* ========================= Data ========================= */
+
   menuItems = signal<MenuItem[]>(MockMenu);
 
   /* ========================= Computed ========================= */
+
   categories = computed(() => {
     const set = new Set<string>();
 
     this.menuItems().forEach(item => {
-      const cats = Array.isArray(item.category)
-        ? item.category
-        : [item.category];
+      const cats = Array.isArray(item.category) ? item.category : [item.category];
 
       cats.forEach(c => set.add(c));
     });
@@ -57,9 +53,7 @@ export class OrderComponent {
     }
 
     return this.menuItems().filter(item =>
-      Array.isArray(item.category)
-        ? item.category.includes(this.selectedCategory())
-        : item.category === this.selectedCategory()
+      Array.isArray(item.category) ? item.category.includes(this.selectedCategory()) : item.category === this.selectedCategory()
     );
   });
 
@@ -67,9 +61,7 @@ export class OrderComponent {
     const map = new Map<string, MenuItem[]>();
 
     this.menuItems().forEach(item => {
-      const cats = Array.isArray(item.category)
-        ? item.category
-        : [item.category];
+      const cats = Array.isArray(item.category) ? item.category : [item.category];
 
       cats.forEach(cat => {
         if (!map.has(cat)) {
@@ -83,10 +75,9 @@ export class OrderComponent {
   });
 
   /* ========================= UI Presenters ========================= */
+
   getCategoryButtonClass(category: string): string {
-    return category === this.selectedCategory()
-      ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]'
-      : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
+    return category === this.selectedCategory() ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
   }
 
   getOptionButtonClass(
@@ -94,18 +85,13 @@ export class OrderComponent {
     option: CustomOption
   ): string {
     const value = this.customization().selections[field.name];
+    const selected = field.type === 'single' ? value === option.label : Array.isArray(value) && value.includes(option.label);
 
-    const selected =
-      field.type === 'single'
-        ? value === option.label
-        : Array.isArray(value) && value.includes(option.label);
-
-    return selected
-      ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]'
-      : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
+    return selected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
   }
 
   /* ========================= Actions ========================= */
+
   openCustomizeModal(item: MenuItem) {
     this.selectedItem.set(item);
     this.quantity.set(1);
@@ -128,9 +114,7 @@ export class OrderComponent {
       state.selections[field.name] = option.label;
     } else {
       const current = (state.selections[field.name] as string[]) ?? [];
-      state.selections[field.name] = current.includes(option.label)
-        ? current.filter(v => v !== option.label)
-        : [...current, option.label];
+      state.selections[field.name] = current.includes(option.label) ? current.filter(v => v !== option.label) : [...current, option.label];
     }
 
     this.customization.set(state);
