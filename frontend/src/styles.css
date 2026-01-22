@@ -80,10 +80,23 @@ body {
   to { opacity: 1; transform: scale(1); }
 }
 
+/* Slide Up */
+@keyframes slide-up {
+  from { 
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 /* ========================= Animation Utilities ========================= */
 
 .animate-fade-in { animation: fade-in 0.3s ease-out; }
 .animate-scale-in { animation: scale-in 0.3s ease-out; }
+.animate-slide-up { animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
 
 /* ========================= Transitions & Performance ========================= */
 
