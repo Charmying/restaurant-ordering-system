@@ -1,13 +1,204 @@
-<header class="sticky top-0 z-50 border-b" style="backdrop-filter: blur(24px); border-color: var(--header-border); background: var(--header-bg); color: var(--header-text);">
+<header class="sticky top-0 z-40 border-b" style="backdrop-filter: blur(24px); border-color: var(--header-border); background: var(--header-bg); color: var(--header-text);">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4">
     <div class="flex items-center justify-between gap-4">
       <h1 class="text-xl font-semibold">
         {{ 'layout.header.title' | translate }}
       </h1>
       <div class="flex items-center gap-2 sm:gap-3">
+        <!-- Shopping Cart Button -->
+        <button (click)="openCart()"
+          class="relative p-2.5 rounded-full hover:bg-[rgb(var(--surface-elevated))] transition-colors active:scale-[0.95]"
+          [class.has-items]="!cartService.isEmpty()"
+          [attr.aria-label]="'Open shopping cart'">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+          @if (cartService!.cartItemCount() > 0) {
+            <span class="absolute top-0 right-0 w-5 h-5 rounded-full bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] text-xs font-bold flex items-center justify-center">
+              {{ cartService!.cartItemCount() }}
+            </span>
+          }
+        </button>
         <app-language-toggle />
         <app-theme-toggle />
       </div>
     </div>
   </div>
 </header>
+<!-- Shopping Cart Modal -->
+@if (showCart()) {
+  <app-full-screen-modal [title]="'features.order.cart' | translate"
+    [showBackButton]="true"
+    [closeOnBackdropClick]="true"
+    (close)="closeCart()">
+    <!-- Cart Content -->
+    <div slot="content" class="flex flex-col h-full bg-[rgb(var(--surface))]">
+      <!-- Empty State -->
+      @if (cart().items.length === 0) {
+        <div class="flex flex-col items-center justify-center h-full px-4 py-8 sm:py-12 text-center">
+          <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 mb-4 sm:mb-6 opacity-20 text-[rgb(var(--text-primary))]">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="1.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <h2 class="text-lg sm:text-2xl md:text-4xl font-bold text-[rgb(var(--text-primary))] mb-2 sm:mb-3">
+            {{ 'features.order.emptyCart' | translate }}
+          </h2>
+          <p class="text-sm sm:text-base md:text-lg text-[rgb(var(--text-secondary))] max-w-sm leading-relaxed">
+            {{ 'features.order.emptyCartMessage' | translate }}
+          </p>
+        </div>
+      } @else {
+        <!-- Cart Items List -->
+        <div class="flex-1 overflow-y-auto">
+          <!-- Sticky Header -->
+          <div class="sticky top-0 bg-[rgb(var(--surface))] px-4 py-3 sm:py-4 border-b border-[rgb(var(--surface-muted))] backdrop-blur-sm bg-opacity-90 z-10">
+            <p class="text-xs font-semibold uppercase tracking-widest text-[rgb(var(--text-secondary))]">
+              {{ cart().totalItems }} {{ cart().totalItems === 1 ? ('features.order.item' | translate) : ('features.order.items' | translate) }}
+            </p>
+          </div>
+          <!-- Cart Items -->
+          <div class="divide-y divide-[rgb(var(--surface-muted))]">
+            @for (item of cart().items; track item.id) {
+              <div class="px-4 py-4 sm:py-5 md:py-6 flex gap-3 sm:gap-4 md:gap-5 hover:bg-[rgb(var(--surface-elevated))] transition-colors duration-200">
+                <!-- Item Image -->
+                <div class="flex-shrink-0">
+                  <div class="w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-28 lg:h-28 rounded-2xl overflow-hidden bg-[rgb(var(--surface-muted))] shadow-sm">
+                    @if (item.image) {
+                      <img [src]="item.image" [alt]="item.name" class="w-full h-full object-cover" />
+                    } @else {
+                      <div class="w-full h-full bg-gradient-to-br from-[rgb(var(--surface-muted))] to-[rgb(var(--surface-elevated))]"></div>
+                    }
+                  </div>
+                </div>
+                <!--  Item Details -->
+                <div class="flex-1 min-w-0 flex flex-col justify-between gap-2 sm:gap-3">
+                  <!-- Top Section: Name & Remove -->
+                  <div class="flex items-start justify-between gap-2">
+                    <div class="flex-1 min-w-0">
+                      <h3 class="text-sm sm:text-base md:text-lg lg:text-xl font-semibold text-[rgb(var(--text-primary))] leading-snug">
+                        {{ item.name }}
+                      </h3>
+                      @if (item.customizations.length > 0) {
+                        <div class="flex flex-wrap gap-1.5 sm:gap-2 mt-1.5 sm:mt-2">
+                          @for (custom of item.customizations; track custom.fieldName) {
+                            <span class="inline-flex text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-secondary))] font-medium">
+                              {{ custom.selectedOptions.join(', ') }}
+                            </span>
+                          }
+                        </div>
+                      }
+                      @if (item.note) {
+                        <p class="text-xs sm:text-sm text-[rgb(var(--text-secondary))] mt-1.5 sm:mt-2 italic opacity-80 line-clamp-2">「{{ item.note }}」</p>
+                      }
+                    </div>
+                    <button type="button" (click)="onRemoveItem(item.id)"
+                      class="flex-shrink-0 w-6 h-6 sm:w-8 sm:h-8 rounded-lg flex items-center justify-center text-[rgb(var(--text-secondary))] opacity-50 transition-colors duration-200"
+                      [attr.aria-label]="'Delete item'">
+                      <svg class="w-4 sm:w-5 h-4 sm:h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+                      </svg>
+                    </button>
+                  </div>
+                  <!-- Bottom Section: Quantity & Price -->
+                  <div class="flex items-center justify-between gap-2 sm:gap-3 pt-1">
+                    <!-- Quantity Control -->
+                    <div class="flex items-center gap-1 sm:gap-2 bg-[rgb(var(--surface-muted))] rounded-xl p-0.5 sm:p-1">
+                      <button type="button" (click)="onUpdateQuantity(item.id, item.quantity - 1)"
+                        [disabled]="item.quantity <= 1"
+                        class="w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center bg-transparent hover:bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))] font-semibold transition-all duration-200 text-xs sm:text-sm"
+                        aria-label="Decrease quantity">
+                        −
+                      </button>
+                      <span class="w-5 sm:w-6 text-center font-semibold text-[rgb(var(--text-primary))] text-xs sm:text-sm">
+                        {{ item.quantity }}
+                      </span>
+                      <button type="button" (click)="onUpdateQuantity(item.id, item.quantity + 1)"
+                        class="w-6 h-6 sm:w-8 sm:h-8 md:w-9 md:h-9 rounded-lg flex items-center justify-center bg-transparent hover:bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))] font-semibold transition-all duration-200 text-xs sm:text-sm"
+                        aria-label="Increase quantity">
+                        +
+                      </button>
+                    </div>
+                    <!-- Price Display -->
+                    <div class="text-right">
+                      <p class="text-xs text-[rgb(var(--text-secondary))] mb-0.5">
+                        NT${{ getSingleItemPrice(item) | number:'1.0-0' }} × {{ item.quantity }}
+                      </p>
+                      <p class="text-sm sm:text-lg md:text-xl lg:text-2xl font-bold text-[rgb(var(--primary))]">
+                        NT${{ getItemSubtotal(item) | number:'1.0-0' }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+    <!-- Footer with Order Summary -->
+    @if (cart().items.length > 0) {
+      <div slot="footer" class="border-t border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface))]">
+        <!-- Order Summary Card -->
+        <div class="px-4 py-4 sm:py-5 md:py-6 space-y-3 sm:space-y-4">
+          <div class="flex items-baseline justify-between pt-2">
+            <span class="text-sm sm:text-lg font-semibold text-[rgb(var(--text-secondary))]">
+              {{ 'features.order.total' | translate }}
+            </span>
+            <span class="text-2xl sm:text-3xl md:text-4xl font-black text-[rgb(var(--primary))]">
+              NT${{ cart().totalPrice | number:'1.0-0' }}
+            </span>
+          </div>
+        </div>
+        <!-- Action Buttons -->
+        <div class="px-4 py-5 sm:py-6 md:py-7 flex flex-col gap-3 sm:gap-4">
+          <!-- Checkout Button - Primary Style -->
+          <button type="button" (click)="onCheckout()"
+            class="w-full px-5 py-3 sm:py-4 md:py-4.5 rounded-2xl font-bold text-base sm:text-lg transition-all duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--primary))] bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] hover:shadow-lg hover:scale-[1.02]">
+            {{ 'features.order.checkout' | translate }}
+          </button>
+          <!-- Secondary Buttons Row -->
+          <div class="flex gap-2.5 sm:gap-3">
+            <!-- Continue Shopping -->
+            <button type="button" (click)="closeCart()"
+              class="flex-1 px-4 py-3 sm:py-4 md:py-4.5 rounded-2xl font-semibold text-sm sm:text-base transition-all duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--primary))] border-2 border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))] hover:border-[rgb(var(--primary))] hover:bg-[rgb(var(--surface-muted))]">
+              {{ 'features.order.continueShopping' | translate }}
+            </button>
+            <!-- Clear Cart Icon Button -->
+            <button type="button" (click)="onClearCart()"
+              class="flex-shrink-0 w-11 sm:w-12 md:w-14 py-3 sm:py-4 md:py-4.5 px-3 rounded-2xl border-2 transition-all duration-200 active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500 flex items-center justify-center border-red-300 bg-red-50 text-red-600 hover:bg-red-100 hover:border-red-500 hover:shadow-md dark:border-red-900 dark:bg-red-950 dark:text-red-400 dark:hover:bg-red-900 dark:hover:border-red-600"
+              [attr.aria-label]="'Clear cart'">
+              <svg class="w-5 sm:w-6 h-5 sm:h-6" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  </app-full-screen-modal>
+  <!-- Remove Confirmation Dialog -->
+  @if (showRemoveConfirm()) {
+    <div class="fixed inset-0 z-[9999] flex items-center justify-center px-4">
+      <div (click)="closeRemoveConfirm()" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+      <div class="relative bg-[rgb(var(--surface))] rounded-2xl p-6 max-w-sm w-full shadow-xl border border-[rgb(var(--surface-muted))]">
+        <h3 class="text-xl font-semibold text-[rgb(var(--text-primary))] mb-2">
+          {{ 'features.order.removeItem' | translate }}
+        </h3>
+        <p class="text-[rgb(var(--text-secondary))] mb-6">
+          {{ 'features.order.removeItemConfirm' | translate }}
+        </p>
+        <div class="flex gap-3">
+          <button (click)="closeRemoveConfirm()"
+            class="flex-1 px-6 py-3 rounded-xl border border-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] font-medium transition-all hover:bg-[rgb(var(--surface-muted))]">
+            {{ 'common.cancel' | translate }}
+          </button>
+          <button (click)="confirmRemoveItem()"
+            class="flex-1 px-6 py-3 rounded-xl bg-red-500 text-white font-medium transition-all hover:bg-red-600 active:scale-[0.95]">
+            {{ 'common.delete' | translate }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+}

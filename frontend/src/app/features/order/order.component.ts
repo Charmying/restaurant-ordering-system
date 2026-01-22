@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
@@ -10,6 +10,7 @@ import {
   CustomField,
   CustomOption,
 } from './order.types';
+import { CartService } from './cart.service';
 
 @Component({
   selector: 'app-order',
@@ -19,10 +20,13 @@ import {
   styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent {
+  private cartService = inject(CartService);
+
   /* ========================= State ========================= */
   selectedCategory = signal<string>('全部');
   selectedItem = signal<MenuItem | null>(null);
   showCustomizeModal = signal(false);
+  quantity = signal(1);
 
   customization = signal<CustomizationState>({
     selections: {},
@@ -104,6 +108,7 @@ export class OrderComponent {
   /* ========================= Actions ========================= */
   openCustomizeModal(item: MenuItem) {
     this.selectedItem.set(item);
+    this.quantity.set(1);
     this.customization.set({
       selections: {},
       note: '',
@@ -113,6 +118,7 @@ export class OrderComponent {
 
   closeCustomizeModal() {
     this.showCustomizeModal.set(false);
+    this.quantity.set(1);
   }
 
   onSelectOption(field: CustomField, option: CustomOption) {
@@ -128,5 +134,60 @@ export class OrderComponent {
     }
 
     this.customization.set(state);
+  }
+
+  calculateCustomizationPrice(): number {
+    const selectedItem = this.selectedItem();
+    if (!selectedItem) return 0;
+
+    let price = 0;
+    const customizations = this.customization().selections;
+
+    selectedItem.customFields?.forEach(field => {
+      const selected = customizations[field.name];
+      const options = field.type === 'single' ? [selected] : (Array.isArray(selected) ? selected : []);
+
+      options.forEach(optionLabel => {
+        const option = field.options.find(o => o.label === optionLabel);
+        if (option?.price) {
+          price += option.price;
+        }
+      });
+    });
+
+    return price;
+  }
+
+  calculateItemTotal(): number {
+    const selectedItem = this.selectedItem();
+    if (!selectedItem) return 0;
+
+    const customizationPrice = this.calculateCustomizationPrice();
+    const basePrice = selectedItem.price + customizationPrice;
+    return basePrice * this.quantity();
+  }
+
+  addToCart(): void {
+    const selectedItem = this.selectedItem();
+    if (!selectedItem) return;
+
+    const customizations = Object.entries(this.customization().selections)
+      .filter(([_, value]) => value !== undefined && value !== '' && (Array.isArray(value) ? value.length > 0 : true))
+      .map(([fieldName, selectedOptions]) => ({
+        fieldName,
+        selectedOptions: Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions],
+      }));
+
+    this.cartService.addItem(selectedItem._id, selectedItem.name, selectedItem.price, customizations, this.customization().note, selectedItem.image, this.quantity());
+
+    this.closeCustomizeModal();
+  }
+
+  incrementQuantity(): void {
+    this.quantity.update(q => q + 1);
+  }
+
+  decrementQuantity(): void {
+    this.quantity.update(q => Math.max(1, q - 1));
   }
 }

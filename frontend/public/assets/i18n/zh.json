@@ -4,6 +4,10 @@
       "title": "餐廳點餐系統"
     }
   },
+  "common": {
+    "cancel": "取消",
+    "delete": "刪除"
+  },
   "language": {
     "switch": "切換語言",
     "current": {
@@ -38,7 +42,18 @@
       "menu": "菜單",
       "remark": "備註",
       "remarkPlaceholder": "有什麼特殊需求嗎？",
-      "addToCart": "加入購物車"
+      "addToCart": "加入購物車",
+      "item": "項",
+      "items": "項",
+      "quantity": "數量",
+      "total": "總計",
+      "cart": "購物車",
+      "emptyCart": "您的購物車是空的",
+      "emptyCartMessage": "加入一些美味的餐點開始吧",
+      "continueShopping": "繼續購物",
+      "checkout": "結帳",
+      "removeItem": "移除項目",
+      "removeItemConfirm": "您確定要移除此項目嗎？"
     },
     "login": {
       "title": "管理後台",
