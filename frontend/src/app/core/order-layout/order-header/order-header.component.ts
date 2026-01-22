@@ -20,14 +20,17 @@ export class OrderHeaderComponent {
   private menuItemResolver = inject(MenuItemResolver);
 
   /* ========================= State ========================= */
+
   showCart = signal(false);
   showRemoveConfirm = signal(false);
   selectedRemoveItemId = signal<string | null>(null);
 
   /* ========================= Computed ========================= */
+
   cart = this.cartService.cart;
 
   /* ========================= Cart Actions ========================= */
+
   openCart(): void {
     this.showCart.set(true);
   }
@@ -69,6 +72,7 @@ export class OrderHeaderComponent {
   }
 
   /* ========================= Presenters ========================= */
+
   getCustomizationPriceDisplay(item: CartItem): number {
     const menuItem = this.menuItemResolver.getById(item.menuItemId);
     if (!menuItem) return 0;
