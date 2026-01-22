@@ -9,22 +9,13 @@
     "delete": "Delete"
   },
   "language": {
-    "switch": "Switch language",
     "current": {
       "en": "EN",
       "zh": "中"
     }
   },
-  "theme": {
-    "icon": {
-      "light": "🌙",
-      "dark": "☀️"
-    }
-  },
   "features": {
     "home": {
-      "title": "Welcome",
-      "description": "Choose your entry point",
       "hero": {
         "title": "Smart Ordering System",
         "subtitle": "Simple. Fast. Elegant."

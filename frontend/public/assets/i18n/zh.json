@@ -9,22 +9,13 @@
     "delete": "刪除"
   },
   "language": {
-    "switch": "切換語言",
     "current": {
       "en": "EN",
       "zh": "中"
     }
   },
-  "theme": {
-    "icon": {
-      "light": "🌙",
-      "dark": "☀️"
-    }
-  },
   "features": {
     "home": {
-      "title": "歡迎",
-      "description": "選擇您的入口",
       "hero": {
         "title": "智慧點餐系統",
         "subtitle": "簡單、快速、優雅"
