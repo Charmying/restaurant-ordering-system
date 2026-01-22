@@ -1,10 +1,10 @@
 <div class="min-h-screen bg-[rgb(var(--surface))] transition-colors">
-  <!-- ========================= Main ========================= -->
+  <!-- Main -->
   <main class="max-w-7xl mx-auto px-6 py-8">
     <h2 class="text-2xl font-semibold text-[rgb(var(--text-primary))] mb-6">
       {{ 'features.order.menu' | translate }} ({{ filteredMenuItems().length }})
     </h2>
-    <!-- ===== Categories ===== -->
+    <!-- Categories -->
     <div class="mb-6 -mx-6 px-6 overflow-x-auto">
       <div class="flex gap-2 min-w-max pb-2">
         @for (category of categories(); track category) {
@@ -16,7 +16,7 @@
         }
       </div>
     </div>
-    <!-- ========================= Menu List by Category ========================= -->
+    <!-- Menu List by Category -->
     @if (selectedCategory() === '全部') {
       @for (category of categories(); track category) {
         @if (category !== '全部') {
@@ -46,7 +46,7 @@
       </div>
     }
   </main>
-  <!-- ========================= Customize Modal ========================= -->
+  <!-- Customize Modal -->
   @if (showCustomizeModal()) {
     <app-modal (close)="closeCustomizeModal()">
       <!-- Header -->
@@ -144,7 +144,7 @@
       </div>
     </app-modal>
   }
-  <!-- ========================= Menu Card Template ========================= -->
+  <!-- Menu Card Template -->
   <ng-template #menuCard let-item="item">
     <div (click)="openCustomizeModal(item)"
       class="group bg-[rgb(var(--surface-elevated))] rounded-3xl overflow-hidden cursor-pointer border border-[rgb(var(--surface-muted))] transition-all duration-300 hover:shadow-2xl hover:scale-[1.03]">

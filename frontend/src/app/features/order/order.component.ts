@@ -82,7 +82,7 @@ export class OrderComponent {
     return map;
   });
 
-  /* ========================= UI Helpers ========================= */
+  /* ========================= UI Presenters ========================= */
   getCategoryButtonClass(category: string): string {
     return category === this.selectedCategory()
       ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]'

@@ -68,7 +68,7 @@ export class OrderHeaderComponent {
     console.log('Proceeding to checkout...');
   }
 
-  /* ========================= Helpers ========================= */
+  /* ========================= Presenters ========================= */
   getCustomizationPriceDisplay(item: CartItem): number {
     const menuItem = this.menuItemResolver.getById(item.menuItemId);
     if (!menuItem) return 0;
