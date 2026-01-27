@@ -20,10 +20,3 @@ export interface Cart {
   totalItems: number;
   totalPrice: number;
 }
-
-export interface CartItemDTO {
-  menuItemId: string;
-  quantity: number;
-  customizations: CartItemCustomization[];
-  note: string;
-}
