@@ -6,7 +6,11 @@
   },
   "common": {
     "cancel": "Cancel",
-    "delete": "Delete"
+    "delete": "Delete",
+    "processing": "Processing...",
+    "noData": "No Data",
+    "total": "Total",
+    "note": "Note"
   },
   "language": {
     "current": {
@@ -45,6 +49,55 @@
       "checkout": "Checkout",
       "removeItem": "Remove Item",
       "removeItemConfirm": "Are you sure you want to remove this item?"
+    },
+    "tableManagement": {
+      "title": "Table Management",
+      "subtitle": "Manage restaurant table status and checkout process",
+      "stats": {
+        "total": "Total Tables",
+        "available": "Available",
+        "occupied": "Occupied",
+        "checkout": "Checkout"
+      },
+      "table": {
+        "number": "Table",
+        "status": {
+          "available": "Available",
+          "occupied": "Occupied",
+          "checkout": "Checkout"
+        },
+        "actions": {
+          "startCheckout": "Start Checkout",
+          "completeCheckout": "Complete Checkout",
+          "setToOccupied": "Set to Occupied",
+          "viewQRCode": "View QR Code",
+          "viewDetails": "View Details"
+        },
+        "consumption": "Consumption Amount",
+        "checkingOut": "Checking out...",
+        "settingUp": "Setting up..."
+      },
+      "qrCode": {
+        "title": "Table {{tableNumber}} QR Code",
+        "subtitle": "Customers can scan this QR Code to enter ordering system",
+        "copyLink": "Copy Link",
+        "downloadImage": "Download Image"
+      },
+      "checkout": {
+        "title": "Table {{tableNumber}} Checkout",
+        "subtitle": "Confirm order details and complete checkout",
+        "noOrders": {
+          "title": "No Order Records",
+          "description": "This table currently has no orders"
+        },
+        "completeCheckout": "Complete Checkout",
+        "completeCheckoutLoading": "Completing checkout...",
+        "continueOrdering": "Continue Ordering"
+      },
+      "emptyState": {
+        "title": "No Table Data",
+        "description": "Currently no available table information"
+      }
     },
     "login": {
       "title": "Admin Portal",

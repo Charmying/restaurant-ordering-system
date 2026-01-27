@@ -6,7 +6,11 @@
   },
   "common": {
     "cancel": "取消",
-    "delete": "刪除"
+    "delete": "刪除",
+    "processing": "處理中...",
+    "noData": "沒有資料",
+    "total": "總計",
+    "note": "備註"
   },
   "language": {
     "current": {
@@ -45,6 +49,55 @@
       "checkout": "結帳",
       "removeItem": "移除項目",
       "removeItemConfirm": "您確定要移除此項目嗎？"
+    },
+    "tableManagement": {
+      "title": "桌位管理",
+      "subtitle": "管理餐廳桌位狀態與結帳流程",
+      "stats": {
+        "total": "總桌位",
+        "available": "空桌",
+        "occupied": "使用中",
+        "checkout": "結帳中"
+      },
+      "table": {
+        "number": "桌號",
+        "status": {
+          "available": "空桌",
+          "occupied": "使用中",
+          "checkout": "結帳中"
+        },
+        "actions": {
+          "startCheckout": "開始結帳",
+          "completeCheckout": "完成結帳",
+          "setToOccupied": "設為使用中",
+          "viewQRCode": "查看 QR Code",
+          "viewDetails": "查看明細"
+        },
+        "consumption": "消費金額",
+        "checkingOut": "結帳中...",
+        "settingUp": "設置中..."
+      },
+      "qrCode": {
+        "title": "桌號 {{tableNumber}} QR Code",
+        "subtitle": "顧客可掃描此 QR Code 進入點餐系統",
+        "copyLink": "複製連結",
+        "downloadImage": "下載圖片"
+      },
+      "checkout": {
+        "title": "桌號 {{tableNumber}} 結帳",
+        "subtitle": "確認訂單明細並完成結帳",
+        "noOrders": {
+          "title": "沒有訂單記錄",
+          "description": "此桌位目前沒有任何訂單"
+        },
+        "completeCheckout": "完成結帳",
+        "completeCheckoutLoading": "完成結帳中...",
+        "continueOrdering": "繼續點餐"
+      },
+      "emptyState": {
+        "title": "沒有桌位資料",
+        "description": "目前沒有可用的桌位資訊"
+      }
     },
     "login": {
       "title": "管理後台",
