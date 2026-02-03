@@ -125,6 +125,67 @@
         "served": "No served orders"
       }
     },
+    "menuManagement": {
+      "title": "Menu Management",
+      "subtitle": "Manage menu items, categories, and customization",
+      "categories": {
+        "all": "All"
+      },
+      "actions": {
+        "add": "Add Item",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "changeImage": "Change Image",
+        "uploadImage": "Click to Upload",
+        "addOption": "+ Add Option",
+        "addField": "Add Field",
+        "deleteConfirm": "Are you sure you want to delete this item?"
+      },
+      "modal": {
+        "addTitle": "Add Item",
+        "editTitle": "Edit Item"
+      },
+      "sections": {
+        "basicInfo": "Basic Info",
+        "customFields": "Customization",
+        "addCustomField": "Add Custom Field"
+      },
+      "fields": {
+        "name": "Item Name",
+        "price": "Price",
+        "category": "Category",
+        "description": "Description",
+        "image": "Item Image",
+        "required": "Required",
+        "optionList": "Option List",
+        "single": "Single",
+        "multiple": "Multiple"
+      },
+      "placeholders": {
+        "name": "e.g. Bubble Milk Tea",
+        "price": "60",
+        "description": "Add a short description...",
+        "categoryInput": "Type or select a category, press Enter",
+        "optionName": "Option name",
+        "optionPrice": "Price",
+        "fieldName": "Field name (e.g. Size)"
+      },
+      "badges": {
+        "customizable": "Customizable",
+        "more": "types"
+      },
+      "emptyState": {
+        "title": "No Menu Items",
+        "description": "There are no menu items available"
+      },
+      "hints": {
+        "imageFormats": "Supports SVG, PNG, JPG, WebP, AVIF, and more"
+      },
+      "validation": {
+        "required": "Please complete all required fields"
+      }
+    },
     "login": {
       "title": "Admin Portal",
       "subtitle": "Please login to continue",
