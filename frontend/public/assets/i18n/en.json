@@ -186,6 +186,21 @@
         "required": "Please complete all required fields"
       }
     },
+    "categoryManagement": {
+      "title": "Category Management",
+      "subtitle": "Drag to reorder categories",
+      "stats": {
+        "total": "Total Categories"
+      },
+      "section": {
+        "title": "Category Ordering",
+        "hint": "Drag cards to adjust order"
+      },
+      "emptyState": {
+        "title": "No Categories",
+        "description": "There are no categories available"
+      }
+    },
     "login": {
       "title": "Admin Portal",
       "subtitle": "Please login to continue",

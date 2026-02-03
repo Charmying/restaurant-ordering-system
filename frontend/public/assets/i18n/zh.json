@@ -186,6 +186,21 @@
         "required": "請填寫完整資訊"
       }
     },
+    "categoryManagement": {
+      "title": "分類管理",
+      "subtitle": "拖曳調整分類顯示順序",
+      "stats": {
+        "total": "分類總數"
+      },
+      "section": {
+        "title": "分類排序管理",
+        "hint": "拖曳卡片以調整順序"
+      },
+      "emptyState": {
+        "title": "沒有分類資料",
+        "description": "目前沒有可用的分類資訊"
+      }
+    },
     "login": {
       "title": "管理後台",
       "subtitle": "請登入以繼續",
