@@ -125,6 +125,67 @@
         "served": "目前沒有已處理訂單"
       }
     },
+    "menuManagement": {
+      "title": "菜單管理",
+      "subtitle": "管理餐點、分類與客製化選項",
+      "categories": {
+        "all": "全部"
+      },
+      "actions": {
+        "add": "新增餐點",
+        "edit": "編輯",
+        "delete": "刪除",
+        "save": "完成",
+        "changeImage": "更換照片",
+        "uploadImage": "點擊上傳照片",
+        "addOption": "＋ 新增選項",
+        "addField": "新增欄位",
+        "deleteConfirm": "確定要刪除這個餐點嗎？"
+      },
+      "modal": {
+        "addTitle": "新增餐點",
+        "editTitle": "編輯餐點"
+      },
+      "sections": {
+        "basicInfo": "基本資訊",
+        "customFields": "客製化欄位",
+        "addCustomField": "新增客製化欄位"
+      },
+      "fields": {
+        "name": "餐點名稱",
+        "price": "價格",
+        "category": "分類",
+        "description": "描述",
+        "image": "餐點照片",
+        "required": "必選",
+        "optionList": "選項列表",
+        "single": "單選",
+        "multiple": "多選"
+      },
+      "placeholders": {
+        "name": "例：珍珠奶茶",
+        "price": "60",
+        "description": "簡短描述這個餐點...",
+        "categoryInput": "輸入或選擇分類，按 Enter 新增",
+        "optionName": "選項名稱",
+        "optionPrice": "加價",
+        "fieldName": "欄位名稱 (例：尺寸)"
+      },
+      "badges": {
+        "customizable": "可客製化",
+        "more": "類"
+      },
+      "emptyState": {
+        "title": "沒有餐點資料",
+        "description": "目前沒有可用的菜單資訊"
+      },
+      "hints": {
+        "imageFormats": "支援 SVG, PNG, JPG, WebP, AVIF 等格式"
+      },
+      "validation": {
+        "required": "請填寫完整資訊"
+      }
+    },
     "login": {
       "title": "管理後台",
       "subtitle": "請登入以繼續",
