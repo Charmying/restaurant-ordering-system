@@ -99,6 +99,32 @@
         "description": "Currently no available table information"
       }
     },
+    "orderManagement": {
+      "title": "Order Management",
+      "subtitle": "Track pending and served orders",
+      "stats": {
+        "total": "Total Orders",
+        "pending": "Pending Orders",
+        "served": "Served Orders",
+        "revenue": "Order Revenue"
+      },
+      "sections": {
+        "pending": "Pending Orders",
+        "served": "Served Orders"
+      },
+      "status": {
+        "pending": "Pending",
+        "served": "Served"
+      },
+      "actions": {
+        "serve": "Serve"
+      },
+      "waitingCheckout": "Waiting for Checkout",
+      "empty": {
+        "pending": "No pending orders",
+        "served": "No served orders"
+      }
+    },
     "login": {
       "title": "Admin Portal",
       "subtitle": "Please login to continue",
