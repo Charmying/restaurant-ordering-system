@@ -99,6 +99,32 @@
         "description": "目前沒有可用的桌位資訊"
       }
     },
+    "orderManagement": {
+      "title": "訂單管理",
+      "subtitle": "追蹤待處理與已出菜訂單",
+      "stats": {
+        "total": "訂單總數",
+        "pending": "待處理訂單",
+        "served": "已出菜訂單",
+        "revenue": "訂單總額"
+      },
+      "sections": {
+        "pending": "待處理訂單",
+        "served": "已處理訂單"
+      },
+      "status": {
+        "pending": "待處理",
+        "served": "已出菜"
+      },
+      "actions": {
+        "serve": "出菜"
+      },
+      "waitingCheckout": "等待結帳",
+      "empty": {
+        "pending": "目前沒有待處理訂單",
+        "served": "目前沒有已處理訂單"
+      }
+    },
     "login": {
       "title": "管理後台",
       "subtitle": "請登入以繼續",

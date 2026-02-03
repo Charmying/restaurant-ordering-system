@@ -1,1 +1,247 @@
-order-management.component
+<div class="min-h-screen bg-[rgb(var(--surface))]">
+  <header class="bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-2xl border-b border-[rgb(var(--border))]/60 shadow-sm">
+    <div class="px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4">
+      <div class="flex flex-col gap-2 sm:gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+          <div class="space-y-0.5">
+            <h1 class="text-lg sm:text-xl lg:text-2xl font-semibold tracking-tight text-[rgb(var(--text-primary))]">
+              {{ 'features.orderManagement.title' | translate }}
+            </h1>
+            <p class="text-xs text-[rgb(var(--text-secondary))] font-medium">
+              {{ 'features.orderManagement.subtitle' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-1.5 sm:gap-2 lg:gap-3">
+          <div class="bg-[rgb(var(--surface))]/60 backdrop-blur-sm rounded-lg p-1.5 sm:p-2 lg:p-3 border border-[rgb(var(--border))]/50 transition-all duration-500 hover:shadow-lg hover:scale-[1.02] hover:bg-[rgb(var(--surface))]/80">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-medium text-[rgb(var(--text-secondary))]">
+                  {{ 'features.orderManagement.stats.total' | translate }}
+                </p>
+                <p class="text-sm sm:text-base lg:text-lg font-bold text-[rgb(var(--text-primary))] mt-0.5">
+                  {{ orderStats().total }}
+                </p>
+              </div>
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--surface-muted))]/50 rounded-lg flex items-center justify-center">
+                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 12h14M5 16h14"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="bg-[rgb(var(--surface))]/60 backdrop-blur-sm rounded-lg p-1.5 sm:p-2 lg:p-3 border border-[rgb(var(--border))]/50 transition-all duration-500 hover:shadow-lg hover:scale-[1.02] hover:bg-[rgb(var(--surface))]/80">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-medium text-[rgb(var(--text-secondary))]">
+                  {{ 'features.orderManagement.stats.pending' | translate }}
+                </p>
+                <p class="text-sm sm:text-base lg:text-lg font-bold text-orange-600 dark:text-orange-400 mt-0.5">
+                  {{ orderStats().pending }}
+                </p>
+              </div>
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-orange-50/80 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
+                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6l4 2"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="bg-[rgb(var(--surface))]/60 backdrop-blur-sm rounded-lg p-1.5 sm:p-2 lg:p-3 border border-[rgb(var(--border))]/50 transition-all duration-500 hover:shadow-lg hover:scale-[1.02] hover:bg-[rgb(var(--surface))]/80">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-medium text-[rgb(var(--text-secondary))]">
+                  {{ 'features.orderManagement.stats.served' | translate }}
+                </p>
+                <p class="text-sm sm:text-base lg:text-lg font-bold text-green-600 dark:text-green-400 mt-0.5">
+                  {{ orderStats().served }}
+                </p>
+              </div>
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-green-50/80 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
+                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+          <div class="bg-[rgb(var(--surface))]/60 backdrop-blur-sm rounded-lg p-1.5 sm:p-2 lg:p-3 border border-[rgb(var(--border))]/50 transition-all duration-500 hover:shadow-lg hover:scale-[1.02] hover:bg-[rgb(var(--surface))]/80">
+            <div class="flex items-center justify-between">
+              <div>
+                <p class="text-xs font-medium text-[rgb(var(--text-secondary))]">
+                  {{ 'features.orderManagement.stats.revenue' | translate }}
+                </p>
+                <p class="text-sm sm:text-base lg:text-lg font-bold text-[rgb(var(--text-primary))] mt-0.5">
+                  {{ formatCurrency(orderStats().revenue) }}
+                </p>
+              </div>
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--accent))]/10 rounded-lg flex items-center justify-center">
+                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--accent))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V6m0 10v2"></path>
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 lg:py-6">
+    <div class="grid grid-cols-1 xl:grid-cols-2 gap-3 sm:gap-4 lg:gap-6">
+      <section class="bg-[rgb(var(--surface))]/80 backdrop-blur-sm rounded-xl border border-[rgb(var(--border))]/60 p-3 sm:p-4 lg:p-5 space-y-3 sm:space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <h2 class="text-base sm:text-lg font-semibold text-[rgb(var(--text-primary))]">
+              {{ 'features.orderManagement.sections.pending' | translate }}
+            </h2>
+            <p class="text-xs text-[rgb(var(--text-secondary))]">
+              {{ orderStats().pending }} {{ 'features.orderManagement.stats.pending' | translate }}
+            </p>
+          </div>
+          <span class="px-2.5 py-1 text-orange-700 dark:text-orange-400 rounded-full text-xs font-semibold border border-orange-200/60 dark:border-orange-800/60">
+            {{ pendingOrders().length }}
+          </span>
+        </div>
+        <div class="space-y-2 sm:space-y-3">
+          @for (order of pendingOrders(); track order._id) {
+            <div class="bg-[rgb(var(--surface))]/70 backdrop-blur-sm rounded-lg border border-[rgb(var(--border))]/60 p-3 sm:p-4 space-y-3 transition-all duration-300 hover:shadow-lg">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm sm:text-base font-semibold text-[rgb(var(--text-primary))]">
+                    {{ 'features.tableManagement.table.number' | translate }} {{ order.tableNumber }}
+                  </h3>
+                  <p class="text-xs text-[rgb(var(--text-secondary))]">
+                    {{ order.createdAt | date:'HH:mm' }}
+                  </p>
+                </div>
+                <span class="px-2 py-1 bg-orange-50/80 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 rounded-full text-xs font-semibold">
+                  {{ 'features.orderManagement.status.pending' | translate }}
+                </span>
+              </div>
+              <div class="border-t border-[rgb(var(--border))]/60 pt-3 space-y-2">
+                @for (item of mergeOrderItems(order.items); track $index) {
+                  <div class="space-y-1">
+                    <div class="flex justify-between text-xs sm:text-sm text-[rgb(var(--text-primary))]">
+                      <span>
+                        {{ item.name }} x {{ item.quantity }}
+                      </span>
+                      <span class="font-medium">
+                        {{ formatCurrency(item.price * item.quantity) }}
+                      </span>
+                    </div>
+                    @if (getCustomizationDisplay(item.customization).length) {
+                      <div class="text-xs text-[rgb(var(--text-secondary))] pl-3 space-y-0.5">
+                        @for (detail of getCustomizationDisplay(item.customization); track $index) {
+                          <div>
+                            {{ detail }}
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="border-t border-[rgb(var(--border))]/60 pt-3 flex items-center justify-between">
+                <span class="text-sm font-semibold text-[rgb(var(--text-primary))]">
+                  {{ 'common.total' | translate }} {{ formatCurrency(order.total) }}
+                </span>
+                <button (click)="onServeOrder(order)"
+                  class="px-4 py-2 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:shadow-lg active:scale-[0.98]">
+                  {{ 'features.orderManagement.actions.serve' | translate }}
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+        @if (!pendingOrders().length) {
+          <div class="text-center py-8 sm:py-10">
+            <div class="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-orange-50/80 dark:bg-orange-900/20 rounded-xl mb-3">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3"></path>
+              </svg>
+            </div>
+            <p class="text-sm text-[rgb(var(--text-secondary))]">
+              {{ 'features.orderManagement.empty.pending' | translate }}
+            </p>
+          </div>
+        }
+      </section>
+      <section class="bg-[rgb(var(--surface))]/80 backdrop-blur-sm rounded-xl border border-[rgb(var(--border))]/60 p-3 sm:p-4 lg:p-5 space-y-3 sm:space-y-4">
+        <div class="flex items-center justify-between">
+          <div class="space-y-0.5">
+            <h2 class="text-base sm:text-lg font-semibold text-[rgb(var(--text-primary))]">
+              {{ 'features.orderManagement.sections.served' | translate }}
+            </h2>
+            <p class="text-xs text-[rgb(var(--text-secondary))]">
+              {{ orderStats().served }} {{ 'features.orderManagement.stats.served' | translate }}
+            </p>
+          </div>
+          <span class="px-2.5 py-1 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold border border-green-200/60 dark:border-green-800/60">
+            {{ servedOrders().length }}
+          </span>
+        </div>
+        <div class="space-y-2 sm:space-y-3">
+          @for (order of servedOrders(); track order._id) {
+            <div class="bg-[rgb(var(--surface))]/70 backdrop-blur-sm rounded-lg border border-[rgb(var(--border))]/60 p-3 sm:p-4 space-y-3 transition-all duration-300 hover:shadow-lg">
+              <div class="flex items-start justify-between">
+                <div>
+                  <h3 class="text-sm sm:text-base font-semibold text-[rgb(var(--text-primary))]">
+                    {{ 'features.tableManagement.table.number' | translate }} {{ order.tableNumber }}
+                  </h3>
+                  <p class="text-xs text-[rgb(var(--text-secondary))]">
+                    {{ order.createdAt | date:'HH:mm' }}
+                  </p>
+                </div>
+                <span class="px-2 py-1 bg-green-50/80 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold">
+                  {{ 'features.orderManagement.status.served' | translate }}
+                </span>
+              </div>
+              <div class="border-t border-[rgb(var(--border))]/60 pt-3 space-y-2">
+                @for (item of mergeOrderItems(order.items); track $index) {
+                  <div class="space-y-1">
+                    <div class="flex justify-between text-xs sm:text-sm text-[rgb(var(--text-primary))]">
+                      <span>
+                        {{ item.name }} x {{ item.quantity }}
+                      </span>
+                      <span class="font-medium">
+                        {{ formatCurrency(item.price * item.quantity) }}
+                      </span>
+                    </div>
+                    @if (getCustomizationDisplay(item.customization).length) {
+                      <div class="text-xs text-[rgb(var(--text-secondary))] pl-3 space-y-0.5">
+                        @for (detail of getCustomizationDisplay(item.customization); track $index) {
+                          <div>
+                            {{ detail }}
+                          </div>
+                        }
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
+              <div class="border-t border-[rgb(var(--border))]/60 pt-3 flex items-center justify-between">
+                <span class="text-sm font-semibold text-[rgb(var(--text-primary))]">
+                  {{ 'common.total' | translate }} {{ formatCurrency(order.total) }}
+                </span>
+                <span class="text-xs text-[rgb(var(--text-secondary))]">
+                  {{ 'features.orderManagement.waitingCheckout' | translate }}
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+        @if (!servedOrders().length) {
+          <div class="text-center py-8 sm:py-10">
+            <div class="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-green-50/80 dark:bg-green-900/20 rounded-xl mb-3">
+              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <p class="text-sm text-[rgb(var(--text-secondary))]">
+              {{ 'features.orderManagement.empty.served' | translate }}
+            </p>
+          </div>
+        }
+      </section>
+    </div>
+  </main>
+</div>
