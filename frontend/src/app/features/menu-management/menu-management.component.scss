@@ -1,0 +1,8 @@
+select.no-arrow-select {
+  appearance: none;
+  background-image: none;
+}
+
+select.no-arrow-select::-ms-expand {
+  display: none;
+}

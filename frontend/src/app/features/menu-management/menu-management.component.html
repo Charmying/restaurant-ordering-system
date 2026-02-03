@@ -1,1 +1,338 @@
-menu-management.component
+<div class="min-h-screen bg-[rgb(var(--surface))]">
+  <header class="bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-2xl border-b border-[rgb(var(--border))]/60 shadow-sm">
+    <div class="px-3 sm:px-4 lg:px-6 py-2 sm:py-3 lg:py-4">
+      <div class="flex flex-col gap-2 sm:gap-3">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <div class="space-y-0.5">
+            <h1 class="text-lg sm:text-xl lg:text-2xl font-semibold tracking-tight text-[rgb(var(--text-primary))]">
+              {{ 'features.menuManagement.title' | translate }}
+            </h1>
+            <p class="text-xs text-[rgb(var(--text-secondary))] font-medium">
+              {{ 'features.menuManagement.subtitle' | translate }}
+            </p>
+          </div>
+          <button (click)="openAddMenuModal()"
+            class="px-4 sm:px-5 py-2 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 hover:shadow-lg active:scale-[0.98]">
+            {{ 'features.menuManagement.actions.add' | translate }}
+          </button>
+        </div>
+        <div class="flex flex-wrap gap-2">
+          @for (category of menuCategories(); track category) {
+            <button (click)="setSelectedCategory(category)"
+              [class]="'px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 hover:shadow-md ' + (selectedCategory() === category ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))]')">
+              @if (category === allCategoryValue) {
+                {{ 'features.menuManagement.categories.all' | translate }}
+              } @else {
+                {{ category }}
+              }
+            </button>
+          }
+        </div>
+      </div>
+    </div>
+  </header>
+  <main class="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 lg:py-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+      @for (item of filteredMenuItems(); track item._id) {
+        <div class="bg-[rgb(var(--surface))]/80 backdrop-blur-sm rounded-xl border border-[rgb(var(--border))]/60 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
+          @if (item.image) {
+            <div class="aspect-[4/3] bg-[rgb(var(--surface-muted))]">
+              <img [src]="item.image" [alt]="item.name" class="w-full h-full object-cover">
+            </div>
+          }
+          <div class="p-4 sm:p-5 space-y-3">
+            <div>
+              <h3 class="text-base sm:text-lg font-semibold text-[rgb(var(--text-primary))]">
+                {{ item.name }}
+              </h3>
+              <p class="text-xs sm:text-sm text-[rgb(var(--text-secondary))] mt-1">
+                {{ item.description }}
+              </p>
+              <p class="text-lg sm:text-xl font-semibold text-[rgb(var(--text-primary))] mt-2">
+                {{ formatCurrency(item.price) }}
+              </p>
+              <div class="flex flex-wrap gap-2 mt-2 items-center">
+                @if (isArray(item.category)) {
+                  <span class="px-2.5 py-1 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-secondary))] rounded text-xs">
+                    {{ item.category.length ? item.category[0] : '其他' }}
+                  </span>
+                  @if (item.category.length > 1) {
+                    <span class="px-2.5 py-1 bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-secondary))] rounded text-xs">
+                      + {{ item.category.length - 1 }} {{ 'features.menuManagement.badges.more' | translate }}
+                    </span>
+                  }
+                } @else {
+                  <span class="px-2.5 py-1 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-secondary))] rounded text-xs">
+                    {{ item.category }}
+                  </span>
+                }
+                @if (item.customFields.length) {
+                  <span class="px-2.5 py-1 bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))] rounded text-xs">
+                    {{ 'features.menuManagement.badges.customizable' | translate }}
+                  </span>
+                }
+              </div>
+            </div>
+            <div class="flex gap-2">
+              <button (click)="openEditMenuModal(item)"
+                class="flex-1 px-3 py-2 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:bg-[rgb(var(--surface-elevated))]">
+                {{ 'features.menuManagement.actions.edit' | translate }}
+              </button>
+              <button (click)="deleteMenuItem(item)"
+                class="flex-1 px-3 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:bg-red-200 dark:hover:bg-red-900/50">
+                {{ 'features.menuManagement.actions.delete' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+    @if (!filteredMenuItems().length) {
+      <div class="text-center py-10 sm:py-16">
+        <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-[rgb(var(--surface-muted))] rounded-2xl mb-4 shadow-inner">
+          <svg class="w-6 h-6 sm:w-8 sm:h-8 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5h18M3 12h18M3 19h18"></path>
+          </svg>
+        </div>
+        <h3 class="text-lg sm:text-xl font-semibold text-[rgb(var(--text-primary))] mb-2">
+          {{ 'features.menuManagement.emptyState.title' | translate }}
+        </h3>
+        <p class="text-sm sm:text-base text-[rgb(var(--text-secondary))]">
+          {{ 'features.menuManagement.emptyState.description' | translate }}
+        </p>
+      </div>
+    }
+  </main>
+  @if (showMenuModal) {
+    <app-full-screen-modal
+      [title]="isEditMode ? ('features.menuManagement.modal.editTitle' | translate) : ('features.menuManagement.modal.addTitle' | translate)"
+      (close)="closeMenuModal()"
+      [showFooterDivider]="true">
+      <div slot="content" class="p-5 sm:p-8 space-y-6">
+        <div class="bg-[rgb(var(--surface))] rounded-2xl p-5 border border-[rgb(var(--border))]/60 space-y-4">
+          <h4 class="text-sm font-semibold text-[rgb(var(--text-primary))]">
+            {{ 'features.menuManagement.sections.basicInfo' | translate }}
+          </h4>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium text-[rgb(var(--text-secondary))] mb-2">
+                {{ 'features.menuManagement.fields.name' | translate }}
+              </label>
+              <input type="text"
+                class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
+                [(ngModel)]="menuForm.name"
+                [placeholder]="'features.menuManagement.placeholders.name' | translate">
+            </div>
+            <div>
+              <label class="block text-xs font-medium text-[rgb(var(--text-secondary))] mb-2">
+                {{ 'features.menuManagement.fields.price' | translate }}
+              </label>
+              <input type="number"
+                class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
+                min="1"
+                step="1"
+                [(ngModel)]="menuForm.price"
+                [placeholder]="'features.menuManagement.placeholders.price' | translate">
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="flex flex-col">
+              <label class="block text-xs font-medium text-[rgb(var(--text-secondary))] mb-2">
+                {{ 'features.menuManagement.fields.category' | translate }}
+              </label>
+              <div class="flex-1 w-full rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-muted))] p-2 flex flex-col">
+                <div class="flex flex-wrap gap-2 mb-2">
+                  @for (cat of menuForm.category; track cat) {
+                    <span class="px-3 py-1 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] rounded-full text-xs flex items-center gap-2">
+                      {{ cat }}
+                      <button (click)="removeCategory(cat)"
+                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 text-xs">
+                        ×
+                      </button>
+                    </span>
+                  }
+                </div>
+                <div class="relative flex-1">
+                  <input type="text"
+                    class="w-full px-4 py-3 rounded-xl border border-transparent bg-transparent text-[rgb(var(--text-primary))] text-sm focus:outline-none"
+                    [(ngModel)]="menuCategoryInput"
+                    (keyup.enter)="addCategoryFromInput()"
+                    [placeholder]="'features.menuManagement.placeholders.categoryInput' | translate">
+                  @if (categorySuggestions.length > 0 && menuCategoryInput.trim().length > 0) {
+                    <div class="absolute left-0 right-0 mt-2 bg-[rgb(var(--surface))] border border-[rgb(var(--border))]/60 rounded-xl shadow-md z-30">
+                      @for (sug of categorySuggestions; track sug) {
+                        <button (click)="toggleCategorySuggestion(sug)"
+                          class="w-full text-left px-4 py-2 text-sm text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--surface-muted))] transition-all">
+                          {{ sug }}
+                        </button>
+                      }
+                    </div>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col">
+              <label class="block text-xs font-medium text-[rgb(var(--text-secondary))] mb-2">
+                {{ 'features.menuManagement.fields.description' | translate }}
+              </label>
+              <textarea class="flex-1 w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] resize-none transition-all"
+                [(ngModel)]="menuForm.description"
+                [placeholder]="'features.menuManagement.placeholders.description' | translate"></textarea>
+            </div>
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-[rgb(var(--text-secondary))] mb-2">
+              {{ 'features.menuManagement.fields.image' | translate }}
+            </label>
+            <input type="file" id="imageUpload" accept="image/*" (change)="onImageUpload($event)" class="hidden">
+            <button type="button" (click)="triggerFileInput()"
+              class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] text-sm hover:bg-[rgb(var(--surface-elevated))] transition-all text-left">
+              {{ menuForm.image ? ('features.menuManagement.actions.changeImage' | translate) : ('features.menuManagement.actions.uploadImage' | translate) }}
+            </button>
+            @if (menuForm.image) {
+              <div class="mt-2 relative aspect-video bg-[rgb(var(--surface-muted))] rounded-xl overflow-hidden">
+                <img [src]="menuForm.image" alt="Preview" class="w-full h-full object-cover">
+              </div>
+            }
+            <p class="text-xs text-[rgb(var(--text-secondary))] mt-1">
+              {{ 'features.menuManagement.hints.imageFormats' | translate }}
+            </p>
+          </div>
+        </div>
+        @if (menuForm.customFields.length > 0) {
+          <div class="bg-[rgb(var(--surface))] rounded-2xl p-5 border border-[rgb(var(--border))]/60 space-y-4">
+            <h4 class="text-sm font-semibold text-[rgb(var(--text-primary))]">
+              {{ 'features.menuManagement.sections.customFields' | translate }}
+            </h4>
+            @for (field of menuForm.customFields; track $index) {
+              <div class="bg-[rgb(var(--surface-muted))] p-4 rounded-xl space-y-3 border border-[rgb(var(--border))]/60">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="flex items-center gap-2 flex-wrap">
+                    <span class="font-semibold text-[rgb(var(--text-primary))]">
+                      {{ field.name }}
+                    </span>
+                    <span class="text-xs px-2.5 py-1 bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-secondary))] rounded-full font-medium">
+                      {{ field.type === 'single' ? ('features.menuManagement.fields.single' | translate) : ('features.menuManagement.fields.multiple' | translate) }}
+                    </span>
+                    @if (field.required) {
+                      <span class="text-xs px-2.5 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full font-medium">
+                        {{ 'features.menuManagement.fields.required' | translate }}
+                      </span>
+                    }
+                  </div>
+                  <button (click)="removeCustomField($index)"
+                    class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 text-xl font-light">
+                    ×
+                  </button>
+                </div>
+                <div class="space-y-2.5">
+                  @for (option of field.options; track $index) {
+                    <div class="flex items-center gap-2.5">
+                      <input type="text"
+                        class="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
+                        [(ngModel)]="option.label"
+                        [placeholder]="'features.menuManagement.placeholders.optionName' | translate">
+                      <input type="number"
+                        class="w-20 sm:w-24 px-3 py-2.5 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
+                        [(ngModel)]="option.price"
+                        [placeholder]="'features.menuManagement.placeholders.optionPrice' | translate">
+                      <button (click)="removeOptionFromField(field, $index)"
+                        class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-light">
+                        ×
+                      </button>
+                    </div>
+                  }
+                  <button (click)="addOptionToField(field)"
+                    class="text-sm text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] font-medium transition-all duration-300">
+                    {{ 'features.menuManagement.actions.addOption' | translate }}
+                  </button>
+                </div>
+              </div>
+            }
+          </div>
+        }
+        <div class="bg-[rgb(var(--surface))] rounded-2xl p-5 border border-[rgb(var(--border))]/60 space-y-4">
+          <h4 class="text-sm font-semibold text-[rgb(var(--text-primary))]">
+            {{ 'features.menuManagement.sections.addCustomField' | translate }}
+          </h4>
+          <div class="space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <input type="text"
+                class="px-4 py-3 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
+                [(ngModel)]="newField.name"
+                [placeholder]="'features.menuManagement.placeholders.fieldName' | translate">
+              <select class="no-arrow-select px-4 py-3 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
+                [(ngModel)]="newField.type">
+                <option value="single">
+                  {{ 'features.menuManagement.fields.single' | translate }}
+                </option>
+                <option value="multiple">
+                  {{ 'features.menuManagement.fields.multiple' | translate }}
+                </option>
+              </select>
+            </div>
+            <label class="flex items-center gap-3 cursor-pointer group">
+              <input type="checkbox" [(ngModel)]="newField.required">
+              <span class="text-sm text-[rgb(var(--text-secondary))] font-medium group-hover:text-[rgb(var(--text-primary))] transition-all duration-300">
+                {{ 'features.menuManagement.fields.required' | translate }}
+              </span>
+            </label>
+            <div class="space-y-3">
+              <label class="block text-sm font-medium text-[rgb(var(--text-secondary))]">
+                {{ 'features.menuManagement.fields.optionList' | translate }}
+              </label>
+              <div class="flex gap-2.5">
+                <input type="text"
+                  class="flex-1 min-w-0 px-3.5 py-2.5 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
+                  [(ngModel)]="newOption.label"
+                  [placeholder]="'features.menuManagement.placeholders.optionName' | translate">
+                <input type="number"
+                  class="w-20 sm:w-24 px-3 py-2.5 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
+                  [(ngModel)]="newOption.price"
+                  [placeholder]="'features.menuManagement.placeholders.optionPrice' | translate">
+                <button (click)="addOptionToNewField()"
+                  class="px-4 sm:px-5 py-2.5 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl text-sm font-medium flex-shrink-0 shadow-md">
+                  +
+                </button>
+              </div>
+              @if (newField.options.length > 0) {
+                <div class="flex flex-wrap gap-2">
+                  @for (option of newField.options; track $index) {
+                    <span class="px-3 py-2 bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))] rounded-full text-xs flex items-center gap-2 font-medium">
+                      {{ option.label }}
+                      @if (option.price != null && option.price > 0) {
+                        <span class="text-[10px] opacity-60">
+                          +{{ formatCurrency(option.price) }}
+                        </span>
+                      }
+                      <button (click)="removeOptionFromNewField($index)"
+                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-red-200 dark:hover:bg-red-900/50 text-gray-500 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-light">
+                        ×
+                      </button>
+                    </span>
+                  }
+                </div>
+              }
+            </div>
+            <button (click)="addCustomField()"
+              [disabled]="!newField.name || newField.options.length === 0"
+              class="w-full px-4 py-3 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-all text-sm font-semibold shadow-md hover:shadow-lg">
+              {{ 'features.menuManagement.actions.addField' | translate }}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div slot="footer" class="p-5 sm:p-8 flex flex-col sm:flex-row gap-3">
+        <button (click)="closeMenuModal()"
+          class="flex-1 px-4 py-3 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl font-semibold transition-all active:scale-[0.98]">
+          {{ 'common.cancel' | translate }}
+        </button>
+        <button (click)="saveMenuItem()"
+          [disabled]="!isFormValid"
+          class="flex-1 px-4 py-3 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl font-semibold transition-all active:scale-[0.98] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
+          {{ 'features.menuManagement.actions.save' | translate }}
+        </button>
+      </div>
+    </app-full-screen-modal>
+  }
+</div>
