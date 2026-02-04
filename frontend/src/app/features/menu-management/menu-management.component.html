@@ -335,4 +335,50 @@
       </div>
     </app-full-screen-modal>
   }
+  @if (showDeleteModal) {
+    <app-modal (close)="closeDeleteModal()" maxHeight="auto">
+      <div class="p-6 sm:p-8 space-y-6 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
+        <div class="flex items-center justify-between">
+          <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
+            {{ 'features.menuManagement.modal.deleteTitle' | translate }}
+          </h3>
+          <button (click)="closeDeleteModal()"
+            class="p-1.5 sm:p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div class="flex items-start gap-4">
+            <div class="flex-shrink-0 w-12 h-12 bg-[rgb(var(--destructive-bg))] rounded-full flex items-center justify-center">
+              <svg class="w-6 h-6 text-[rgb(var(--destructive))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+              </svg>
+            </div>
+            <div class="flex-1">
+              <p class="text-base text-[rgb(var(--text-primary))] font-medium">
+                {{ 'features.menuManagement.modal.deleteMessage' | translate }}
+              </p>
+              @if (itemToDelete) {
+                <p class="text-sm text-[rgb(var(--text-secondary))] mt-2">
+                  {{ itemToDelete.name }}
+                </p>
+              }
+            </div>
+          </div>
+        </div>
+        <div class="flex gap-3">
+          <button (click)="closeDeleteModal()"
+            class="flex-1 px-4 py-3 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl hover:bg-[rgb(var(--surface-elevated))] transition-all font-semibold">
+            {{ 'features.menuManagement.actions.cancel' | translate }}
+          </button>
+          <button (click)="confirmDelete()"
+            class="flex-1 px-4 py-3 bg-[rgb(var(--destructive))] text-white rounded-xl hover:bg-[rgb(var(--destructive))]/90 transition-all font-semibold shadow-md">
+            {{ 'features.menuManagement.actions.delete' | translate }}
+          </button>
+        </div>
+      </div>
+    </app-modal>
+  }
 </div>

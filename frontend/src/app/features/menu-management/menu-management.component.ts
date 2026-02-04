@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FullScreenModalComponent } from '../../core/components/full-screen-modal/full-screen-modal.component';
+import { ModalComponent } from '../../core/components/modal/modal.component';
 import { MenuManagementService } from './menu-management.service';
 import { MenuManagementPresenter } from './menu-management.presenter';
 import { MenuCustomField, MenuCustomOption, MenuForm, MenuItem } from './menu-management.types';
@@ -10,7 +11,7 @@ import { MenuCustomField, MenuCustomOption, MenuForm, MenuItem } from './menu-ma
 @Component({
   selector: 'app-menu-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, FullScreenModalComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, FullScreenModalComponent, ModalComponent],
   templateUrl: './menu-management.component.html',
   styleUrls: ['./menu-management.component.scss'],
 })
@@ -28,6 +29,8 @@ export class MenuManagementComponent {
   showMenuModal = false;
   isEditMode = false;
   formError = '';
+  showDeleteModal = false;
+  itemToDelete: MenuItem | null = null;
 
   menuForm: MenuForm = this.menuService.createEmptyForm();
   menuCategoryInput = '';
@@ -106,9 +109,20 @@ export class MenuManagementComponent {
   }
 
   deleteMenuItem(item: MenuItem): void {
-    const message = this.translateService.instant('features.menuManagement.actions.deleteConfirm');
-    if (!window.confirm(message)) return;
-    this.menuService.deleteMenuItem(item._id);
+    this.itemToDelete = item;
+    this.showDeleteModal = true;
+  }
+
+  confirmDelete(): void {
+    if (this.itemToDelete) {
+      this.menuService.deleteMenuItem(this.itemToDelete._id);
+    }
+    this.closeDeleteModal();
+  }
+
+  closeDeleteModal(): void {
+    this.showDeleteModal = false;
+    this.itemToDelete = null;
   }
 
   addCustomField(): void {
