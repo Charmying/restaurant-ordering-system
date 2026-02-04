@@ -20,6 +20,10 @@
   --primary: 17 24 39;
   --primary-contrast: 255 255 255;
   --accent: 59 130 246;
+
+  /* Destructive */
+  --destructive: 255 59 48;
+  --destructive-bg: 255 245 244;
 }
 
 /* Dark theme */
@@ -36,6 +40,9 @@
   --primary: 245 245 247;
   --primary-contrast: 0 0 0;
   --accent: 96 165 250;
+
+  --destructive: 255 69 58;
+  --destructive-bg: 59 15 15;
 }
 
 /* ========================= Base / Reset ========================= */
