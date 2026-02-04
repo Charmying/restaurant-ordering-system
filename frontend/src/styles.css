@@ -24,6 +24,14 @@
   /* Destructive */
   --destructive: 255 59 48;
   --destructive-bg: 255 245 244;
+
+  /* Pinned */
+  --pinned-bg: 255 251 235;
+  --pinned-border: 251 191 36;
+  --pinned-text: 146 64 14;
+  --pinned-badge-bg: 254 243 199;
+  --pinned-badge-text: 120 53 15;
+  --pinned-icon: 217 119 6;
 }
 
 /* Dark theme */
@@ -43,6 +51,13 @@
 
   --destructive: 255 69 58;
   --destructive-bg: 59 15 15;
+
+  --pinned-bg: 58 48 28;
+  --pinned-border: 180 130 50;
+  --pinned-text: 253 224 71;
+  --pinned-badge-bg: 78 58 18;
+  --pinned-badge-text: 254 240 138;
+  --pinned-icon: 251 191 36;
 }
 
 /* ========================= Base / Reset ========================= */
