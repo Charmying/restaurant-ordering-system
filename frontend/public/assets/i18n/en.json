@@ -204,6 +204,43 @@
         "description": "There are no categories available"
       }
     },
+    "storeInfo": {
+      "title": "Store Information",
+      "subtitle": "Manage store details and public info",
+      "storeName": "Store Name",
+      "stats": {
+        "total": "Total Items"
+      },
+      "actions": {
+        "add": "Add Info",
+        "edit": "Edit",
+        "delete": "Delete",
+        "save": "Save",
+        "cancel": "Cancel",
+        "ok": "OK"
+      },
+      "form": {
+        "label": "Label",
+        "labelPlaceholder": "e.g. Business Hours",
+        "value": "Value",
+        "valuePlaceholder": "e.g. 11:00 - 22:00"
+      },
+      "modal": {
+        "addTitle": "Add Info",
+        "editTitle": "Edit Info",
+        "deleteTitle": "Delete Info",
+        "deleteMessage": "Are you sure you want to delete this info?"
+      },
+      "validation": {
+        "title": "Validation Error",
+        "requiredLabel": "Please enter a label"
+      },
+      "confirmDelete": "Are you sure you want to delete this info?",
+      "emptyState": {
+        "title": "No Store Info",
+        "description": "There is no store information available"
+      }
+    },
     "login": {
       "title": "Admin Portal",
       "subtitle": "Please login to continue",
