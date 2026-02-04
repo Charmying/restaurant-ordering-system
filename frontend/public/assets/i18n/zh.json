@@ -135,6 +135,7 @@
         "add": "新增餐點",
         "edit": "編輯",
         "delete": "刪除",
+        "cancel": "取消",
         "save": "完成",
         "changeImage": "更換照片",
         "uploadImage": "點擊上傳照片",
@@ -144,7 +145,9 @@
       },
       "modal": {
         "addTitle": "新增餐點",
-        "editTitle": "編輯餐點"
+        "editTitle": "編輯餐點",
+        "deleteTitle": "刪除餐點",
+        "deleteMessage": "確定要刪除這個餐點嗎？此操作無法復原。"
       },
       "sections": {
         "basicInfo": "基本資訊",
