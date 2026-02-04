@@ -79,7 +79,7 @@
                 {{ 'features.menuManagement.actions.edit' | translate }}
               </button>
               <button (click)="deleteMenuItem(item)"
-                class="flex-1 px-3 py-2 bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:bg-red-200 dark:hover:bg-red-900/50">
+                class="flex-1 px-3 py-2 bg-[rgb(var(--destructive-bg))] text-[rgb(var(--destructive))] rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:bg-[rgb(var(--destructive))]/10">
                 {{ 'features.menuManagement.actions.delete' | translate }}
               </button>
             </div>
@@ -146,7 +146,7 @@
                     <span class="px-3 py-1 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] rounded-full text-xs flex items-center gap-2">
                       {{ cat }}
                       <button (click)="removeCategory(cat)"
-                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all duration-200 text-xs">
+                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-gray-400 hover:text-[rgb(var(--destructive))] transition-all duration-200 text-xs">
                         ×
                       </button>
                     </span>
@@ -215,13 +215,13 @@
                       {{ field.type === 'single' ? ('features.menuManagement.fields.single' | translate) : ('features.menuManagement.fields.multiple' | translate) }}
                     </span>
                     @if (field.required) {
-                      <span class="text-xs px-2.5 py-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-full font-medium">
+                      <span class="text-xs px-2.5 py-1 bg-[rgb(var(--destructive-bg))] text-[rgb(var(--destructive))] rounded-full font-medium">
                         {{ 'features.menuManagement.fields.required' | translate }}
                       </span>
                     }
                   </div>
                   <button (click)="removeCustomField($index)"
-                    class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 text-xl font-light">
+                    class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-gray-400 hover:text-[rgb(var(--destructive))] transition-all duration-300 text-xl font-light">
                     ×
                   </button>
                 </div>
@@ -237,7 +237,7 @@
                         [(ngModel)]="option.price"
                         [placeholder]="'features.menuManagement.placeholders.optionPrice' | translate">
                       <button (click)="removeOptionFromField(field, $index)"
-                        class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-red-100 dark:hover:bg-red-900/30 text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-light">
+                        class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-gray-400 hover:text-[rgb(var(--destructive))] transition-all duration-300 font-light">
                         ×
                       </button>
                     </div>
@@ -306,7 +306,7 @@
                         </span>
                       }
                       <button (click)="removeOptionFromNewField($index)"
-                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-red-200 dark:hover:bg-red-900/50 text-gray-500 hover:text-red-600 dark:hover:text-red-400 transition-all duration-300 font-light">
+                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-gray-500 hover:text-[rgb(var(--destructive))] transition-all duration-300 font-light">
                         ×
                       </button>
                     </span>
