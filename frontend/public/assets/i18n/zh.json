@@ -204,6 +204,43 @@
         "description": "目前沒有可用的分類資訊"
       }
     },
+    "storeInfo": {
+      "title": "店家資訊管理",
+      "subtitle": "管理店家基本資訊與對外顯示內容",
+      "storeName": "店名",
+      "stats": {
+        "total": "資訊總數"
+      },
+      "actions": {
+        "add": "新增資訊",
+        "edit": "編輯",
+        "delete": "刪除",
+        "save": "儲存",
+        "cancel": "取消",
+        "ok": "確定"
+      },
+      "form": {
+        "label": "標籤",
+        "labelPlaceholder": "例：營業時間",
+        "value": "內容",
+        "valuePlaceholder": "例：11:00 - 22:00"
+      },
+      "modal": {
+        "addTitle": "新增資訊",
+        "editTitle": "編輯資訊",
+        "deleteTitle": "刪除資訊",
+        "deleteMessage": "確定要刪除這個資訊嗎？"
+      },
+      "validation": {
+        "title": "驗證錯誤",
+        "requiredLabel": "請填寫標籤"
+      },
+      "confirmDelete": "確定要刪除這個資訊嗎？",
+      "emptyState": {
+        "title": "沒有店家資訊",
+        "description": "目前沒有可用的店家資訊"
+      }
+    },
     "login": {
       "title": "管理後台",
       "subtitle": "請登入以繼續",
