@@ -241,6 +241,47 @@
         "description": "目前沒有可用的店家資訊"
       }
     },
+    "messageBoard": {
+      "title": "留言板",
+      "subtitle": "管理置頂公告與一般留言",
+      "editing": "正在編輯留言",
+      "stats": {
+        "total": "留言總數",
+        "pinned": "置頂公告",
+        "general": "一般留言"
+      },
+      "sections": {
+        "pinned": "置頂公告",
+        "general": "一般留言"
+      },
+      "actions": {
+        "send": "傳送",
+        "update": "更新",
+        "edit": "編輯",
+        "delete": "刪除",
+        "pin": "置頂",
+        "unpin": "取消置頂",
+        "cancel": "取消",
+        "deleteAll": "刪除全部"
+      },
+      "placeholders": {
+        "new": "輸入留言...",
+        "edit": "編輯留言..."
+      },
+      "badges": {
+        "pinned": "公告",
+        "edited": "已編輯"
+      },
+      "confirmDelete": "確定要刪除這則留言嗎？",
+      "confirmDeleteAll": "確定要刪除全部留言嗎？",
+      "modal": {
+        "deleteTitle": "刪除留言",
+        "deleteMessage": "確定要刪除這則留言嗎？此操作無法復原。",
+        "deleteAllTitle": "刪除全部留言",
+        "deleteAllMessage": "確定要刪除全部留言嗎？此操作無法復原。"
+      },
+      "emptyState": "目前沒有留言"
+    },
     "login": {
       "title": "管理後台",
       "subtitle": "請登入以繼續",
