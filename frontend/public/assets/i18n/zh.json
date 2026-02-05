@@ -282,6 +282,55 @@
       },
       "emptyState": "目前沒有留言"
     },
+    "businessReports": {
+      "title": "營業報表",
+      "subtitle": "掌握營收、訂單與熱銷餐點",
+      "range": {
+        "label": "報表範圍",
+        "today": "本日",
+        "week": "本週",
+        "month": "本月",
+        "all": "全部",
+        "custom": "自訂日期",
+        "start": "開始日期",
+        "end": "結束日期",
+        "apply": "套用"
+      },
+      "stats": {
+        "totalItems": "餐點總數",
+        "totalOrders": "訂單總數",
+        "totalRevenue": "總營業額",
+        "avgOrderValue": "平均每單價格"
+      },
+      "items": {
+        "title": "餐點銷售排行",
+        "rank": "排名",
+        "name": "餐點名稱",
+        "quantity": "銷售數量",
+        "revenue": "營業額"
+      },
+      "actions": {
+        "reset": "歸零報表",
+        "cancel": "取消",
+        "confirmReset": "確認歸零",
+        "ok": "確定"
+      },
+      "reset": {
+        "title": "歸零營業報表",
+        "description": "請輸入超級管理者密碼以確認歸零。",
+        "password": "管理者密碼",
+        "placeholder": "輸入密碼"
+      },
+      "validation": {
+        "dateRequired": "請選擇開始和結束日期",
+        "invalidRange": "開始日期不能晚於結束日期",
+        "resetPassword": "請輸入超級管理者密碼"
+      },
+      "alert": {
+        "title": "提示"
+      },
+      "emptyState": "目前沒有銷售資料"
+    },
     "login": {
       "title": "管理後台",
       "subtitle": "請登入以繼續",
