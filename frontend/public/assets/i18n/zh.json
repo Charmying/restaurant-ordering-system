@@ -10,7 +10,9 @@
     "processing": "處理中...",
     "noData": "沒有資料",
     "total": "總計",
-    "note": "備註"
+    "note": "備註",
+    "notification": "通知",
+    "ok": "確定"
   },
   "language": {
     "current": {
@@ -330,6 +332,50 @@
         "title": "提示"
       },
       "emptyState": "目前沒有銷售資料"
+    },
+    "userManagement": {
+      "title": "使用者管理",
+      "subtitle": "管理帳號權限與密碼",
+      "stats": {
+        "total": "使用者總數",
+        "managers": "管理者",
+        "employees": "員工"
+      },
+      "actions": {
+        "add": "新增使用者",
+        "save": "儲存",
+        "cancel": "取消",
+        "delete": "刪除",
+        "editUsername": "修改帳號名稱",
+        "changePassword": "變更密碼",
+        "confirm": "確定",
+        "passwordChanged": "密碼變更成功"
+      },
+      "badges": {
+        "me": "我"
+      },
+      "form": {
+        "username": "帳號",
+        "usernamePlaceholder": "輸入帳號",
+        "password": "密碼",
+        "passwordPlaceholder": "輸入密碼",
+        "role": "角色",
+        "newPassword": "新密碼",
+        "newPasswordPlaceholder": "輸入新密碼"
+      },
+      "modal": {
+        "addTitle": "新增使用者",
+        "changePasswordTitle": "變更密碼",
+        "editUsernameTitle": "修改帳號名稱",
+        "deleteTitle": "刪除使用者"
+      },
+      "validation": {
+        "required": "請填寫完整資訊",
+        "passwordRequired": "請輸入新密碼",
+        "usernameRequired": "請輸入帳號名稱"
+      },
+      "confirmDelete": "確定要刪除使用者 {{username}} 嗎？",
+      "emptyState": "目前沒有使用者"
     },
     "login": {
       "title": "管理後台",

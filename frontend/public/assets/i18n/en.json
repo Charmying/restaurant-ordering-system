@@ -10,7 +10,9 @@
     "processing": "Processing...",
     "noData": "No Data",
     "total": "Total",
-    "note": "Note"
+    "note": "Note",
+    "notification": "Notification",
+    "ok": "OK"
   },
   "language": {
     "current": {
@@ -330,6 +332,50 @@
         "title": "Notice"
       },
       "emptyState": "No sales data available"
+    },
+    "userManagement": {
+      "title": "User Management",
+      "subtitle": "Manage accounts, roles, and passwords",
+      "stats": {
+        "total": "Total Users",
+        "managers": "Managers",
+        "employees": "Employees"
+      },
+      "actions": {
+        "add": "Add User",
+        "save": "Save",
+        "cancel": "Cancel",
+        "delete": "Delete",
+        "editUsername": "Edit Username",
+        "changePassword": "Change Password",
+        "confirm": "Confirm",
+        "passwordChanged": "Password updated"
+      },
+      "badges": {
+        "me": "Me"
+      },
+      "form": {
+        "username": "Username",
+        "usernamePlaceholder": "Enter username",
+        "password": "Password",
+        "passwordPlaceholder": "Enter password",
+        "role": "Role",
+        "newPassword": "New Password",
+        "newPasswordPlaceholder": "Enter new password"
+      },
+      "modal": {
+        "addTitle": "Add User",
+        "changePasswordTitle": "Change Password",
+        "editUsernameTitle": "Edit Username",
+        "deleteTitle": "Delete User"
+      },
+      "validation": {
+        "required": "Please complete all required fields",
+        "passwordRequired": "Please enter a new password",
+        "usernameRequired": "Please enter a username"
+      },
+      "confirmDelete": "Are you sure you want to delete user {{username}}?",
+      "emptyState": "No users available"
     },
     "login": {
       "title": "Admin Portal",
