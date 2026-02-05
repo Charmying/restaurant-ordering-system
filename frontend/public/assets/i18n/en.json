@@ -282,6 +282,55 @@
       },
       "emptyState": "No messages yet"
     },
+    "businessReports": {
+      "title": "Business Reports",
+      "subtitle": "Track revenue, orders, and bestsellers",
+      "range": {
+        "label": "Report Range",
+        "today": "Today",
+        "week": "This Week",
+        "month": "This Month",
+        "all": "All Time",
+        "custom": "Custom Range",
+        "start": "Start Date",
+        "end": "End Date",
+        "apply": "Apply"
+      },
+      "stats": {
+        "totalItems": "Total Items",
+        "totalOrders": "Total Orders",
+        "totalRevenue": "Total Revenue",
+        "avgOrderValue": "Average Order Value"
+      },
+      "items": {
+        "title": "Top Selling Items",
+        "rank": "Rank",
+        "name": "Item Name",
+        "quantity": "Quantity Sold",
+        "revenue": "Revenue"
+      },
+      "actions": {
+        "reset": "Reset Reports",
+        "cancel": "Cancel",
+        "confirmReset": "Confirm Reset",
+        "ok": "OK"
+      },
+      "reset": {
+        "title": "Reset Business Reports",
+        "description": "Enter the super admin password to confirm reset.",
+        "password": "Admin Password",
+        "placeholder": "Enter password"
+      },
+      "validation": {
+        "dateRequired": "Please select start and end dates",
+        "invalidRange": "Start date cannot be later than end date",
+        "resetPassword": "Please enter the super admin password"
+      },
+      "alert": {
+        "title": "Notice"
+      },
+      "emptyState": "No sales data available"
+    },
     "login": {
       "title": "Admin Portal",
       "subtitle": "Please login to continue",
