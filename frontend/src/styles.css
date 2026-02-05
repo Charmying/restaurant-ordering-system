@@ -20,10 +20,19 @@
   --primary: 17 24 39;
   --primary-contrast: 255 255 255;
   --accent: 59 130 246;
+  --accent-contrast: 255 255 255;
 
   /* Destructive */
   --destructive: 255 59 48;
   --destructive-bg: 255 245 244;
+
+  /* Ranking Badges */
+  --rank-1-bg: 254 249 195;
+  --rank-1-text: 133 77 14;
+  --rank-2-bg: 229 231 235;
+  --rank-2-text: 55 65 81;
+  --rank-3-bg: 254 215 170;
+  --rank-3-text: 154 52 18;
 
   /* Pinned */
   --pinned-bg: 255 251 235;
@@ -48,9 +57,18 @@
   --primary: 245 245 247;
   --primary-contrast: 0 0 0;
   --accent: 96 165 250;
+  --accent-contrast: 255 255 255;
 
   --destructive: 255 69 58;
   --destructive-bg: 59 15 15;
+
+  /* Ranking Badges */
+  --rank-1-bg: 113 63 18;
+  --rank-1-text: 254 240 138;
+  --rank-2-bg: 75 85 99;
+  --rank-2-text: 229 231 235;
+  --rank-3-bg: 124 45 18;
+  --rank-3-text: 254 215 170;
 
   --pinned-bg: 58 48 28;
   --pinned-border: 180 130 50;
