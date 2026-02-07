@@ -1,52 +1,56 @@
 # Dependencies
 
-## Production Dependencies
+This document summarizes `package.json` dependencies and how they are used in the frontend.
 
-### Core Framework
+---
 
-- **@angular/common** — Angular common utilities (pipes, directives, HTTP)
-- **@angular/compiler** — Angular template compiler
-- **@angular/core** — Angular core framework
-- **@angular/forms** — Angular reactive and template-driven forms
-- **@angular/platform-browser** — Browser-specific rendering layer
-- **@angular/router** — Angular routing and navigation
+## Runtime Dependencies
+
+### Angular Core
+
+- **@angular/common** — common directives, pipes, and HTTP helpers
+- **@angular/compiler** — template compilation
+- **@angular/core** — Angular core runtime
+- **@angular/forms** — template and reactive forms
+- **@angular/platform-browser** — browser-specific rendering
+- **@angular/router** — routing, layout composition, and lazy loading
 
 ### Internationalization
 
-- **@ngx-translate/core** — i18n translation service for Angular
+- **@ngx-translate/core** — translation service and pipes (JSON-based)
 
 ### Utilities
 
-- **rxjs** — Reactive programming library (observables, operators)
+- **rxjs** — reactive streams (signals interop and async data)
 - **tslib** — TypeScript runtime helpers
 
 ---
 
-## Development Dependencies
+## Tooling & Build Dependencies
 
-### Build Tools
+### Build System
 
-- **@angular/build** — Angular application builder (esbuild-based)
-- **@angular/cli** — Angular command-line interface
-- **@angular/compiler-cli** — Angular ahead-of-time (AOT) compiler
+- **@angular/build** — application builder (esbuild-based)
+- **@angular/cli** — Angular CLI
+- **@angular/compiler-cli** — AOT compiler
 
 ### Styling
 
-- **@tailwindcss/postcss** — Tailwind CSS PostCSS plugin
-- **postcss** — CSS transformation tool
-- **tailwindcss** — Utility-first CSS framework
+- **tailwindcss** — utility-first CSS (v4)
+- **@tailwindcss/postcss** — Tailwind v4 PostCSS integration
+- **postcss** — CSS transformation pipeline
 
 ### Testing
 
-- **jsdom** — JavaScript DOM implementation for testing
-- **vitest** — Fast unit test framework
+- **jsdom** — DOM implementation for unit tests
+- **vitest** — unit test runner
 
 ### Language
 
-- **typescript** — TypeScript compiler and language support
+- **typescript** — TypeScript compiler
 
 ---
 
 ## Package Manager
 
-- **npm@10.9.4** — Locked package manager version
+- **npm@10.9.4** — locked package manager version

@@ -1,125 +1,79 @@
 # Color System
 
-A semantic, high-contrast color system designed for scalable light and dark themes.
+A semantic color system designed for light and dark themes. Tokens are defined as CSS variables in `frontend/src/styles.css` and applied via the `data-theme` attribute on `<html>`.
 
 ## Core Principles
 
-- **Minimalism**: Black, white, and precise grays
-- **Contrast**: WCAG AAA compliance
-- **Consistency**: Unified spacing and transitions
-- **Refinement**: Subtle shadows and smooth animations
+- **Semantic tokens**: use intent-based variables (e.g., surface, text, border)
+- **Theme parity**: light/dark values stay structurally aligned
+- **Consistency**: shared spacing, transitions, and radii
+- **Clarity**: maintain readable contrast across states
 
 ---
 
-## Base Colors
+## Base Tokens
 
-### Background
-
-```css
---bg-primary-light: 255 255 255;      /* #ffffff */
---bg-primary-dark: 0 0 0;             /* #000000 */
-
---bg-secondary-light: 249 250 251;    /* #f9fafb */
---bg-secondary-dark: 28 28 30;        /* #1c1c1e */
-```
-
-### Surface (Cards & Containers)
+### Surface
 
 ```css
---surface-light: 255 255 255;         /* #ffffff */
---surface-dark: 28 28 30;             /* #1c1c1e */
-
---surface-elevated-light: 243 244 246; /* #f3f4f6 */
---surface-elevated-dark: 44 44 46;     /* #2c2c2e */
-```
-
-### Border
-
-```css
---border-light: 229 231 235;          /* #e5e7eb */
---border-dark: 56 56 58;              /* #38383a */
-
---border-subtle-light: 209 213 219;   /* #d1d5db */
---border-subtle-dark: 72 72 74;       /* #48484a */
+--surface: 255 255 255;
+--surface-elevated: 245 245 247;
+--surface-muted: 235 235 238;
 ```
 
 ### Text
 
 ```css
---text-primary-light: 17 24 39;       /* #111827 */
---text-primary-dark: 255 255 255;     /* #ffffff */
+--text-primary: 17 17 17;
+--text-secondary: 85 85 85;
+```
 
---text-secondary-light: 107 114 128;  /* #6b7280 */
---text-secondary-dark: 152 152 157;   /* #98989d */
+### Border
 
---text-tertiary-light: 156 163 175;   /* #9ca3af */
---text-tertiary-dark: 110 110 115;    /* #6e6e73 */
+```css
+--border: 220 220 224;
 ```
 
 ---
 
 ## Interactive Elements
 
-### Primary Button
+### Brand / Accent
 
 ```css
---btn-primary-bg-light: 29 29 31;     /* #1d1d1f */
---btn-primary-fg-light: 255 255 255;  /* #ffffff */
---btn-primary-hover-light: 55 65 81;  /* #374151 */
-
---btn-primary-bg-dark: 245 245 247;   /* #f5f5f7 */
---btn-primary-fg-dark: 0 0 0;         /* #000000 */
---btn-primary-hover-dark: 255 255 255; /* #ffffff */
-```
-
-### Secondary Button
-
-```css
---btn-secondary-bg-light: 243 244 246; /* #f3f4f6 */
---btn-secondary-hover-light: 229 231 235; /* #e5e7eb */
-
---btn-secondary-bg-dark: 44 44 46;     /* #2c2c2e */
---btn-secondary-hover-dark: 58 58 60;  /* #3a3a3c */
+--primary: 17 24 39;
+--primary-contrast: 255 255 255;
+--accent: 59 130 246;
+--accent-contrast: 255 255 255;
 ```
 
 ---
 
 ## Status Colors
 
-### Success (Green)
+### Destructive
 
 ```css
---success-bg-light: 220 252 231;      /* #dcfce7 */
---success-bg-dark: 34 197 94 / 0.2;   /* rgba(34,197,94,0.2) */
---success-fg-light: 22 101 52;        /* #166534 */
---success-fg-dark: 74 222 128;        /* #4ade80 */
+--destructive: 255 59 48;
+--destructive-bg: 255 245 244;
 ```
 
-### Warning (Yellow)
+### Ranking / Pinned (Dashboard)
 
 ```css
---warning-bg-light: 254 243 199;      /* #fef3c7 */
---warning-bg-dark: 245 158 11 / 0.2;  /* rgba(245,158,11,0.2) */
---warning-fg-light: 146 64 14;        /* #92400e */
---warning-fg-dark: 251 191 36;        /* #fbbf24 */
-```
+--rank-1-bg: 254 249 195;
+--rank-1-text: 133 77 14;
+--rank-2-bg: 229 231 235;
+--rank-2-text: 55 65 81;
+--rank-3-bg: 254 215 170;
+--rank-3-text: 154 52 18;
 
-### Error (Red)
-
-```css
---error-bg-light: 254 226 226;        /* #fee2e2 */
---error-bg-dark: 239 68 68 / 0.2;     /* rgba(239,68,68,0.2) */
---error-fg-light: 153 27 27;          /* #991b1b */
---error-fg-dark: 248 113 113;         /* #f87171 */
-```
-
-### Info (Blue)
-
-```css
---info-bg-light: 219 234 254;         /* #dbeafe */
---info-bg-dark: 59 130 246 / 0.2;     /* rgba(59,130,246,0.2) */
---info-fg-light: 30 64 175;           /* #1e40af */
---info-fg-dark: 96 165 250;           /* #60a5fa */
+--pinned-bg: 255 251 235;
+--pinned-border: 251 191 36;
+--pinned-text: 146 64 14;
+--pinned-badge-bg: 254 243 199;
+--pinned-badge-text: 120 53 15;
+--pinned-icon: 217 119 6;
 ```
 
 ---
@@ -140,23 +94,11 @@ A semantic, high-contrast color system designed for scalable light and dark them
 
 ### Radius
 
-- Small: `rounded-lg` (8px)
-- Medium: `rounded-xl` (12px)
-- Large: `rounded-2xl` (16px)
+- `rounded-lg`, `rounded-xl`, `rounded-2xl` used across layouts
 
 ### Scrollbar
 
-```css
-/* Light */
-track: transparent
-thumb: rgba(0, 0, 0, 0.15)
-thumb-hover: rgba(0, 0, 0, 0.25)
-
-/* Dark */
-track: transparent
-thumb: rgba(255, 255, 255, 0.15)
-thumb-hover: rgba(255, 255, 255, 0.25)
-```
+Scrollbar styling is handled by platform defaults; avoid custom styling unless required for accessibility.
 
 ---
 
@@ -165,5 +107,47 @@ thumb-hover: rgba(255, 255, 255, 0.25)
 1. **Always use CSS variables** for colors
 2. **Prefer semantic names** over color names
 3. **Test both themes** before shipping
-4. **Maintain contrast ratios** ≥ 7:1 for text
-5. **Use transitions** for all theme switches
+4. **Validate contrast** for critical text
+5. **Use transitions** for theme switches
+
+---
+
+## Contrast Requirements
+
+- Target **WCAG AA** by default (4.5:1 for normal text, 3:1 for large text)
+- Use **text-primary** on surface tokens for primary content
+- Avoid using accent colors for long-form text
+
+---
+
+## Theme Implementation
+
+Themes are driven by CSS variables in `frontend/src/styles.css`:
+
+- Light theme: `:root { ... }`
+- Dark theme: `[data-theme='dark'] { ... }`
+
+Theme switching is handled by the frontend `ThemeService`, which applies the `data-theme`
+attribute on `<html>` and persists the user's preference.
+
+---
+
+## Usage Examples
+
+### In Component Styles
+
+```css
+.card {
+  background-color: rgb(var(--surface-elevated));
+  color: rgb(var(--text-primary));
+  border: 1px solid rgb(var(--border));
+}
+```
+
+### In Templates (Tailwind Arbitrary Values)
+
+```html
+<div class="bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]">
+  Content
+</div>
+```
