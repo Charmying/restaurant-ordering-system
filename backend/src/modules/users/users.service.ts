@@ -58,4 +58,13 @@ export class UsersService {
 
     await this.userModel.findByIdAndDelete(userId);
   }
+
+  async createSystemUser(data: { username: string; password: string; role: UserRole; }) {
+    return this.userModel.create(data);
+  }
+
+  async findByUsername(username: string) {
+    return this.userModel.findOne({ username });
+  }
+
 }
