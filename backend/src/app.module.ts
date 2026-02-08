@@ -16,6 +16,7 @@ import { SeedModule } from './seed/seed.module';
 import { TablesModule } from './modules/tables/tables.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { StoreInfoModule } from './modules/store-info/store-info.module';
+import { MessagesModule } from './modules/messages/messages.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { StoreInfoModule } from './modules/store-info/store-info.module';
     TablesModule,
     OrdersModule,
     StoreInfoModule,
+    MessagesModule,
   ],
   controllers: [HealthController],
   providers: [
