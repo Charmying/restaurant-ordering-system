@@ -15,6 +15,7 @@ import { MenuModule } from './modules/menu/menu.module';
 import { SeedModule } from './seed/seed.module';
 import { TablesModule } from './modules/tables/tables.module';
 import { OrdersModule } from './modules/orders/orders.module';
+import { StoreInfoModule } from './modules/store-info/store-info.module';
 
 @Module({
   imports: [
@@ -35,6 +36,7 @@ import { OrdersModule } from './modules/orders/orders.module';
     SeedModule,
     TablesModule,
     OrdersModule,
+    StoreInfoModule,
   ],
   controllers: [HealthController],
   providers: [
