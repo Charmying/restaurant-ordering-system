@@ -8,12 +8,14 @@ import { ChangePasswordDto } from './dto/change-password.dto';
 import { JwtPayload } from '../../common/interfaces/jwt-payload.interface';
 import { UserRole } from './enums/user-role.enum';
 import { hasSufficientRole } from '../../common/policies/role.policy';
-
+import { EventsService } from '../events/events.service';
+import { DomainEvent } from '../events/events.constants';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    private readonly eventsService: EventsService,
   ) {}
 
   async findAll(requestorRole: UserRole) {
@@ -30,9 +32,12 @@ export class UsersService {
     if (hasSufficientRole(targetRole, requestor.role)) throw new ForbiddenException('Cannot create a user with equal or higher role',);
 
     const existing = await this.userModel.findOne({ username: dto.username });
-    if (existing) throw new ConflictException(`Username '${dto.username}' already exists`,);
+    if (existing) throw new ConflictException(`Username '${dto.username}' already exists`);
 
-    return this.userModel.create(dto);
+    const user = await this.userModel.create(dto);
+    this.eventsService.emit(DomainEvent.UserCreated, { id: user._id, username: user.username, role: user.role });
+
+    return user;
   }
 
   async changePassword(targetUserId: string, dto: ChangePasswordDto, requestor: JwtPayload) {
@@ -57,14 +62,7 @@ export class UsersService {
     if (hasSufficientRole(user.role, requestor.role)) throw new ForbiddenException('Cannot delete user with equal or higher role');
 
     await this.userModel.findByIdAndDelete(userId);
-  }
 
-  async createSystemUser(data: { username: string; password: string; role: UserRole; }) {
-    return this.userModel.create(data);
+    this.eventsService.emit(DomainEvent.UserDeleted, { id: userId });
   }
-
-  async findByUsername(username: string) {
-    return this.userModel.findOne({ username });
-  }
-
 }
