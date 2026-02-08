@@ -1,8 +1,43 @@
 import { NestFactory } from '@nestjs/core';
+import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import helmet from 'helmet';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
+
+  const config = app.get<ConfigService>(ConfigService);
+  const logger = new Logger('Bootstrap');
+
+  app.setGlobalPrefix('api');
+  app.use(helmet());
+
+  app.enableCors({
+    origin: config.get<string>('FRONTEND_URL'),
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  });
+
+  const swaggerConfig = new DocumentBuilder()
+    .setTitle('Restaurant Ordering System API')
+    .setDescription('RESTful API for restaurant ordering and management')
+    .setVersion('1.0')
+    .addBearerAuth()
+    .build();
+  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  SwaggerModule.setup('api/docs', app, document);
+
+  const port = config.get<number>('PORT', 4000);
+  await app.listen(port);
+
+  logger.log(`Server running on port ${port}`);
+  logger.log(`Swagger: http://localhost:${port}/api/docs`);
 }
-bootstrap();
+
+bootstrap().catch((err) => {
+  console.error('Application failed to start:', err);
+  process.exit(1);
+});
