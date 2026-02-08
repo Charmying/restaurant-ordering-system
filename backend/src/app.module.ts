@@ -11,6 +11,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
 import { UsersModule } from './modules/users/users.module';
 import { RolesGuard } from './common/guards/roles.guard';
 import { EventsModule } from './modules/events/events.module';
+import { MenuModule } from './modules/menu/menu.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { EventsModule } from './modules/events/events.module';
     AuthModule,
     UsersModule,
     EventsModule,
+    MenuModule,
   ],
   controllers: [HealthController],
   providers: [
