@@ -1,10 +1,16 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from '../modules/users/users.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { User, UserSchema } from '../modules/users/schemas/user.schema';
+import { Table, TableSchema } from '../modules/tables/schemas/table.schema';
 import { SeedService } from './seed.service';
 
 @Module({
-  imports: [UsersModule],
+  imports: [
+    MongooseModule.forFeature([
+      { name: User.name, schema: UserSchema },
+      { name: Table.name, schema: TableSchema },
+    ]),
+  ],
   providers: [SeedService],
-  exports: [SeedService],
 })
 export class SeedModule {}

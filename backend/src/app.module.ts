@@ -12,6 +12,9 @@ import { UsersModule } from './modules/users/users.module';
 import { RolesGuard } from './common/guards/roles.guard';
 import { EventsModule } from './modules/events/events.module';
 import { MenuModule } from './modules/menu/menu.module';
+import { SeedModule } from './seed/seed.module';
+import { TablesModule } from './modules/tables/tables.module';
+
 
 @Module({
   imports: [
@@ -29,6 +32,8 @@ import { MenuModule } from './modules/menu/menu.module';
     UsersModule,
     EventsModule,
     MenuModule,
+    SeedModule,
+    TablesModule,
   ],
   controllers: [HealthController],
   providers: [
