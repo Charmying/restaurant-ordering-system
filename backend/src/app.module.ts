@@ -10,6 +10,7 @@ import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 import { UsersModule } from './modules/users/users.module';
 import { RolesGuard } from './common/guards/roles.guard';
+import { EventsModule } from './modules/events/events.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { RolesGuard } from './common/guards/roles.guard';
     }),
     AuthModule,
     UsersModule,
+    EventsModule,
   ],
   controllers: [HealthController],
   providers: [
