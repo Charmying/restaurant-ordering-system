@@ -6,6 +6,7 @@ import { HealthController } from './common/controllers/health.controller';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
 import { TransformInterceptor } from './common/interceptors/transform.interceptor';
+import { UsersModule } from './modules/users/users.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { TransformInterceptor } from './common/interceptors/transform.intercepto
       }),
       inject: [ConfigService],
     }),
+    UsersModule,
   ],
   controllers: [HealthController],
   providers: [
