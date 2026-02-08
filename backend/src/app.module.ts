@@ -18,6 +18,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { StoreInfoModule } from './modules/store-info/store-info.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { ServiceCallsModule } from './modules/service-calls/service-calls.module';
+import { CategoriesModule } from './modules/categories/categories.module';
 
 @Module({
   imports: [
@@ -41,6 +42,7 @@ import { ServiceCallsModule } from './modules/service-calls/service-calls.module
     StoreInfoModule,
     MessagesModule,
     ServiceCallsModule,
+    CategoriesModule,
   ],
   controllers: [HealthController],
   providers: [
