@@ -3,6 +3,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { envValidationSchema } from './config/env.validation';
 import { HealthController } from './common/controllers/health.controller';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { TransformInterceptor } from './common/interceptors/transform.interceptor';
 
 @Module({
   imports: [
@@ -18,5 +21,9 @@ import { HealthController } from './common/controllers/health.controller';
     }),
   ],
   controllers: [HealthController],
+  providers: [
+    { provide: APP_FILTER, useClass: AllExceptionsFilter },
+    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
+  ],
 })
 export class AppModule {}
