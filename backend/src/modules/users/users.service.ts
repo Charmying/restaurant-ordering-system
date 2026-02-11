@@ -29,7 +29,7 @@ export class UsersService {
     const targetRole = dto.role ?? UserRole.Employee;
 
     if (!hasSufficientRole(requestor.role, UserRole.Manager)) throw new ForbiddenException('Only managers can create users');
-    if (hasSufficientRole(targetRole, requestor.role)) throw new ForbiddenException('Cannot create a user with equal or higher role',);
+    if (requestor.role !== UserRole.Superadmin && hasSufficientRole(targetRole, requestor.role)) throw new ForbiddenException('Cannot create a user with equal or higher role',);
 
     const existing = await this.userModel.findOne({ username: dto.username });
     if (existing) throw new ConflictException(`Username '${dto.username}' already exists`);
