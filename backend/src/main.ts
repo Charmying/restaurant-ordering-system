@@ -14,8 +14,14 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.use(helmet());
 
+  const frontendUrl = config.get<string>('FRONTEND_URL');
+  const allowedOrigins = [frontendUrl]
+    .filter((value): value is string => Boolean(value))
+    .flatMap((value) => value.split(',').map((origin) => origin.trim()))
+    .filter(Boolean);
+
   app.enableCors({
-    origin: config.get<string>('FRONTEND_URL'),
+    origin: allowedOrigins,
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
     allowedHeaders: ['Content-Type', 'Authorization'],
