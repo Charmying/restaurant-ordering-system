@@ -1,11 +1,13 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { StoreInfoItem, StoreInfoState } from './store-info.types';
-import { MockStoreInfoItems } from './store-info.mock';
+import { ApiService } from '../../core/services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreInfoService {
+  private readonly api = inject(ApiService);
   private readonly state = signal<StoreInfoState>({
     items: []
   });
@@ -14,63 +16,73 @@ export class StoreInfoService {
   readonly totalCount = computed(() => this.state().items.length);
 
   constructor() {
-    this.loadStoreInfo();
+    void this.loadStoreInfo();
   }
 
-  addInfo(label: string, value: string): StoreInfoItem {
+  async addInfo(label: string, value: string): Promise<StoreInfoItem | null> {
     const nextOrder = this.getNextOrder();
-    const newItem: StoreInfoItem = {
-      _id: this.generateId(),
-      label,
-      value,
-      order: nextOrder,
-      isStoreName: false,
-      isDeletable: true,
-      createdAt: new Date().toISOString(),
-      __v: 0
-    };
-
-    this.state.update(current => ({
-      ...current,
-      items: [...current.items, newItem]
-    }));
-
-    return newItem;
+    try {
+      const newItem = await firstValueFrom(
+        this.api.post<StoreInfoItem>('/store-info', {
+          label,
+          value,
+          order: nextOrder,
+          isStoreName: false,
+          isDeletable: true
+        })
+      );
+      this.state.update(current => ({
+        ...current,
+        items: [...current.items, newItem]
+      }));
+      return newItem;
+    } catch (error) {
+      console.error('Failed to create store info', error);
+      return null;
+    }
   }
 
-  updateInfo(id: string, label: string, value: string): StoreInfoItem | null {
-    const currentItem = this.state().items.find(item => item._id === id);
-    if (!currentItem) return null;
-
-    const updated: StoreInfoItem = {
-      ...currentItem,
-      label,
-      value
-    };
-
-    this.state.update(current => ({
-      ...current,
-      items: current.items.map(item => item._id === id ? updated : item)
-    }));
-
-    return updated;
+  async updateInfo(id: string, label: string, value: string): Promise<StoreInfoItem | null> {
+    try {
+      const updated = await firstValueFrom(
+        this.api.put<StoreInfoItem>(`/store-info/${id}`, { label, value })
+      );
+      this.state.update(current => ({
+        ...current,
+        items: current.items.map(item => item._id === id ? updated : item)
+      }));
+      return updated;
+    } catch (error) {
+      console.error('Failed to update store info', error);
+      return null;
+    }
   }
 
-  deleteInfo(id: string): void {
+  async deleteInfo(id: string): Promise<void> {
     const currentItem = this.state().items.find(item => item._id === id);
     if (!currentItem || currentItem.isDeletable === false) return;
 
-    this.state.update(current => ({
-      ...current,
-      items: current.items.filter(item => item._id !== id)
-    }));
+    try {
+      await firstValueFrom(this.api.delete(`/store-info/${id}`));
+      this.state.update(current => ({
+        ...current,
+        items: current.items.filter(item => item._id !== id)
+      }));
+    } catch (error) {
+      console.error('Failed to delete store info', error);
+    }
   }
 
-  private loadStoreInfo(): void {
-    this.state.update(current => ({
-      ...current,
-      items: MockStoreInfoItems
-    }));
+  private async loadStoreInfo(): Promise<void> {
+    try {
+      const items = await firstValueFrom(this.api.get<StoreInfoItem[]>('/store-info'));
+      this.state.update(current => ({
+        ...current,
+        items
+      }));
+    } catch (error) {
+      console.error('Failed to load store info', error);
+    }
   }
 
   private getSortedItems(items: StoreInfoItem[]): StoreInfoItem[] {

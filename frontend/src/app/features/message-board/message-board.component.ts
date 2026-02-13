@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MessageBoardService } from './message-board.service';
+import { AuthService } from '../../core/services/auth.service';
 import { MessageBoardItem } from './message-board.types';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 
@@ -15,6 +16,7 @@ import { ModalComponent } from '../../core/components/modal/modal.component';
 })
 export class MessageBoardComponent {
   private readonly messageService = inject(MessageBoardService);
+  private readonly authService = inject(AuthService);
 
   /* ========================= State ========================= */
 
@@ -29,16 +31,16 @@ export class MessageBoardComponent {
   showDeleteAllModal = false;
   messageToDelete: MessageBoardItem | null = null;
 
-  private readonly currentUser = {
-    id: 'local-admin',
-    name: 'Admin'
-  };
+  private get isAuthenticated(): boolean {
+    return !!this.authService.user();
+  }
 
   /* ========================= Actions ========================= */
 
   sendMessage(): void {
     const content = this.messageContent.trim();
     if (!content) return;
+    if (!this.isAuthenticated) return;
 
     if (this.editingMessage) {
       this.messageService.updateMessage(this.editingMessage._id, content);
@@ -47,7 +49,7 @@ export class MessageBoardComponent {
       return;
     }
 
-    this.messageService.createMessage(content, this.currentUser.id, this.currentUser.name);
+    this.messageService.createMessage(content);
     this.messageContent = '';
   }
 

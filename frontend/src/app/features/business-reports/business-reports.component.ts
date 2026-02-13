@@ -110,12 +110,16 @@ export class BusinessReportsComponent {
     this.showResetModal = false;
   }
 
-  resetReports(): void {
+  async resetReports(): Promise<void> {
     if (!this.resetPassword) {
       this.showAlert('features.businessReports.validation.resetPassword');
       return;
     }
-    this.reportsService.resetReports();
+    const ok = await this.reportsService.resetReports();
+    if (!ok) {
+      this.showAlert('features.businessReports.errors.resetFailed');
+      return;
+    }
     this.closeResetModal();
   }
 

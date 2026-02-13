@@ -15,9 +15,11 @@ export interface Order {
   tableNumber: string;
   items: OrderItem[];
   total: number;
-  status: 'pending' | 'served';
+  status: 'pending' | 'served' | 'completed' | 'cancelled';
   token: string;
   createdAt: string;
+  updatedAt?: string;
+  completedAt?: string;
   __v: number;
 }
 

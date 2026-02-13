@@ -1,12 +1,14 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { MessageBoardItem, MessageBoardState } from './message-board.types';
-import { MockMessageBoardItems } from './message-board.mock';
 import { MessageBoardPresenter } from './message-board.presenter';
+import { ApiService } from '../../core/services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MessageBoardService {
+  private readonly api = inject(ApiService);
   private readonly state = signal<MessageBoardState>({
     messages: []
   });
@@ -21,72 +23,91 @@ export class MessageBoardService {
   }));
 
   constructor() {
-    this.loadMessages();
+    void this.loadMessages();
   }
 
-  createMessage(content: string, userId: string, username: string): void {
-    const now = new Date().toISOString();
-    const message: MessageBoardItem = {
-      _id: this.generateId(),
-      userId,
-      username,
-      content,
-      isPinned: false,
-      createdAt: now,
-      updatedAt: now,
-      __v: 0
-    };
-
-    this.state.update(current => ({
-      ...current,
-      messages: [message, ...current.messages]
-    }));
-  }
-
-  updateMessage(id: string, content: string): void {
-    const now = new Date().toISOString();
-    this.state.update(current => ({
-      ...current,
-      messages: current.messages.map(item =>
-        item._id === id ? { ...item, content, updatedAt: now } : item
-      )
-    }));
-  }
-
-  togglePinMessage(id: string): void {
-    this.state.update(current => ({
-      ...current,
-      messages: current.messages.map(item =>
-        item._id === id ? { ...item, isPinned: !item.isPinned } : item
-      )
-    }));
-  }
-
-  deleteMessage(id: string): void {
-    this.state.update(current => ({
-      ...current,
-      messages: current.messages.filter(item => item._id !== id)
-    }));
-  }
-
-  deleteAllMessages(): void {
-    this.state.update(current => ({
-      ...current,
-      messages: []
-    }));
-  }
-
-  private loadMessages(): void {
-    this.state.update(current => ({
-      ...current,
-      messages: MessageBoardPresenter.sortByCreatedAtDesc(MockMessageBoardItems)
-    }));
-  }
-
-  private generateId(): string {
-    if (typeof crypto !== 'undefined' && 'randomUUID' in crypto) {
-      return crypto.randomUUID();
+  async createMessage(content: string): Promise<void> {
+    try {
+      const message = await firstValueFrom(
+        this.api.post<MessageBoardItem>('/messages', { content })
+      );
+      this.state.update(current => ({
+        ...current,
+        messages: [message, ...current.messages]
+      }));
+    } catch (error) {
+      console.error('Failed to create message', error);
     }
-    return Math.random().toString(36).slice(2, 12);
+  }
+
+  async updateMessage(id: string, content: string): Promise<void> {
+    try {
+      const updated = await firstValueFrom(
+        this.api.put<MessageBoardItem>(`/messages/${id}`, { content })
+      );
+      this.state.update(current => ({
+        ...current,
+        messages: current.messages.map(item =>
+          item._id === id ? updated : item
+        )
+      }));
+    } catch (error) {
+      console.error('Failed to update message', error);
+    }
+  }
+
+  async togglePinMessage(id: string): Promise<void> {
+    const target = this.state().messages.find(item => item._id === id);
+    if (!target) return;
+
+    try {
+      const updated = await firstValueFrom(
+        this.api.put<MessageBoardItem>(`/messages/${id}/${target.isPinned ? 'unpin' : 'pin'}`)
+      );
+      this.state.update(current => ({
+        ...current,
+        messages: current.messages.map(item =>
+          item._id === id ? updated : item
+        )
+      }));
+    } catch (error) {
+      console.error('Failed to toggle pin', error);
+    }
+  }
+
+  async deleteMessage(id: string): Promise<void> {
+    try {
+      await firstValueFrom(this.api.delete(`/messages/${id}`));
+      this.state.update(current => ({
+        ...current,
+        messages: current.messages.filter(item => item._id !== id)
+      }));
+    } catch (error) {
+      console.error('Failed to delete message', error);
+    }
+  }
+
+  async deleteAllMessages(): Promise<void> {
+    try {
+      await firstValueFrom(this.api.delete('/messages/all'));
+      this.state.update(current => ({
+        ...current,
+        messages: []
+      }));
+    } catch (error) {
+      console.error('Failed to delete all messages', error);
+    }
+  }
+
+  private async loadMessages(): Promise<void> {
+    try {
+      const messages = await firstValueFrom(this.api.get<MessageBoardItem[]>('/messages'));
+      this.state.update(current => ({
+        ...current,
+        messages: MessageBoardPresenter.sortByCreatedAtDesc(messages)
+      }));
+    } catch (error) {
+      console.error('Failed to load messages', error);
+    }
   }
 }

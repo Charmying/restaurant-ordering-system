@@ -1,13 +1,15 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { Table, TableManagementState } from './table-management.types';
-import { MockTableManagement } from './table-management.mock';
+import { ApiService } from '../../core/services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TableManagementService {
   private readonly translateService = inject(TranslateService);
+  private readonly api = inject(ApiService);
   private readonly state = signal<TableManagementState>({
     tables: [],
     selectedTable: null,
@@ -35,22 +37,21 @@ export class TableManagementService {
   });
 
   constructor() {
-    this.loadTables();
+    void this.loadTables();
   }
 
-  private simulateRequest<T>(fn: () => T, delay = 600): void {
-    setTimeout(fn, delay);
-  }
-
-  private loadTables(): void {
-    this.simulateRequest(() => {
+  private async loadTables(): Promise<void> {
+    try {
+      const tables = await firstValueFrom(this.api.get<Table[]>('/tables'));
       this.state.update(current => ({
         ...current,
-        tables: MockTableManagement.sort((a, b) => 
-          parseInt(a.tableNumber) - parseInt(b.tableNumber)
-        )
+        tables: tables
+          .map(table => this.normalizeTable(table))
+          .sort((a, b) => parseInt(a.tableNumber) - parseInt(b.tableNumber))
       }));
-    }, 300);
+    } catch (error) {
+      console.error('Failed to load tables', error);
+    }
   }
 
   toggleTableStatus(table: Table): void {
@@ -58,41 +59,7 @@ export class TableManagementService {
 
     this.addLoadingTable(tableNumber);
 
-    this.simulateRequest(() => {
-      this.state.update(current => {
-        const updatedTables = current.tables.map(t => {
-          if (t.tableNumber === tableNumber) {
-            const newStatus = t.status === 'available' ? 'occupied' : 'available';
-            const updatedTable = { ...t, status: newStatus as Table['status'] };
-
-            if (newStatus === 'occupied' && !t.qrCodeUrl) {
-              updatedTable.qrCodeUrl = `https://restaurant.example.com/menu?table=${tableNumber}&token=${this.generateToken()}`;
-              updatedTable.qrCodeImage = t.qrCodeImage || MockTableManagement.find(mt => mt.tableNumber === '1')?.qrCodeImage;
-            }
-
-            return updatedTable;
-          }
-          return t;
-        });
-
-        const toggledTable = updatedTables.find(t => t.tableNumber === tableNumber);
-        if (toggledTable?.status === 'occupied') {
-          return {
-            ...current,
-            tables: updatedTables,
-            selectedTable: toggledTable,
-            showQRModal: true
-          };
-        }
-
-        return {
-          ...current,
-          tables: updatedTables
-        };
-      });
-
-      this.removeLoadingTable(tableNumber);
-    }, 800);
+    void this.activateTable(tableNumber);
   }
 
   startCheckout(table: Table): void {
@@ -100,27 +67,7 @@ export class TableManagementService {
 
     this.addLoadingTable(tableNumber);
 
-    this.simulateRequest(() => {
-      this.state.update(current => {
-        const updatedTables = current.tables.map(t => {
-          if (t.tableNumber === tableNumber) {
-            return { ...t, status: 'checkout' as const };
-          }
-          return t;
-        });
-
-        const checkoutTable = updatedTables.find(t => t.tableNumber === tableNumber);
-
-        return {
-          ...current,
-          tables: updatedTables,
-          checkoutTable: checkoutTable || null,
-          showCheckoutModal: true
-        };
-      });
-
-      this.removeLoadingTable(tableNumber);
-    }, 600);
+    void this.requestCheckout(tableNumber);
   }
 
   completeCheckout(table: Table): void {
@@ -128,32 +75,7 @@ export class TableManagementService {
 
     this.addLoadingTable(tableNumber);
 
-    this.simulateRequest(() => {
-      this.state.update(current => {
-        const updatedTables = current.tables.map(t => {
-          if (t.tableNumber === tableNumber) {
-            return { 
-              ...t, 
-              status: 'available' as const,
-              totalAmount: 0,
-              orderItems: [],
-              qrCodeUrl: undefined,
-              qrCodeToken: undefined
-            };
-          }
-          return t;
-        });
-
-        return {
-          ...current,
-          tables: updatedTables,
-          checkoutTable: null,
-          showCheckoutModal: false
-        };
-      });
-
-      this.removeLoadingTable(tableNumber);
-    }, 1000);
+    void this.finishCheckout(tableNumber);
   }
 
   openQRModal(table: Table): void {
@@ -178,6 +100,7 @@ export class TableManagementService {
       checkoutTable: table,
       showCheckoutModal: true
     }));
+    void this.refreshCheckoutTable(table.tableNumber);
   }
 
   closeCheckoutModal(): void {
@@ -191,18 +114,7 @@ export class TableManagementService {
   resumeOrdering(table: Table): void {
     this.addLoadingTable(table.tableNumber);
 
-    this.simulateRequest(() => {
-      this.state.update(current => ({
-        ...current,
-        tables: current.tables.map(t => 
-          t._id === table._id ? { ...t, status: 'occupied' as const, updatedAt: new Date().toISOString() } : t
-        ),
-        showCheckoutModal: false,
-        checkoutTable: null
-      }));
-
-      this.removeLoadingTable(table.tableNumber);
-    }, 500);
+    void this.resetAndReactivate(table.tableNumber);
   }
 
   private addLoadingTable(tableNumber: string): void {
@@ -223,8 +135,132 @@ export class TableManagementService {
     });
   }
 
-  private generateToken(): string {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  private async activateTable(tableNumber: string): Promise<void> {
+    try {
+      const updated = await firstValueFrom(
+        this.api.post<Table>(`/tables/${tableNumber}/activate`)
+      );
+      const normalized = this.normalizeTable(updated);
+      this.updateTableState(normalized, { openQrModal: true });
+    } catch (error) {
+      console.error('Failed to activate table', error);
+    } finally {
+      this.removeLoadingTable(tableNumber);
+    }
+  }
+
+  private async requestCheckout(tableNumber: string): Promise<void> {
+    try {
+      const updated = await firstValueFrom(
+        this.api.post<Table>(`/tables/${tableNumber}/checkout`)
+      );
+      const normalized = this.normalizeTable(updated);
+      const orderItems = await this.loadOrderItemsForTable(tableNumber);
+
+      this.updateTableState(
+        { ...normalized, orderItems },
+        { openCheckoutModal: true }
+      );
+    } catch (error) {
+      console.error('Failed to start checkout', error);
+    } finally {
+      this.removeLoadingTable(tableNumber);
+    }
+  }
+
+  private async finishCheckout(tableNumber: string): Promise<void> {
+    try {
+      const updated = await firstValueFrom(
+        this.api.post<Table>(`/tables/${tableNumber}/complete-checkout`)
+      );
+      const normalized = this.normalizeTable(updated);
+      this.updateTableState(normalized, { closeCheckoutModal: true });
+    } catch (error) {
+      console.error('Failed to complete checkout', error);
+    } finally {
+      this.removeLoadingTable(tableNumber);
+    }
+  }
+
+  private async resetAndReactivate(tableNumber: string): Promise<void> {
+    try {
+      await firstValueFrom(this.api.post(`/tables/${tableNumber}/force-reset`));
+      const updated = await firstValueFrom(
+        this.api.post<Table>(`/tables/${tableNumber}/activate`)
+      );
+      const normalized = this.normalizeTable(updated);
+      this.updateTableState(normalized, { closeCheckoutModal: true, openQrModal: true });
+    } catch (error) {
+      console.error('Failed to resume ordering', error);
+    } finally {
+      this.removeLoadingTable(tableNumber);
+    }
+  }
+
+  private async loadOrderItemsForTable(tableNumber: string): Promise<Table['orderItems']> {
+    try {
+      const orders = await firstValueFrom(this.api.get<Array<{ items: Table['orderItems'] }>>(`/tables/${tableNumber}/orders`));
+      return orders.flatMap(order => order.items ?? []);
+    } catch (error) {
+      console.error('Failed to load table orders', error);
+      return [];
+    }
+  }
+
+  private async refreshCheckoutTable(tableNumber: string): Promise<void> {
+    const orderItems = await this.loadOrderItemsForTable(tableNumber);
+    this.state.update(current => {
+      const checkoutTable = current.tables.find(t => t.tableNumber === tableNumber);
+      if (!checkoutTable) return current;
+      const updatedTable = { ...checkoutTable, orderItems };
+      return {
+        ...current,
+        checkoutTable: updatedTable,
+        tables: current.tables.map(t => (t.tableNumber === tableNumber ? updatedTable : t))
+      };
+    });
+  }
+
+  private normalizeTable(table: Table): Table {
+    return {
+      ...table,
+      tableNumber: String(table.tableNumber),
+      totalAmount: table.totalAmount ?? 0,
+      orderItems: table.orderItems ?? [],
+      qrCodeUrl: table.qrCodeUrl ?? null,
+      qrCodeToken: table.qrCodeToken ?? null,
+      qrCodeImage: table.qrCodeImage ?? null,
+    };
+  }
+
+  private updateTableState(
+    updatedTable: Table,
+    options?: { openQrModal?: boolean; openCheckoutModal?: boolean; closeCheckoutModal?: boolean }
+  ): void {
+    this.state.update(current => {
+      const tables = current.tables.map(t => (t._id === updatedTable._id ? updatedTable : t));
+      const next: TableManagementState = {
+        ...current,
+        tables,
+      };
+
+      if (options?.openQrModal) {
+        next.selectedTable = updatedTable;
+        next.showQRModal = true;
+      }
+
+      if (options?.openCheckoutModal) {
+        next.checkoutTable = updatedTable;
+        next.showCheckoutModal = true;
+      }
+
+      if (options?.closeCheckoutModal) {
+        next.checkoutTable = null;
+        next.showCheckoutModal = false;
+      }
+
+      return next;
+    });
   }
 
   getStatusColor(status: Table['status']): { bg: string; text: string; border: string } {

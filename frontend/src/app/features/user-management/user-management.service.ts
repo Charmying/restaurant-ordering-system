@@ -1,12 +1,14 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { ChangePasswordForm, UserForm, UserItem, UserManagementState, UserRole } from './user-management.types';
-import { MockUserItems } from './user-management.mock';
 import { UserManagementPresenter } from './user-management.presenter';
+import { ApiService } from '../../core/services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserManagementService {
+  private readonly api = inject(ApiService);
   private readonly state = signal<UserManagementState>({
     users: []
   });
@@ -14,51 +16,67 @@ export class UserManagementService {
   readonly users = computed(() => this.state().users);
 
   constructor() {
-    this.loadUsers();
+    void this.loadUsers();
   }
 
-  loadUsers(): void {
-    this.state.update(current => ({
-      ...current,
-      users: MockUserItems
-    }));
+  async loadUsers(): Promise<void> {
+    try {
+      const users = await firstValueFrom(this.api.get<UserItem[]>('/users'));
+      this.state.update(current => ({
+        ...current,
+        users
+      }));
+    } catch (error) {
+      console.error('Failed to load users', error);
+    }
   }
 
-  createUser(form: UserForm): UserItem {
-    const user: UserItem = {
-      _id: this.generateId(),
-      username: form.username,
-      role: form.role,
-      createdAt: new Date().toISOString(),
-      __v: 0
-    };
-
-    this.state.update(current => ({
-      ...current,
-      users: [user, ...current.users]
-    }));
-
-    return user;
+  async createUser(form: UserForm): Promise<UserItem | null> {
+    try {
+      const user = await firstValueFrom(this.api.post<UserItem>('/users', {
+        username: form.username,
+        password: form.password,
+        role: form.role
+      }));
+      this.state.update(current => ({
+        ...current,
+        users: [user, ...current.users]
+      }));
+      return user;
+    } catch (error) {
+      console.error('Failed to create user', error);
+      return null;
+    }
   }
 
-  deleteUser(id: string): void {
-    this.state.update(current => ({
-      ...current,
-      users: current.users.filter(user => user._id !== id)
-    }));
+  async deleteUser(id: string): Promise<void> {
+    try {
+      await firstValueFrom(this.api.delete(`/users/${id}`));
+      this.state.update(current => ({
+        ...current,
+        users: current.users.filter(user => user._id !== id)
+      }));
+    } catch (error) {
+      console.error('Failed to delete user', error);
+    }
   }
 
-  updateUsername(id: string, username: string): void {
-    this.state.update(current => ({
-      ...current,
-      users: current.users.map(user =>
-        user._id === id ? { ...user, username } : user
-      )
-    }));
+  async updateUsername(_id: string, _username: string): Promise<boolean> {
+    console.warn('Backend does not support username updates yet.');
+    return false;
   }
 
-  changePassword(_form: ChangePasswordForm): void {
-    // mock: password update is a no-op in frontend
+  async changePassword(form: ChangePasswordForm): Promise<boolean> {
+    try {
+      await firstValueFrom(this.api.put(`/users/${form.userId}/password`, {
+        currentPassword: form.currentPassword,
+        newPassword: form.newPassword
+      }));
+      return true;
+    } catch (error) {
+      console.error('Failed to change password', error);
+      return false;
+    }
   }
 
   getRoleName(role: UserRole): string {

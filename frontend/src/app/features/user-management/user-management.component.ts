@@ -5,6 +5,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { UserManagementService } from './user-management.service';
 import { ChangePasswordForm, UserForm, UserItem, UserRole } from './user-management.types';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-user-management',
@@ -16,14 +17,17 @@ import { ChangePasswordForm, UserForm, UserItem, UserRole } from './user-managem
 export class UserManagementComponent {
   private readonly userService = inject(UserManagementService);
   private readonly translateService = inject(TranslateService);
+  private readonly authService = inject(AuthService);
 
   /* ========================= State ========================= */
 
-  readonly currentUser = {
-    _id: '6936d769a45d37726f77647d',
-    username: 'Charmy',
-    role: 'superadmin' as UserRole
-  };
+  readonly currentUser = computed(() => {
+    const user = this.authService.user();
+    if (!user) {
+      return { _id: '', username: 'Guest', role: 'employee' as UserRole };
+    }
+    return { _id: user.userId, username: user.username, role: user.role as UserRole };
+  });
 
   showAddUserModal = false;
   showChangePasswordModal = false;
@@ -32,7 +36,7 @@ export class UserManagementComponent {
   showAlertModal = false;
 
   userForm: UserForm = { username: '', password: '', role: 'employee' };
-  changePasswordForm: ChangePasswordForm = { userId: '', password: '' };
+  changePasswordForm: ChangePasswordForm = { userId: '', currentPassword: '', newPassword: '' };
   editUsernameForm = { userId: '', username: '' };
   userToDelete: UserItem | null = null;
   alertMessage = '';
@@ -40,7 +44,7 @@ export class UserManagementComponent {
   /* ========================= Computed ========================= */
 
   readonly users = computed(() =>
-    this.userService.sortUsers(this.userService.users(), this.currentUser._id)
+    this.userService.sortUsers(this.userService.users(), this.currentUser()._id)
   );
 
   readonly stats = computed(() => ({
@@ -52,22 +56,22 @@ export class UserManagementComponent {
   /* ========================= Permissions ========================= */
 
   canManageUsers(): boolean {
-    return this.currentUser.role === 'manager' || this.currentUser.role === 'superadmin';
+    return this.currentUser().role === 'manager' || this.currentUser().role === 'superadmin';
   }
 
   canDeleteUser(user: UserItem): boolean {
     if (user.role === 'superadmin') return false;
-    if (this.currentUser.role === 'superadmin') return true;
-    if (this.currentUser.role === 'manager') return user.role === 'employee';
+    if (this.currentUser().role === 'superadmin') return true;
+    if (this.currentUser().role === 'manager') return user.role === 'employee';
     return false;
   }
 
   canChangePassword(user: UserItem): boolean {
-    return user._id === this.currentUser._id && user.role !== 'superadmin';
+    return user._id === this.currentUser()._id && user.role !== 'superadmin';
   }
 
   canEditUsername(user: UserItem): boolean {
-    return user._id === this.currentUser._id;
+    return user._id === this.currentUser()._id;
   }
 
   /* ========================= UI Presenters ========================= */
@@ -86,8 +90,8 @@ export class UserManagementComponent {
   }
 
   get availableRoles(): UserRole[] {
-    if (this.currentUser.role === 'superadmin') return ['employee', 'manager', 'superadmin'];
-    if (this.currentUser.role === 'manager') return ['employee'];
+    if (this.currentUser().role === 'superadmin') return ['employee', 'manager', 'superadmin'];
+    if (this.currentUser().role === 'manager') return ['employee'];
     return [];
   }
 
@@ -102,13 +106,17 @@ export class UserManagementComponent {
     this.showAddUserModal = false;
   }
 
-  saveUser(): void {
+  async saveUser(): Promise<void> {
     if (!this.userForm.username || !this.userForm.password) {
       this.showAlert('features.userManagement.validation.required');
       return;
     }
 
-    this.userService.createUser(this.userForm);
+    const created = await this.userService.createUser(this.userForm);
+    if (!created) {
+      this.showAlert('features.userManagement.errors.actionFailed');
+      return;
+    }
     this.userForm = { username: '', password: '', role: 'employee' };
     this.showAddUserModal = false;
   }
@@ -122,21 +130,22 @@ export class UserManagementComponent {
     this.showEditUsernameModal = false;
   }
 
-  saveUsername(): void {
+  async saveUsername(): Promise<void> {
     const username = this.editUsernameForm.username.trim();
     if (!username) {
       this.showAlert('features.userManagement.validation.usernameRequired');
       return;
     }
-    this.userService.updateUsername(this.editUsernameForm.userId, username);
-    if (this.editUsernameForm.userId === this.currentUser._id) {
-      this.currentUser.username = username;
+    const updated = await this.userService.updateUsername(this.editUsernameForm.userId, username);
+    if (!updated) {
+      this.showAlert('features.userManagement.errors.usernameNotSupported');
+      return;
     }
     this.showEditUsernameModal = false;
   }
 
   openChangePasswordModal(user: UserItem): void {
-    this.changePasswordForm = { userId: user._id, password: '' };
+    this.changePasswordForm = { userId: user._id, currentPassword: '', newPassword: '' };
     this.showChangePasswordModal = true;
   }
 
@@ -144,15 +153,23 @@ export class UserManagementComponent {
     this.showChangePasswordModal = false;
   }
 
-  changePassword(): void {
-    if (!this.changePasswordForm.password) {
+  async changePassword(): Promise<void> {
+    if (!this.changePasswordForm.currentPassword) {
+      this.showAlert('features.userManagement.validation.currentPasswordRequired');
+      return;
+    }
+    if (!this.changePasswordForm.newPassword) {
       this.showAlert('features.userManagement.validation.passwordRequired');
       return;
     }
 
-    this.userService.changePassword(this.changePasswordForm);
+    const changed = await this.userService.changePassword(this.changePasswordForm);
+    if (!changed) {
+      this.showAlert('features.userManagement.errors.actionFailed');
+      return;
+    }
     this.showAlert('features.userManagement.actions.passwordChanged');
-    this.changePasswordForm = { userId: '', password: '' };
+    this.changePasswordForm = { userId: '', currentPassword: '', newPassword: '' };
     this.showChangePasswordModal = false;
   }
 
@@ -163,9 +180,9 @@ export class UserManagementComponent {
     this.showDeleteModal = true;
   }
 
-  confirmDelete(): void {
+  async confirmDelete(): Promise<void> {
     if (this.userToDelete) {
-      this.userService.deleteUser(this.userToDelete._id);
+      await this.userService.deleteUser(this.userToDelete._id);
       this.userToDelete = null;
     }
     this.showDeleteModal = false;
