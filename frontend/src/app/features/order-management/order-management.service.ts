@@ -1,11 +1,13 @@
-import { Injectable, signal, computed } from '@angular/core';
-import { MockPendingOrders, MockServedOrders } from './order-management.mock';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { firstValueFrom, forkJoin } from 'rxjs';
+import { ApiService } from '../../core/services/api.service';
 import { Order, OrderManagementState } from './order-management.types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class OrderManagementService {
+  private readonly api = inject(ApiService);
   private readonly state = signal<OrderManagementState>({
     pendingOrders: [],
     servedOrders: []
@@ -29,44 +31,53 @@ export class OrderManagementService {
   });
 
   constructor() {
-    this.loadOrders();
+    void this.loadOrders();
   }
 
-  private simulateRequest<T>(fn: () => T, delay = 600): void {
-    setTimeout(fn, delay);
-  }
+  private async loadOrders(): Promise<void> {
+    try {
+      const { pending, served } = await firstValueFrom(
+        forkJoin({
+          pending: this.api.get<Order[]>('/orders/pending'),
+          served: this.api.get<Order[]>('/orders/served')
+        })
+      );
 
-  private loadOrders(): void {
-    this.simulateRequest(() => {
       this.state.update(current => ({
         ...current,
-        pendingOrders: this.sortByCreatedAt(MockPendingOrders),
-        servedOrders: this.sortByCreatedAt(MockServedOrders)
+        pendingOrders: this.sortByCreatedAt(pending.map(order => this.normalizeOrder(order))),
+        servedOrders: this.sortByCreatedAt(served.map(order => this.normalizeOrder(order)))
       }));
-    }, 300);
+    } catch (error) {
+      console.error('Failed to load orders', error);
+    }
   }
 
-  serveOrder(order: Order): void {
-    this.simulateRequest(() => {
-      this.state.update(current => {
-        const exists = current.pendingOrders.some(item => item._id === order._id);
-        if (!exists) return current;
+  async serveOrder(order: Order): Promise<void> {
+    try {
+      const updated = await firstValueFrom(this.api.put<Order>(`/orders/${order._id}/serve`));
+      const normalized = this.normalizeOrder(updated);
 
-        const pendingOrders = current.pendingOrders.filter(item => item._id !== order._id);
-        const servedOrder: Order = { ...order, status: 'served' };
-
-        return {
-          ...current,
-          pendingOrders,
-          servedOrders: [servedOrder, ...current.servedOrders]
-        };
-      });
-    }, 500);
+      this.state.update(current => ({
+        ...current,
+        pendingOrders: current.pendingOrders.filter(item => item._id !== order._id),
+        servedOrders: [normalized, ...current.servedOrders]
+      }));
+    } catch (error) {
+      console.error('Failed to serve order', error);
+    }
   }
 
   private sortByCreatedAt(orders: Order[]): Order[] {
     return [...orders].sort((a, b) => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
     });
+  }
+
+  private normalizeOrder(order: Order): Order {
+    return {
+      ...order,
+      tableNumber: String(order.tableNumber),
+    };
   }
 }

@@ -1,14 +1,14 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { MenuItem } from './order.types';
-import { MockMenu } from './order.mock';
+import { OrderMenuService } from './order-menu.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MenuItemResolver {
-  private menuItems = signal<MenuItem[]>(MockMenu);
+  private readonly menuService = inject(OrderMenuService);
 
   getById(id: string): MenuItem | undefined {
-    return this.menuItems().find(item => item._id === id);
+    return this.menuService.getById(id);
   }
 }

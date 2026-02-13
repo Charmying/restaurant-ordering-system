@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
-import { MockMenu } from './order.mock';
 import { MenuItem, CustomizationState, CustomField, CustomOption } from './order.types';
 import { CartService } from './cart.service';
+import { OrderMenuService } from './order-menu.service';
 
 @Component({
   selector: 'app-order',
@@ -16,6 +16,7 @@ import { CartService } from './cart.service';
 })
 export class OrderComponent {
   private cartService = inject(CartService);
+  private orderMenuService = inject(OrderMenuService);
 
   /* ========================= State ========================= */
 
@@ -31,7 +32,7 @@ export class OrderComponent {
 
   /* ========================= Data ========================= */
 
-  menuItems = signal<MenuItem[]>(MockMenu);
+  menuItems = this.orderMenuService.menuItems;
 
   /* ========================= Computed ========================= */
 

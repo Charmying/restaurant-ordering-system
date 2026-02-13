@@ -16,7 +16,8 @@ export interface UserForm {
 
 export interface ChangePasswordForm {
   userId: string;
-  password: string;
+  currentPassword: string;
+  newPassword: string;
 }
 
 export interface UserManagementState {

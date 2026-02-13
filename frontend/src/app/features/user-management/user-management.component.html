@@ -78,13 +78,13 @@
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       @for (user of users(); track user._id) {
         <div class="bg-[rgb(var(--surface))] border border-[rgb(var(--border))]/60 rounded-2xl p-5 sm:p-6 space-y-4"
-          [class.border-blue-400]="user._id === currentUser._id">
+          [class.border-blue-400]="user._id === currentUser()._id">
           <div>
             <div class="flex items-center gap-2">
               <h3 class="text-base sm:text-lg font-semibold text-[rgb(var(--text-primary))]">
                 {{ user.username }}
               </h3>
-              @if (user._id === currentUser._id) {
+              @if (user._id === currentUser()._id) {
                 <span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-xs font-medium">
                   {{ 'features.userManagement.badges.me' | translate }}
                 </span>
@@ -201,11 +201,20 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
+            {{ 'features.userManagement.form.currentPassword' | translate }}
+          </label>
+          <input type="password"
+            class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+            [(ngModel)]="changePasswordForm.currentPassword"
+            [placeholder]="'features.userManagement.form.currentPasswordPlaceholder' | translate">
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
             {{ 'features.userManagement.form.newPassword' | translate }}
           </label>
           <input type="password"
             class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
-            [(ngModel)]="changePasswordForm.password"
+            [(ngModel)]="changePasswordForm.newPassword"
             [placeholder]="'features.userManagement.form.newPasswordPlaceholder' | translate">
         </div>
         <div class="flex gap-3">
