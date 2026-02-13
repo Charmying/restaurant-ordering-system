@@ -17,6 +17,8 @@
           <input type="text" 
             class="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500" 
             style="border-color: rgb(var(--border)); background: rgb(var(--surface)); color: rgb(var(--text-primary));"
+            [(ngModel)]="username"
+            name="username"
             [placeholder]="'features.login.form.usernamePlaceholder' | translate">
         </div>
         <div>
@@ -26,11 +28,24 @@
           <input type="password" 
             class="w-full px-4 py-3 rounded-xl border focus:outline-none focus:ring-2 focus:ring-blue-500" 
             style="border-color: rgb(var(--border)); background: rgb(var(--surface)); color: rgb(var(--text-primary));"
+            [(ngModel)]="password"
+            name="password"
             [placeholder]="'features.login.form.passwordPlaceholder' | translate">
         </div>
+        @if (loginError) {
+          <div class="text-sm text-red-600">
+            {{ loginError | translate }}
+          </div>
+        }
       </div>
-      <button type="submit" class="w-full bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] py-4 rounded-2xl font-semibold transition active:scale-[0.97]">
-        {{ 'features.login.form.submit' | translate }}
+      <button type="submit"
+        [disabled]="isSubmitting"
+        class="w-full bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] py-4 rounded-2xl font-semibold transition active:scale-[0.97] disabled:opacity-70 disabled:cursor-not-allowed">
+        @if (isSubmitting) {
+          {{ 'common.processing' | translate }}
+        } @else {
+          {{ 'features.login.form.submit' | translate }}
+        }
       </button>
     </form>
   </div>
