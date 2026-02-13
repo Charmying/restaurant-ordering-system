@@ -99,8 +99,8 @@ export class MenuManagementComponent {
     this.formError = '';
   }
 
-  saveMenuItem(): void {
-    const result = this.menuService.saveMenuItem(this.menuForm, this.isEditMode);
+  async saveMenuItem(): Promise<void> {
+    const result = await this.menuService.saveMenuItem(this.menuForm, this.isEditMode);
     if (!result.success) {
       this.formError = result.error ? this.translateService.instant(result.error) : this.translateService.instant('common.noData');
       return;
@@ -113,9 +113,9 @@ export class MenuManagementComponent {
     this.showDeleteModal = true;
   }
 
-  confirmDelete(): void {
+  async confirmDelete(): Promise<void> {
     if (this.itemToDelete) {
-      this.menuService.deleteMenuItem(this.itemToDelete._id);
+      await this.menuService.deleteMenuItem(this.itemToDelete._id);
     }
     this.closeDeleteModal();
   }

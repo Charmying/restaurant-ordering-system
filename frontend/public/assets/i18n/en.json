@@ -328,6 +328,9 @@
         "invalidRange": "Start date cannot be later than end date",
         "resetPassword": "Please enter the super admin password"
       },
+      "errors": {
+        "resetFailed": "Failed to reset reports, please try again"
+      },
       "alert": {
         "title": "Notice"
       },
@@ -360,6 +363,8 @@
         "password": "Password",
         "passwordPlaceholder": "Enter password",
         "role": "Role",
+        "currentPassword": "Current Password",
+        "currentPasswordPlaceholder": "Enter current password",
         "newPassword": "New Password",
         "newPasswordPlaceholder": "Enter new password"
       },
@@ -372,7 +377,12 @@
       "validation": {
         "required": "Please complete all required fields",
         "passwordRequired": "Please enter a new password",
+        "currentPasswordRequired": "Please enter current password",
         "usernameRequired": "Please enter a username"
+      },
+      "errors": {
+        "actionFailed": "Action failed, please try again",
+        "usernameNotSupported": "Editing usernames is not supported by the backend yet"
       },
       "confirmDelete": "Are you sure you want to delete user {{username}}?",
       "emptyState": "No users available"
@@ -386,6 +396,10 @@
         "usernamePlaceholder": "Enter your username",
         "passwordPlaceholder": "Enter your password",
         "submit": "Login"
+      },
+      "errors": {
+        "required": "Please enter username and password",
+        "invalidCredentials": "Invalid username or password"
       }
     },
     "dashboard": {
