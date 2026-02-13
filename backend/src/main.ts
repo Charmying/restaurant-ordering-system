@@ -15,7 +15,7 @@ async function bootstrap() {
   app.use(helmet());
 
   const frontendUrl = config.get<string>('FRONTEND_URL');
-  const allowedOrigins = [frontendUrl]
+  const allowedOrigins = [frontendUrl, 'http://localhost:4200']
     .filter((value): value is string => Boolean(value))
     .flatMap((value) => value.split(',').map((origin) => origin.trim()))
     .filter(Boolean);

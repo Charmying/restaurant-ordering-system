@@ -1,4 +1,5 @@
 import { Injectable, Logger, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../modules/users/schemas/user.schema';
@@ -12,6 +13,7 @@ export class SeedService implements OnModuleInit {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Table.name) private tableModel: Model<TableDocument>,
+    private configService: ConfigService,
   ) {}
 
   async onModuleInit() {
@@ -37,11 +39,23 @@ export class SeedService implements OnModuleInit {
 
   private async seedSuperAdmin() {
     const existing = await this.userModel.findOne({ role: 'superadmin' });
-    if (existing) return;
+    const username = this.configService.get<string>('SUPERADMIN_USERNAME', 'Charmy');
+    const password = this.configService.get<string>('SUPERADMIN_PASSWORD', 'Charmying');
+    const shouldReset = this.configService.get<boolean>('RESET_SUPERADMIN', false);
+
+    if (existing && !shouldReset) return;
+
+    if (existing) {
+      existing.username = username;
+      existing.password = password;
+      await existing.save();
+      this.logger.log('Reset superadmin user credentials');
+      return;
+    }
 
     await this.userModel.create({
-      username: 'Charmy',
-      password: 'Charmying',
+      username,
+      password,
       role: 'superadmin',
     });
     this.logger.log('Seeded superadmin user');
