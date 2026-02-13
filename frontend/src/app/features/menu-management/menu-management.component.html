@@ -142,7 +142,7 @@
               </label>
               <div class="flex-1 w-full rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-muted))] p-2 flex flex-col">
                 <div class="flex flex-wrap gap-2 mb-2">
-                  @for (cat of menuForm.category; track cat) {
+                  @for (cat of menuForm.category; track $index) {
                     <span class="px-3 py-1 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] rounded-full text-xs flex items-center gap-2">
                       {{ cat }}
                       <button (click)="removeCategory(cat)"
