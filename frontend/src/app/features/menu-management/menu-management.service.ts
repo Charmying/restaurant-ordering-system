@@ -1,6 +1,7 @@
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { MenuCustomField, MenuItem, MenuManagementState, MenuForm } from './menu-management.types';
-import { MockMenuItems } from './menu-management.mock';
+import { ApiService } from '../../core/services/api.service';
 
 const allCategory = '__all__';
 
@@ -8,6 +9,7 @@ const allCategory = '__all__';
   providedIn: 'root'
 })
 export class MenuManagementService {
+  private readonly api = inject(ApiService);
   private readonly state = signal<MenuManagementState>({
     menuItems: [],
     selectedCategory: allCategory
@@ -28,7 +30,7 @@ export class MenuManagementService {
   });
 
   constructor() {
-    this.loadMenuItems();
+    void this.loadMenuItems();
   }
 
   setSelectedCategory(category: string): void {
@@ -55,47 +57,61 @@ export class MenuManagementService {
     return { name: '', type: 'single', required: false, options: [] };
   }
 
-  saveMenuItem(form: MenuForm, isEdit: boolean): { success: boolean; error?: string } {
+  async saveMenuItem(form: MenuForm, isEdit: boolean): Promise<{ success: boolean; error?: string }> {
     if (!form.name || !form.price || form.price <= 0) {
       return { success: false, error: 'features.menuManagement.validation.required' };
     }
 
-    const normalized = this.normalizeForm(form);
-    if (!normalized) {
+    const payload = this.normalizeForm(form);
+    if (!payload) {
       return { success: false, error: 'features.menuManagement.validation.required' };
     }
 
-    if (isEdit && normalized._id) {
-      this.updateMenuItem(normalized);
+    try {
+      if (isEdit && form._id) {
+        const updated = await firstValueFrom(
+          this.api.put<MenuItem>(`/menu/${form._id}`, payload)
+        );
+        this.updateMenuItem(updated);
+        return { success: true };
+      }
+
+      const created = await firstValueFrom(
+        this.api.post<MenuItem>('/menu', payload)
+      );
+      this.state.update(current => ({
+        ...current,
+        menuItems: [created, ...current.menuItems]
+      }));
       return { success: true };
+    } catch (error) {
+      console.error('Failed to save menu item', error);
+      return { success: false, error: 'common.noData' };
     }
-
-    const createdItem = {
-      ...normalized,
-      _id: normalized._id || this.generateId(),
-      createdAt: normalized.createdAt || new Date().toISOString()
-    };
-
-    this.state.update(current => ({
-      ...current,
-      menuItems: [createdItem, ...current.menuItems]
-    }));
-
-    return { success: true };
   }
 
-  deleteMenuItem(id: string): void {
-    this.state.update(current => ({
-      ...current,
-      menuItems: current.menuItems.filter(item => item._id !== id)
-    }));
+  async deleteMenuItem(id: string): Promise<void> {
+    try {
+      await firstValueFrom(this.api.delete(`/menu/${id}`));
+      this.state.update(current => ({
+        ...current,
+        menuItems: current.menuItems.filter(item => item._id !== id)
+      }));
+    } catch (error) {
+      console.error('Failed to delete menu item', error);
+    }
   }
 
-  private loadMenuItems(): void {
-    this.state.update(current => ({
-      ...current,
-      menuItems: MockMenuItems
-    }));
+  private async loadMenuItems(): Promise<void> {
+    try {
+      const items = await firstValueFrom(this.api.get<MenuItem[]>('/menu/admin/all'));
+      this.state.update(current => ({
+        ...current,
+        menuItems: items
+      }));
+    } catch (error) {
+      console.error('Failed to load menu items', error);
+    }
   }
 
   private updateMenuItem(form: MenuItem): void {
@@ -105,7 +121,7 @@ export class MenuManagementService {
     }));
   }
 
-  private normalizeForm(form: MenuForm): MenuItem | null {
+  private normalizeForm(form: MenuForm): Omit<MenuItem, '_id' | 'createdAt' | '__v'> | null {
     const categoryArray = Array.isArray(form.category) && form.category.length ? form.category : ['其他'];
 
     const firstCategory = categoryArray[0] || '其他';
@@ -123,7 +139,6 @@ export class MenuManagementService {
     if (!form.name || !form.price || form.price <= 0) return null;
 
     return {
-      _id: form._id || '',
       name: form.name,
       price: Number(form.price),
       description: form.description,
@@ -131,9 +146,7 @@ export class MenuManagementService {
       categoryOrder,
       image: form.image,
       customFields,
-      available: form.available ?? true,
-      createdAt: form.createdAt || new Date().toISOString(),
-      __v: form.__v ?? 0
+      available: form.available ?? true
     };
   }
 

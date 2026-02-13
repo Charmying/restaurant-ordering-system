@@ -328,6 +328,9 @@
         "invalidRange": "開始日期不能晚於結束日期",
         "resetPassword": "請輸入超級管理者密碼"
       },
+      "errors": {
+        "resetFailed": "歸零失敗，請稍後再試"
+      },
       "alert": {
         "title": "提示"
       },
@@ -360,6 +363,8 @@
         "password": "密碼",
         "passwordPlaceholder": "輸入密碼",
         "role": "角色",
+        "currentPassword": "目前密碼",
+        "currentPasswordPlaceholder": "輸入目前密碼",
         "newPassword": "新密碼",
         "newPasswordPlaceholder": "輸入新密碼"
       },
@@ -372,7 +377,12 @@
       "validation": {
         "required": "請填寫完整資訊",
         "passwordRequired": "請輸入新密碼",
+        "currentPasswordRequired": "請輸入目前密碼",
         "usernameRequired": "請輸入帳號名稱"
+      },
+      "errors": {
+        "actionFailed": "操作失敗，請稍後再試",
+        "usernameNotSupported": "後端尚未提供修改帳號名稱功能"
       },
       "confirmDelete": "確定要刪除使用者 {{username}} 嗎？",
       "emptyState": "目前沒有使用者"
@@ -386,6 +396,10 @@
         "usernamePlaceholder": "請輸入帳號",
         "passwordPlaceholder": "請輸入密碼",
         "submit": "登入"
+      },
+      "errors": {
+        "required": "請輸入帳號與密碼",
+        "invalidCredentials": "帳號或密碼錯誤"
       }
     },
     "dashboard": {
