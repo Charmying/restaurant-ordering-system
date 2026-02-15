@@ -49,8 +49,37 @@
       "emptyCartMessage": "Add some delicious items to get started",
       "continueShopping": "Continue Shopping",
       "checkout": "Checkout",
+      "openCart": "Open shopping cart",
+      "clearCart": "Clear cart",
       "removeItem": "Remove Item",
-      "removeItemConfirm": "Are you sure you want to remove this item?"
+      "removeItemConfirm": "Are you sure you want to remove this item?",
+      "checkoutPage": {
+        "title": "Review and Submit Order",
+        "tableNumber": "Table",
+        "orderSummary": "Order Summary",
+        "submit": "Submit Order",
+        "submitting": "Submitting...",
+        "retry": "Retry",
+        "emptyCart": "Your cart is empty. Add items before checking out.",
+        "needQR": {
+          "title": "Missing table verification context",
+          "description": "Please re-enter from the table QR code to complete checkout.",
+          "goHome": "Go Home",
+          "browseMenu": "Browse Menu"
+        },
+        "success": {
+          "title": "Order submitted successfully",
+          "description": "The kitchen has received your order. Please wait for your meal.",
+          "continueOrdering": "Continue Ordering"
+        },
+        "errors": {
+          "submitFailed": "Failed to submit order. Please try again.",
+          "checkConnection": "If this keeps happening, check your network or ask staff for help.",
+          "invalidTableOrToken": "Invalid table or verification token. Please scan QR code again.",
+          "validationFailed": "Order payload validation failed. Please review your items.",
+          "onlyPendingCanBeServed": "Order status changed. Please refresh and try again."
+        }
+      }
     },
     "tableManagement": {
       "title": "Table Management",
