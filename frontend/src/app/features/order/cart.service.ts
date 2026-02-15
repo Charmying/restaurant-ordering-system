@@ -28,7 +28,16 @@ export class CartService {
     this.#loadFromStorage();
   }
 
-  addItem(menuItemId: string, name: string, price: number, customizations: CartItemCustomization[], note: string, image?: string, quantity: number = 1): CartItem {
+  addItem(
+    menuItemId: string,
+    name: string,
+    price: number,
+    customizations: CartItemCustomization[],
+    note: string,
+    image?: string,
+    quantity: number = 1,
+    unitPrice: number = price
+  ): CartItem {
     const key = this.#generateItemKey(menuItemId, customizations, note);
     const existingIndex = this.cartItems().findIndex(
       (item) => this.#generateItemKey(item.menuItemId, item.customizations, item.note) === key
@@ -37,7 +46,7 @@ export class CartService {
     if (existingIndex !== -1) {
       const updated = [...this.cartItems()];
       updated[existingIndex].quantity += quantity;
-      updated[existingIndex].subtotal = updated[existingIndex].price * updated[existingIndex].quantity;
+      updated[existingIndex].subtotal = unitPrice * updated[existingIndex].quantity;
       this.cartItems.set(updated);
       return updated[existingIndex];
     }
@@ -51,7 +60,7 @@ export class CartService {
       quantity,
       customizations,
       note,
-      subtotal: price * quantity,
+      subtotal: unitPrice * quantity,
     };
 
     this.cartItems.set([...this.cartItems(), cartItem]);
@@ -111,7 +120,7 @@ export class CartService {
       const data = localStorage.getItem(this.STORAGE_KEY);
       if (data) {
         const items = JSON.parse(data) as CartItem[];
-        this.cartItems.set(items);
+        this.cartItems.set(items.map((item) => ({ ...item, subtotal: item.subtotal ?? item.price * item.quantity })));
       }
     } catch (error) {
       console.error('Failed to load cart from storage:', error);
