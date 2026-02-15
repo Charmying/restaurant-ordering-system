@@ -49,8 +49,37 @@
       "emptyCartMessage": "加入一些美味的餐點開始吧",
       "continueShopping": "繼續購物",
       "checkout": "結帳",
+      "openCart": "開啟購物車",
+      "clearCart": "清空購物車",
       "removeItem": "移除項目",
-      "removeItemConfirm": "您確定要移除此項目嗎？"
+      "removeItemConfirm": "您確定要移除此項目嗎？",
+      "checkoutPage": {
+        "title": "確認並送出訂單",
+        "tableNumber": "桌號",
+        "orderSummary": "訂單明細",
+        "submit": "送出訂單",
+        "submitting": "送出中...",
+        "retry": "重試",
+        "emptyCart": "購物車目前是空的，先去挑選餐點吧。",
+        "needQR": {
+          "title": "尚未取得桌位驗證資訊",
+          "description": "請從桌位 QR Code 重新進入，以完成結帳。",
+          "goHome": "回首頁",
+          "browseMenu": "前往菜單"
+        },
+        "success": {
+          "title": "訂單已成功送出",
+          "description": "廚房已收到您的訂單，請稍候餐點。祝您用餐愉快！",
+          "continueOrdering": "繼續點餐"
+        },
+        "errors": {
+          "submitFailed": "送出失敗，請稍後再試。",
+          "checkConnection": "若問題持續發生，請確認網路連線或請現場人員協助。",
+          "invalidTableOrToken": "桌號或驗證資訊無效，請重新掃描 QR Code。",
+          "validationFailed": "訂單格式驗證失敗，請檢查品項內容。",
+          "onlyPendingCanBeServed": "訂單狀態已更新，請重新整理後再試。"
+        }
+      }
     },
     "tableManagement": {
       "title": "桌位管理",
