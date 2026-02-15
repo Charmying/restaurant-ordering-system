@@ -1,6 +1,7 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { firstValueFrom, forkJoin } from 'rxjs';
 import { ApiService } from '../../core/services/api.service';
+import { EventsWsService } from '../../core/services/events-ws.service';
 import { Order, OrderManagementState } from './order-management.types';
 
 @Injectable({
@@ -8,6 +9,7 @@ import { Order, OrderManagementState } from './order-management.types';
 })
 export class OrderManagementService {
   private readonly api = inject(ApiService);
+  private readonly eventsWs = inject(EventsWsService);
   private readonly state = signal<OrderManagementState>({
     pendingOrders: [],
     servedOrders: []
@@ -32,6 +34,9 @@ export class OrderManagementService {
 
   constructor() {
     void this.loadOrders();
+    this.eventsWs.onOrdersChanged.subscribe(() => {
+      void this.refreshOrders();
+    });
   }
 
   private async loadOrders(): Promise<void> {
@@ -66,6 +71,10 @@ export class OrderManagementService {
     } catch (error) {
       console.error('Failed to serve order', error);
     }
+  }
+
+  async refreshOrders(): Promise<void> {
+    await this.loadOrders();
   }
 
   private sortByCreatedAt(orders: Order[]): Order[] {
