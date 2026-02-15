@@ -163,7 +163,17 @@ export class OrderComponent {
         selectedOptions: Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions],
       }));
 
-    this.cartService.addItem(selectedItem._id, selectedItem.name, selectedItem.price, customizations, this.customization().note, selectedItem.image, this.quantity());
+    const unitPrice = selectedItem.price + this.calculateCustomizationPrice();
+    this.cartService.addItem(
+      selectedItem._id,
+      selectedItem.name,
+      selectedItem.price,
+      customizations,
+      this.customization().note,
+      selectedItem.image,
+      this.quantity(),
+      unitPrice
+    );
 
     this.closeCustomizeModal();
   }

@@ -1,5 +1,6 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageToggleComponent } from '../../components/language-toggle/language-toggle.component';
 import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
@@ -16,6 +17,7 @@ import { CartItem } from '../../../features/order/cart.types';
   styleUrls: ['./order-header.component.scss'],
 })
 export class OrderHeaderComponent {
+  private readonly router = inject(Router);
   protected cartService = inject(CartService);
   private menuItemResolver = inject(MenuItemResolver);
 
@@ -28,6 +30,7 @@ export class OrderHeaderComponent {
   /* ========================= Computed ========================= */
 
   cart = this.cartService.cart;
+  readonly cartDisplayTotal = computed(() => this.cart().items.reduce((sum, item) => sum + this.getItemSubtotal(item), 0));
 
   /* ========================= Cart Actions ========================= */
 
@@ -68,7 +71,8 @@ export class OrderHeaderComponent {
   }
 
   onCheckout(): void {
-    console.log('Proceeding to checkout...');
+    this.closeCart();
+    void this.router.navigate(['/order/checkout']);
   }
 
   /* ========================= Presenters ========================= */
