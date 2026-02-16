@@ -5,6 +5,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { LanguageToggleComponent } from '../../components/language-toggle/language-toggle.component';
 import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
 import { FullScreenModalComponent } from '../../components/full-screen-modal/full-screen-modal.component';
+import { ServiceBellComponent } from '../../../features/order/service-bell/service-bell.component';
 import { CartService } from '../../../features/order/cart.service';
 import { MenuItemResolver } from '../../../features/order/menu-item.resolver';
 import { CartItem } from '../../../features/order/cart.types';
@@ -12,7 +13,7 @@ import { CartItem } from '../../../features/order/cart.types';
 @Component({
   selector: 'app-order-header',
   standalone: true,
-  imports: [CommonModule, TranslateModule, LanguageToggleComponent, ThemeToggleComponent, FullScreenModalComponent],
+  imports: [CommonModule, TranslateModule, LanguageToggleComponent, ThemeToggleComponent, FullScreenModalComponent, ServiceBellComponent],
   templateUrl: './order-header.component.html',
   styleUrls: ['./order-header.component.scss'],
 })

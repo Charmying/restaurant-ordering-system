@@ -16,6 +16,8 @@ export class EventsWsService implements OnDestroy {
   private readonly orderServed$ = new Subject<unknown>();
   private readonly orderCompleted$ = new Subject<unknown>();
   private readonly orderCancelled$ = new Subject<unknown>();
+  private readonly serviceCall$ = new Subject<unknown>();
+  private readonly serviceCallHandled$ = new Subject<unknown>();
 
   get onOrderCreated(): Observable<unknown> {
     this.ensureConnected();
@@ -35,6 +37,16 @@ export class EventsWsService implements OnDestroy {
       this.orderCompleted$.pipe(map(() => undefined)),
       this.orderCancelled$.pipe(map(() => undefined))
     );
+  }
+
+  get onServiceCall(): Observable<unknown> {
+    this.ensureConnected();
+    return this.serviceCall$.asObservable();
+  }
+
+  get onServiceCallHandled(): Observable<unknown> {
+    this.ensureConnected();
+    return this.serviceCallHandled$.asObservable();
   }
 
   ngOnDestroy(): void {
@@ -65,6 +77,12 @@ export class EventsWsService implements OnDestroy {
     });
     this.socket.on('order:cancelled', (payload: unknown) => {
       this.orderCancelled$.next(payload);
+    });
+    this.socket.on('serviceCall', (payload: unknown) => {
+      this.serviceCall$.next(payload);
+    });
+    this.socket.on('serviceCallHandled', (payload: unknown) => {
+      this.serviceCallHandled$.next(payload);
     });
     this.socket.on('connect_error', (err: Error) => {
       console.warn('[EventsWs] connect_error', err.message);
