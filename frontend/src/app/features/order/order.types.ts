@@ -1,4 +1,4 @@
-export type CustomFieldType = 'single' | 'multiple';
+type CustomFieldType = 'single' | 'multiple';
 
 export interface CustomOption {
   _id?: string;
