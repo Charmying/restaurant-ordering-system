@@ -1,0 +1,72 @@
+<div class="relative">
+  <button (click)="toggleDropdown()"
+    class="relative p-2 sm:p-2.5 rounded-full hover:bg-[rgb(var(--surface-elevated))] transition-colors active:scale-[0.95]"
+    [attr.aria-label]="'features.serviceCallNotification.title' | translate"
+    [attr.aria-expanded]="isOpen()"
+    aria-haspopup="true">
+    <svg class="w-5 h-5" [class.animate-bell-ring]="isRinging()" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+    </svg>
+    @if (pendingCount() > 0) {
+      <span class="absolute -top-0.5 -right-0.5 min-w-5 h-5 px-1 rounded-full bg-[rgb(var(--destructive))] text-white text-[11px] font-bold flex items-center justify-center animate-scale-in leading-none">
+        {{ pendingCount() }}
+      </span>
+    }
+  </button>
+  @if (isOpen()) {
+    <div class="fixed inset-x-0 top-0 h-screen z-[1000] md:hidden" (click)="toggleDropdown()"></div>
+    <div class="fixed left-3 right-3 top-12 z-[1000] md:absolute md:left-auto md:right-0 md:top-full md:mt-2 md:w-96 rounded-2xl shadow-xl border border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface))] overflow-hidden animate-scale-in">
+      <div class="px-4 py-3 border-b border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface-elevated))]">
+        <div class="flex items-center justify-between gap-2">
+          <h3 class="font-semibold text-sm text-[rgb(var(--text-primary))]">
+            {{ 'features.serviceCallNotification.title' | translate }}
+          </h3>
+          @if (pendingCount() > 0) {
+            <span class="text-xs px-2 py-0.5 rounded-full bg-[rgb(var(--destructive))]/10 text-[rgb(var(--destructive))] font-semibold whitespace-nowrap flex-shrink-0">
+              {{ pendingCount() }} {{ 'features.serviceCallNotification.pending' | translate }}
+            </span>
+          }
+        </div>
+      </div>
+      <div class="max-h-[60vh] md:max-h-80 overflow-y-auto">
+        @if (pendingCalls().length === 0) {
+          <div class="px-4 py-8 text-center text-sm text-[rgb(var(--text-secondary))]">
+            <svg class="w-10 h-10 mx-auto mb-3 opacity-20" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0" />
+            </svg>
+            {{ 'features.serviceCallNotification.empty' | translate }}
+          </div>
+        } @else {
+          @for (call of pendingCalls(); track call._id) {
+            <div class="px-3 sm:px-4 py-3 flex items-center justify-between gap-2 sm:gap-3 border-b border-[rgb(var(--surface-muted))] last:border-b-0 hover:bg-[rgb(var(--surface-elevated))] transition-colors animate-fade-in">
+              <div class="flex items-center gap-2 sm:gap-3 min-w-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[rgb(var(--service-bell))]/10 flex items-center justify-center flex-shrink-0">
+                  <span class="text-sm sm:text-base font-bold text-[rgb(var(--service-bell))]">
+                    {{ call.tableNumber }}
+                  </span>
+                </div>
+                <div class="min-w-0">
+                  <p class="text-sm font-medium text-[rgb(var(--text-primary))] truncate">
+                    {{ 'features.serviceCallNotification.table' | translate }} {{ call.tableNumber }}
+                  </p>
+                  <p class="text-xs text-[rgb(var(--text-secondary))]">
+                    {{ getTimeAgo(call.createdAt) }}
+                  </p>
+                </div>
+              </div>
+              <button (click)="handleCall(call._id, $event)"
+                [disabled]="handlingId() === call._id"
+                class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 active:scale-[0.95] bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] hover:shadow-md disabled:opacity-50 disabled:cursor-wait flex-shrink-0">
+                @if (handlingId() === call._id) {
+                  {{ 'features.serviceCallNotification.handling' | translate }}
+                } @else {
+                  {{ 'features.serviceCallNotification.handle' | translate }}
+                }
+              </button>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }
+</div>

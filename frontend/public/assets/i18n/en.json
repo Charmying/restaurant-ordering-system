@@ -416,6 +416,27 @@
       "confirmDelete": "Are you sure you want to delete user {{username}}?",
       "emptyState": "No users available"
     },
+    "serviceBell": {
+      "callService": "Call Service",
+      "calling": "Calling service...",
+      "called": "Service called!",
+      "callFailed": "Call failed, try again",
+      "cooldown": "Please wait",
+      "tableRequired": "Please scan QR code first"
+    },
+    "serviceCallNotification": {
+      "title": "Service Calls",
+      "pending": "pending",
+      "table": "Table",
+      "handle": "Handle",
+      "handling": "Handling...",
+      "empty": "No pending service calls",
+      "time": {
+        "justNow": "Just now",
+        "minutesAgo": "{{count}} min ago",
+        "hoursAgo": "{{count}} hr ago"
+      }
+    },
     "login": {
       "title": "Admin Portal",
       "subtitle": "Please login to continue",

@@ -416,6 +416,27 @@
       "confirmDelete": "確定要刪除使用者 {{username}} 嗎？",
       "emptyState": "目前沒有使用者"
     },
+    "serviceBell": {
+      "callService": "呼叫服務",
+      "calling": "呼叫服務員中...",
+      "called": "已呼叫服務員！",
+      "callFailed": "呼叫失敗，請重試",
+      "cooldown": "請稍候",
+      "tableRequired": "請先掃描 QR Code"
+    },
+    "serviceCallNotification": {
+      "title": "服務鈴通知",
+      "pending": "待處理",
+      "table": "桌號",
+      "handle": "處理",
+      "handling": "處理中...",
+      "empty": "目前沒有待處理的服務呼叫",
+      "time": {
+        "justNow": "剛剛",
+        "minutesAgo": "{{count}} 分鐘前",
+        "hoursAgo": "{{count}} 小時前"
+      }
+    },
     "login": {
       "title": "管理後台",
       "subtitle": "請登入以繼續",
