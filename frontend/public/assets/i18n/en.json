@@ -100,7 +100,6 @@
         },
         "actions": {
           "startCheckout": "Start Checkout",
-          "completeCheckout": "Complete Checkout",
           "setToOccupied": "Set to Occupied",
           "viewQRCode": "View QR Code",
           "viewDetails": "View Details"
@@ -172,8 +171,7 @@
         "changeImage": "Change Image",
         "uploadImage": "Click to Upload",
         "addOption": "+ Add Option",
-        "addField": "Add Field",
-        "deleteConfirm": "Are you sure you want to delete this item?"
+        "addField": "Add Field"
       },
       "modal": {
         "addTitle": "Add Item",
@@ -267,7 +265,6 @@
         "title": "Validation Error",
         "requiredLabel": "Please enter a label"
       },
-      "confirmDelete": "Are you sure you want to delete this info?",
       "emptyState": {
         "title": "No Store Info",
         "description": "There is no store information available"
@@ -304,8 +301,6 @@
         "pinned": "Pinned",
         "edited": "Edited"
       },
-      "confirmDelete": "Are you sure you want to delete this message?",
-      "confirmDeleteAll": "Are you sure you want to delete all messages?",
       "modal": {
         "deleteTitle": "Delete Message",
         "deleteMessage": "Are you sure you want to delete this message? This action cannot be undone.",
@@ -422,7 +417,6 @@
       "calling": "Calling service...",
       "called": "Service called!",
       "callFailed": "Call failed, try again",
-      "cooldown": "Please wait",
       "tableRequired": "Please scan QR code first"
     },
     "serviceCallNotification": {

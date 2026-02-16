@@ -100,7 +100,6 @@
         },
         "actions": {
           "startCheckout": "開始結帳",
-          "completeCheckout": "完成結帳",
           "setToOccupied": "設為使用中",
           "viewQRCode": "查看 QR Code",
           "viewDetails": "查看明細"
@@ -172,8 +171,7 @@
         "changeImage": "更換照片",
         "uploadImage": "點擊上傳照片",
         "addOption": "＋ 新增選項",
-        "addField": "新增欄位",
-        "deleteConfirm": "確定要刪除這個餐點嗎？"
+        "addField": "新增欄位"
       },
       "modal": {
         "addTitle": "新增餐點",
@@ -267,7 +265,6 @@
         "title": "驗證錯誤",
         "requiredLabel": "請填寫標籤"
       },
-      "confirmDelete": "確定要刪除這個資訊嗎？",
       "emptyState": {
         "title": "沒有店家資訊",
         "description": "目前沒有可用的店家資訊"
@@ -304,8 +301,6 @@
         "pinned": "公告",
         "edited": "已編輯"
       },
-      "confirmDelete": "確定要刪除這則留言嗎？",
-      "confirmDeleteAll": "確定要刪除全部留言嗎？",
       "modal": {
         "deleteTitle": "刪除留言",
         "deleteMessage": "確定要刪除這則留言嗎？此操作無法復原。",
@@ -422,7 +417,6 @@
       "calling": "呼叫服務員中...",
       "called": "已呼叫服務員！",
       "callFailed": "呼叫失敗，請重試",
-      "cooldown": "請稍候",
       "tableRequired": "請先掃描 QR Code"
     },
     "serviceCallNotification": {

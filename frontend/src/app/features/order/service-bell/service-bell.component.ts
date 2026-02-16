@@ -5,8 +5,8 @@ import { firstValueFrom } from 'rxjs';
 import { ServiceCallService } from '../../../core/services/service-call.service';
 import { OrderContextService } from '../order-context.service';
 
-export type BellState = 'idle' | 'sending' | 'success' | 'cooldown';
-export type ToastType = 'info' | 'success' | 'error';
+type BellState = 'idle' | 'sending' | 'success' | 'cooldown';
+type ToastType = 'info' | 'success' | 'error';
 
 @Component({
   selector: 'app-service-bell',

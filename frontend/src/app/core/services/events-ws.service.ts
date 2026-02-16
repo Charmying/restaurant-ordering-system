@@ -4,8 +4,6 @@ import { map } from 'rxjs/operators';
 import { EVENTS_WS_ORIGIN } from '../config/api.config';
 import { io, Socket } from 'socket.io-client';
 
-export type OrderDomainEvent = 'order:created' | 'order:served' | 'order:completed' | 'order:cancelled';
-
 @Injectable({
   providedIn: 'root',
 })
