@@ -1,22 +1,64 @@
 import { Injectable, signal, computed, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { StoreInfoItem, StoreInfoState } from './store-info.types';
+import { StoreInfoPresenter } from './store-info.presenter';
 import { ApiService } from '../../core/services/api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class StoreInfoService {
+  private static readonly POLL_INTERVAL_MS = 30_000;
+  private static readonly CHANNEL_NAME = 'store-info-sync';
+
   private readonly api = inject(ApiService);
   private readonly state = signal<StoreInfoState>({
     items: []
   });
+  private pollingTimer: ReturnType<typeof setInterval> | null = null;
+  private readonly channel: BroadcastChannel | null =
+    typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel(StoreInfoService.CHANNEL_NAME) : null;
 
   readonly items = computed(() => this.getSortedItems(this.state().items));
   readonly totalCount = computed(() => this.state().items.length);
+  readonly storeName = computed(() => StoreInfoPresenter.getStoreName(this.state().items));
 
   constructor() {
     void this.loadStoreInfo();
+    this.setupAutoRefresh();
+  }
+
+  private setupAutoRefresh(): void {
+    this.startPolling();
+
+    if (this.channel) {
+      this.channel.onmessage = () => void this.loadStoreInfo();
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        void this.loadStoreInfo();
+        this.startPolling();
+      } else {
+        this.stopPolling();
+      }
+    });
+  }
+
+  private startPolling(): void {
+    this.stopPolling();
+    this.pollingTimer = setInterval(() => void this.loadStoreInfo(), StoreInfoService.POLL_INTERVAL_MS);
+  }
+
+  private stopPolling(): void {
+    if (this.pollingTimer !== null) {
+      clearInterval(this.pollingTimer);
+      this.pollingTimer = null;
+    }
+  }
+
+  private notifyOtherTabs(): void {
+    this.channel?.postMessage('updated');
   }
 
   async addInfo(label: string, value: string): Promise<StoreInfoItem | null> {
@@ -35,6 +77,7 @@ export class StoreInfoService {
         ...current,
         items: [...current.items, newItem]
       }));
+      this.notifyOtherTabs();
       return newItem;
     } catch (error) {
       console.error('Failed to create store info', error);
@@ -51,6 +94,7 @@ export class StoreInfoService {
         ...current,
         items: current.items.map(item => item._id === id ? updated : item)
       }));
+      this.notifyOtherTabs();
       return updated;
     } catch (error) {
       console.error('Failed to update store info', error);
@@ -68,6 +112,7 @@ export class StoreInfoService {
         ...current,
         items: current.items.filter(item => item._id !== id)
       }));
+      this.notifyOtherTabs();
     } catch (error) {
       console.error('Failed to delete store info', error);
     }

@@ -29,6 +29,7 @@ export class StoreInfoComponent {
   showValidationModal = false;
   validationMessage = '';
   infoToDelete: StoreInfoItem | null = null;
+  isEditingStoreName = false;
 
   infoForm: StoreInfoForm = {
     _id: '',
@@ -49,6 +50,7 @@ export class StoreInfoComponent {
 
   editInfo(info: StoreInfoItem): void {
     this.infoForm = { _id: info._id, label: info.label, value: info.value };
+    this.isEditingStoreName = info.isStoreName === true;
     this.showEditInfoModal = true;
   }
 
@@ -92,6 +94,7 @@ export class StoreInfoComponent {
 
   closeEditModal(): void {
     this.showEditInfoModal = false;
+    this.isEditingStoreName = false;
   }
 
   closeValidationModal(): void {
