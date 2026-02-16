@@ -9,6 +9,7 @@ import { ServiceBellComponent } from '../../../features/order/service-bell/servi
 import { CartService } from '../../../features/order/cart.service';
 import { MenuItemResolver } from '../../../features/order/menu-item.resolver';
 import { CartItem } from '../../../features/order/cart.types';
+import { StoreInfoService } from '../../../features/store-info/store-info.service';
 
 @Component({
   selector: 'app-order-header',
@@ -19,8 +20,10 @@ import { CartItem } from '../../../features/order/cart.types';
 })
 export class OrderHeaderComponent {
   private readonly router = inject(Router);
+  private readonly storeInfoService = inject(StoreInfoService);
   protected cartService = inject(CartService);
   private menuItemResolver = inject(MenuItemResolver);
+  readonly storeName = this.storeInfoService.storeName;
 
   /* ========================= State ========================= */
 

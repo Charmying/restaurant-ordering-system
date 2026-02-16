@@ -37,7 +37,7 @@
         </svg>
       </button>
       <h1 class="ml-2.5 text-base font-semibold tracking-tight text-[rgb(var(--text-primary))]">
-        {{ 'layout.header.title' | translate }}
+        {{ storeName() || ('layout.header.title' | translate) }}
       </h1>
     </header>
     <main class="flex-1 overflow-auto p-3 sm:p-5 md:p-6 lg:p-8">

@@ -4,7 +4,7 @@ export const MockStoreInfoItems: StoreInfoItem[] = [
   {
     _id: '6938294bf8545faf5a1c08ab',
     label: '店名',
-    value: '店名',
+    value: '餐廳點餐系統',
     order: 0,
     isStoreName: true,
     isDeletable: false,
