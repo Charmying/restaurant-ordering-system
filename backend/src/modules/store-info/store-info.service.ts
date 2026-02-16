@@ -27,16 +27,16 @@ export class StoreInfoService {
   }
 
   async update(id: string, dto: UpdateStoreInfoDto) {
-    const doc = await this.model.findByIdAndUpdate(
-      id,
-      dto,
-      {
-        new: true,
-        runValidators: true,
-      },
-    );
+    const existing = await this.model.findById(id);
+    if (!existing) throw new NotFoundException('Store info not found');
 
-    if (!doc) throw new NotFoundException('Store info not found');
+    const updatePayload = existing.isStoreName ? { value: dto.value } : dto;
+
+    const doc = await this.model.findByIdAndUpdate(id, updatePayload, {
+      new: true,
+      runValidators: true,
+    });
+
     return doc;
   }
 

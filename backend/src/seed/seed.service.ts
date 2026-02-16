@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../modules/users/schemas/user.schema';
 import { Table, TableDocument } from '../modules/tables/schemas/table.schema';
+import { StoreInfo, StoreInfoDocument } from '../modules/store-info/schemas/store-info.schema';
 import { TableStatus } from 'src/modules/tables/enums/table-status.enum';
 
 @Injectable()
@@ -13,6 +14,7 @@ export class SeedService implements OnModuleInit {
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Table.name) private tableModel: Model<TableDocument>,
+    @InjectModel(StoreInfo.name) private storeInfoModel: Model<StoreInfoDocument>,
     private configService: ConfigService,
   ) {}
 
@@ -23,6 +25,7 @@ export class SeedService implements OnModuleInit {
   async seed() {
     await this.seedTables();
     await this.seedSuperAdmin();
+    await this.seedStoreName();
   }
 
   private async seedTables() {
@@ -59,5 +62,19 @@ export class SeedService implements OnModuleInit {
       role: 'superadmin',
     });
     this.logger.log('Seeded superadmin user');
+  }
+
+  private async seedStoreName() {
+    const existing = await this.storeInfoModel.findOne({ isStoreName: true });
+    if (existing) return;
+
+    await this.storeInfoModel.create({
+      label: '店名',
+      value: '餐廳點餐系統',
+      order: 0,
+      isStoreName: true,
+      isDeletable: false,
+    });
+    this.logger.log('Seeded default store name');
   }
 }
