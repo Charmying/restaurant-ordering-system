@@ -1,4 +1,24 @@
 <div class="min-h-screen bg-[rgb(var(--surface))] transition-colors">
+  <!-- Store Information -->
+  @if (storeInfoItems().length > 0) {
+    <section class="bg-[rgb(var(--surface-elevated))] animate-fade-in"
+      [attr.aria-label]="'features.order.storeInfo' | translate">
+      <div class="max-w-7xl mx-auto px-6 py-5 sm:py-7 lg:py-8">
+        <dl class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 sm:gap-x-10 gap-y-5 sm:gap-y-6">
+          @for (info of storeInfoItems(); track info._id) {
+            <div class="min-w-0">
+              <div class="text-[11px] sm:text-xs font-medium uppercase tracking-[0.08em] text-[rgb(var(--text-secondary))]">
+                {{ info.label }}
+              </div>
+              <div class="mt-1 sm:mt-1.5 text-[13px] sm:text-[15px] font-semibold text-[rgb(var(--text-primary))] leading-relaxed break-words">
+                {{ info.value }}
+              </div>
+            </div>
+          }
+        </dl>
+      </div>
+    </section>
+  }
   <!-- Main -->
   <main class="max-w-7xl mx-auto px-6 py-8">
     <h2 class="text-2xl font-semibold text-[rgb(var(--text-primary))] mb-6">

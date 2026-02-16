@@ -6,6 +6,7 @@ import { ModalComponent } from '../../core/components/modal/modal.component';
 import { MenuItem, CustomizationState, CustomField, CustomOption } from './order.types';
 import { CartService } from './cart.service';
 import { OrderMenuService } from './order-menu.service';
+import { StoreInfoService } from '../store-info/store-info.service';
 
 @Component({
   selector: 'app-order',
@@ -17,6 +18,7 @@ import { OrderMenuService } from './order-menu.service';
 export class OrderComponent {
   private cartService = inject(CartService);
   private orderMenuService = inject(OrderMenuService);
+  private readonly storeInfoService = inject(StoreInfoService);
 
   /* ========================= State ========================= */
 
@@ -33,6 +35,10 @@ export class OrderComponent {
   /* ========================= Data ========================= */
 
   menuItems = this.orderMenuService.menuItems;
+
+  storeInfoItems = computed(() =>
+    this.storeInfoService.items().filter(item => !item.isStoreName)
+  );
 
   /* ========================= Computed ========================= */
 

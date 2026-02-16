@@ -52,6 +52,7 @@
       "openCart": "開啟購物車",
       "clearCart": "清空購物車",
       "removeItem": "移除項目",
+      "storeInfo": "店家資訊",
       "removeItemConfirm": "您確定要移除此項目嗎？",
       "checkoutPage": {
         "title": "確認並送出訂單",

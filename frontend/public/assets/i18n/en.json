@@ -52,6 +52,7 @@
       "openCart": "Open shopping cart",
       "clearCart": "Clear cart",
       "removeItem": "Remove Item",
+      "storeInfo": "Store Information",
       "removeItemConfirm": "Are you sure you want to remove this item?",
       "checkoutPage": {
         "title": "Review and Submit Order",
