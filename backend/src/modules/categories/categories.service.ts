@@ -100,4 +100,13 @@ export class CategoriesService {
     }
     return merged;
   }
+
+  async cleanupEmptyCategories(): Promise<void> {
+    const activeCategories = await this.buildOrderedCategories();
+    await this.categoryOrderModel.findOneAndUpdate(
+      {},
+      { categories: activeCategories },
+      { upsert: true },
+    );
+  }
 }
