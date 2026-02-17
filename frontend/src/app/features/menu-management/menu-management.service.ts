@@ -2,6 +2,7 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { MenuCustomField, MenuItem, MenuManagementState, MenuForm } from './menu-management.types';
 import { ApiService } from '../../core/services/api.service';
+import { CategoryManagementService } from '../category-management/category-management.service';
 
 const allCategory = '__all__';
 
@@ -10,6 +11,7 @@ const allCategory = '__all__';
 })
 export class MenuManagementService {
   private readonly api = inject(ApiService);
+  private readonly categoryService = inject(CategoryManagementService);
   private readonly state = signal<MenuManagementState>({
     menuItems: [],
     selectedCategory: allCategory
@@ -73,6 +75,7 @@ export class MenuManagementService {
           this.api.put<MenuItem>(`/menu/${form._id}`, payload)
         );
         this.updateMenuItem(updated);
+        this.categoryService.refreshCategories();
         return { success: true };
       }
 
@@ -83,6 +86,7 @@ export class MenuManagementService {
         ...current,
         menuItems: [created, ...current.menuItems]
       }));
+      this.categoryService.refreshCategories();
       return { success: true };
     } catch (error) {
       console.error('Failed to save menu item', error);
@@ -97,6 +101,7 @@ export class MenuManagementService {
         ...current,
         menuItems: current.menuItems.filter(item => item._id !== id)
       }));
+      this.categoryService.refreshCategories();
     } catch (error) {
       console.error('Failed to delete menu item', error);
     }
