@@ -6,6 +6,7 @@ import { CreateMenuItemDto } from './dto/create-menu-item.dto';
 import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
 import { EventsService } from '../events/events.service';
 import { MenuDomainEvent } from './menu.events';
+import { CategoriesService } from '../categories/categories.service';
 
 @Injectable()
 export class MenuService {
@@ -13,6 +14,7 @@ export class MenuService {
     @InjectModel(MenuItem.name)
     private readonly menuItemModel: Model<MenuItemDocument>,
     private readonly eventsService: EventsService,
+    private readonly categoriesService: CategoriesService,
   ) {}
 
   findAllPublic() {
@@ -39,6 +41,7 @@ export class MenuService {
     const item = await this.menuItemModel.findByIdAndUpdate(id, dto, { new: true, runValidators: true });
     if (!item) throw new NotFoundException('Menu item not found');
     this.eventsService.emit(MenuDomainEvent.MenuUpdated, { id: item._id });
+    await this.categoriesService.cleanupEmptyCategories();
     return item;
   }
 
@@ -46,5 +49,6 @@ export class MenuService {
     const item = await this.menuItemModel.findByIdAndDelete(id);
     if (!item) throw new NotFoundException('Menu item not found');
     this.eventsService.emit(MenuDomainEvent.MenuDeleted, { id });
+    await this.categoriesService.cleanupEmptyCategories();
   }
 }
