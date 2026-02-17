@@ -16,6 +16,9 @@ export class EventsWsService implements OnDestroy {
   private readonly orderCancelled$ = new Subject<unknown>();
   private readonly serviceCall$ = new Subject<unknown>();
   private readonly serviceCallHandled$ = new Subject<unknown>();
+  private readonly menuCreated$ = new Subject<unknown>();
+  private readonly menuUpdated$ = new Subject<unknown>();
+  private readonly menuDeleted$ = new Subject<unknown>();
 
   get onOrderCreated(): Observable<unknown> {
     this.ensureConnected();
@@ -45,6 +48,15 @@ export class EventsWsService implements OnDestroy {
   get onServiceCallHandled(): Observable<unknown> {
     this.ensureConnected();
     return this.serviceCallHandled$.asObservable();
+  }
+
+  get onMenuChanged(): Observable<void> {
+    this.ensureConnected();
+    return merge(
+      this.menuCreated$.pipe(map(() => undefined)),
+      this.menuUpdated$.pipe(map(() => undefined)),
+      this.menuDeleted$.pipe(map(() => undefined))
+    );
   }
 
   ngOnDestroy(): void {
@@ -81,6 +93,15 @@ export class EventsWsService implements OnDestroy {
     });
     this.socket.on('serviceCallHandled', (payload: unknown) => {
       this.serviceCallHandled$.next(payload);
+    });
+    this.socket.on('menu.created', (payload: unknown) => {
+      this.menuCreated$.next(payload);
+    });
+    this.socket.on('menu.updated', (payload: unknown) => {
+      this.menuUpdated$.next(payload);
+    });
+    this.socket.on('menu.deleted', (payload: unknown) => {
+      this.menuDeleted$.next(payload);
     });
     this.socket.on('connect_error', (err: Error) => {
       console.warn('[EventsWs] connect_error', err.message);

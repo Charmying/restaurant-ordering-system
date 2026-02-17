@@ -2,12 +2,14 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { CategoryManagementState } from './category-management.types';
 import { ApiService } from '../../core/services/api.service';
+import { EventsWsService } from '../../core/services/events-ws.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryManagementService {
   private readonly api = inject(ApiService);
+  private readonly eventsWs = inject(EventsWsService);
   private readonly state = signal<CategoryManagementState>({
     categories: []
   });
@@ -17,6 +19,9 @@ export class CategoryManagementService {
 
   constructor() {
     void this.loadCategories();
+    this.eventsWs.onMenuChanged.subscribe(() => {
+      void this.loadCategories();
+    });
   }
 
   async setCategories(categories: string[]): Promise<void> {
@@ -55,5 +60,9 @@ export class CategoryManagementService {
     } catch (error) {
       console.error('Failed to load categories', error);
     }
+  }
+
+  refreshCategories(): void {
+    void this.loadCategories();
   }
 }
