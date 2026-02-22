@@ -1,6 +1,6 @@
 import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router, RouterModule } from '@angular/router';
+import { Router, RouterModule, ActivatedRoute } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OrderContextService } from '../order-context.service';
 import { CartService } from '../cart.service';
@@ -22,6 +22,7 @@ const API_ERROR_TO_I18N: Record<string, string> = {
 })
 export class CheckoutComponent implements OnDestroy {
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly orderContext = inject(OrderContextService);
   private readonly cartService = inject(CartService);
   private readonly checkoutService = inject(OrderCheckoutService);
@@ -106,11 +107,13 @@ export class CheckoutComponent implements OnDestroy {
   }
 
   goToMenu(): void {
-    this.router.navigate(['/order']);
+    const queryParams = { ...this.route.snapshot.queryParams };
+    this.router.navigate(['/order'], { queryParams });
   }
 
   goHome(): void {
-    this.router.navigate(['/']);
+    const queryParams = { ...this.route.snapshot.queryParams };
+    this.router.navigate(['/'], { queryParams });
   }
 
   ngOnDestroy(): void {
