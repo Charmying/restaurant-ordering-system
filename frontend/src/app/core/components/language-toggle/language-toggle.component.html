@@ -1,8 +1,8 @@
 <button type="button" (click)="lang.switch()" 
   (mouseenter)="hover = true" 
   (mouseleave)="hover = false"
-  class="p-2 rounded-full transition-[background-color,transform] duration-200 ease-out active:scale-95"
-  [style.background]="hover ? 'var(--hover-bg)' : 'transparent'">
+  class="p-2 rounded-full transition-all duration-200 ease-out active:scale-95"
+  [class.bg-[rgb(var(--hover-bg))]]="hover">
   <span class="text-sm font-medium">
     {{ labelKey | translate }}
   </span>

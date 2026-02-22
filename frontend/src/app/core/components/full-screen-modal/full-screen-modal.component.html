@@ -1,33 +1,28 @@
-<div (click)="onBackdropClick()" role="presentation" aria-hidden="true" class="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm transition-opacity duration-300" [class.pointer-events-none]="!closeOnBackdropClick"></div>
-<div class="fixed inset-0 z-50 flex flex-col overflow-hidden bg-[rgb(var(--surface))] w-screen h-screen animate-slide-up" role="dialog" aria-modal="true" [attr.aria-labelledby]="title ? 'fsm-title' : null">
-  <!-- Header -->
-  <header class="flex-shrink-0 h-14 border-b border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface))] flex items-center px-5 sm:px-8 lg:px-10 self-center w-full max-w-5xl">
+<div (click)="onBackdropClick()" role="presentation" aria-hidden="true" class="fixed inset-0 z-40 bg-[rgba(var(--surface-overlay),0.2)] backdrop-blur-sm transition-opacity duration-300" [class.pointer-events-none]="!closeOnBackdropClick"></div>
+<div class="fixed inset-0 z-50 flex flex-col overflow-hidden bg-surface w-screen h-screen animate-slide-up" role="dialog" aria-modal="true" [attr.aria-labelledby]="title ? 'fsm-title' : null">
+  <header class="flex-shrink-0 h-14 border-b border-default bg-surface flex items-center px-5 sm:px-8 lg:px-10 self-center w-full max-w-5xl">
     <div class="flex items-center gap-4 w-full min-w-0">
-      <!-- Back Button -->
       @if (showBackButton) {
         <button type="button" (click)="close.emit()"
-          class="flex-shrink-0 w-11 h-11 flex items-center justify-center rounded-full bg-transparent border-none cursor-pointer transition-all hover:bg-[rgb(var(--surface-elevated))] active:scale-95 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--primary))]"
+          class="flex-shrink-0 w-11 h-11 flex items-center justify-center rounded-full interactive"
           [attr.aria-label]="'Back'"
           aria-haspopup="false">
-          <svg class="w-6 h-6 text-[rgb(var(--text-primary))] stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-primary stroke-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
         </button>
       }
-      <!-- Title -->
       @if (title) {
-        <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-[rgb(var(--text-primary))] leading-tight -tracking-0.5 m-0 flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" [id]="'fsm-title'">
+        <h1 class="text-xl sm:text-2xl font-bold text-primary leading-tight m-0 flex-1 min-w-0 overflow-hidden text-ellipsis whitespace-nowrap" [id]="'fsm-title'">
           {{ title }}
         </h1>
       }
     </div>
   </header>
-  <!-- Main Scrollable Content -->
   <main class="flex-1 overflow-y-auto overflow-x-hidden scroll-smooth self-center w-full max-w-5xl" role="main">
     <ng-content select="[slot='content']"></ng-content>
   </main>
-  <!-- Footer -->
-  <footer class="flex-shrink-0 bg-[rgb(var(--surface))] transition-colors self-center w-full max-w-5xl" [class.border-t="border-[rgb(var(--surface-muted))]"]="showFooterDivider" role="contentinfo">
+  <footer class="flex-shrink-0 bg-surface transition-smooth self-center w-full max-w-5xl" [class.border-t]="showFooterDivider" [class.border-default]="showFooterDivider" role="contentinfo">
     <ng-content select="[slot='footer']"></ng-content>
   </footer>
 </div>

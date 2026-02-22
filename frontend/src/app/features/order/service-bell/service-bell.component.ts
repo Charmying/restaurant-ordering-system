@@ -38,24 +38,24 @@ export class ServiceBellComponent implements OnDestroy {
   buttonClass = computed(() => {
     switch (this.state()) {
       case 'idle':
-        return 'hover:bg-[rgb(var(--surface-elevated))]';
+        return 'interactive';
       case 'sending':
-        return 'text-[rgb(var(--text-secondary))] cursor-wait';
+        return 'text-secondary cursor-wait';
       case 'success':
         return '';
       case 'cooldown':
-        return 'text-[rgb(var(--text-secondary))] opacity-60 cursor-not-allowed';
+        return 'text-secondary opacity-60 cursor-not-allowed';
     }
   });
 
   toastClass = computed(() => {
     switch (this.toastType()) {
       case 'success':
-        return 'bg-[rgb(var(--success))] text-[rgb(var(--success-text))]';
+        return 'bg-[rgb(var(--success))] text-[rgb(var(--success-contrast))]';
       case 'error':
-        return 'bg-[rgb(var(--destructive))] text-white';
+        return 'bg-[rgb(var(--error))] text-[rgb(var(--error-contrast))]';
       default:
-        return 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))] border border-[rgb(var(--surface-muted))]';
+        return 'bg-surface-elevated text-primary border border-default';
     }
   });
 

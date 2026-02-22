@@ -1,14 +1,13 @@
-<div class="flex h-screen overflow-hidden bg-[rgb(var(--bg-primary))]">
+<div class="flex h-screen overflow-hidden bg-surface">
   @if (isSidebarOpen()) {
-    <div (click)="closeSidebar()" class="fixed inset-0 z-40 bg-black/60 backdrop-blur-md transition-opacity duration-200 md:hidden"></div>
+    <div (click)="closeSidebar()" class="fixed inset-0 z-40 bg-[rgba(var(--surface-overlay),var(--surface-overlay-opacity))] backdrop-blur-md transition-opacity duration-200 md:hidden"></div>
   }
-  <aside [class]="'fixed inset-y-0 left-0 z-40 w-72 transform bg-[rgb(var(--surface))] shadow-2xl shadow-black/10 border-r border-[rgb(var(--border))]/50 flex flex-col transition-transform duration-200 ease-out md:static md:translate-x-0 md:shadow-none ' + (isSidebarOpen() ? 'translate-x-0' : '-translate-x-full')">
-    <div class="flex items-center justify-between h-14 px-5 border-b border-[rgb(var(--border))]/50 md:hidden">
-      <h2 class="text-base font-semibold tracking-tight text-[rgb(var(--text-primary))]">
+  <aside [class]="'fixed inset-y-0 left-0 z-40 w-72 transform bg-surface shadow-2xl border-r border-default flex flex-col transition-transform duration-200 ease-out md:static md:translate-x-0 md:shadow-none ' + (isSidebarOpen() ? 'translate-x-0' : '-translate-x-full')">
+    <div class="flex items-center justify-between h-14 px-5 border-b border-default md:hidden">
+      <h2 class="text-base font-semibold tracking-tight text-primary">
         {{ 'features.dashboard.sidebar.menu' | translate }}
       </h2>
-      <button (click)="closeSidebar()"
-        class="p-1.5 -mr-1.5 rounded-lg text-[rgb(var(--text-secondary))] hover:bg-[rgb(var(--surface-elevated))] hover:text-[rgb(var(--text-primary))] transition-all active:scale-95">
+      <button (click)="closeSidebar()" class="p-1.5 -mr-1.5 rounded-lg interactive">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
         </svg>
@@ -17,26 +16,23 @@
     <nav class="flex-1 px-2.5 py-5 space-y-0.5 overflow-y-auto overscroll-contain">
       @for (item of navItems; track item.route) {
         <button (click)="closeSidebar()" [routerLink]="item.route" routerLinkActive="active"
-          class="group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium text-[rgb(var(--text-secondary))] transition-all duration-200 hover:bg-[rgb(var(--surface-elevated))] hover:text-[rgb(var(--text-primary))] [&.active]:bg-[rgb(var(--btn-primary-bg))] [&.active]:text-[rgb(var(--btn-primary-fg))] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[rgb(var(--btn-primary-bg))]">
+          class="group relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[14px] font-medium text-secondary transition-all duration-200 interactive [&.active]:bg-[rgb(var(--btn-primary-bg))] [&.active]:text-[rgb(var(--btn-primary-fg))]">
           <svg class="w-[18px] h-[18px] flex-shrink-0 transition-transform group-hover:scale-110" fill="none" stroke="currentColor"  viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" [attr.d]="item.icon"/>
           </svg>
-          <span>
-            {{ item.labelKey | translate }}
-          </span>
+          <span>{{ item.labelKey | translate }}</span>
         </button>
       }
     </nav>
   </aside>
   <div class="flex flex-col flex-1 min-w-0">
-    <header class="sticky top-0 z-30 flex items-center h-14 px-4 bg-[rgb(var(--surface))]/80 backdrop-blur-xl border-b border-[rgb(var(--border))]/50 md:hidden">
-      <button (click)="toggleSidebar()"
-        class="p-1.5 -ml-1.5 rounded-lg text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--surface-elevated))] transition-all active:scale-95">
+    <header class="sticky top-0 z-30 flex items-center h-14 px-4 glass border-b border-default md:hidden">
+      <button (click)="toggleSidebar()" class="p-1.5 -ml-1.5 rounded-lg interactive">
         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
       </button>
-      <h1 class="ml-2.5 text-base font-semibold tracking-tight text-[rgb(var(--text-primary))]">
+      <h1 class="ml-2.5 text-base font-semibold tracking-tight text-primary">
         {{ storeName() || ('layout.header.title' | translate) }}
       </h1>
     </header>
