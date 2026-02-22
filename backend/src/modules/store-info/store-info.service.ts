@@ -30,7 +30,9 @@ export class StoreInfoService {
     const existing = await this.model.findById(id);
     if (!existing) throw new NotFoundException('Store info not found');
 
-    const updatePayload = existing.isStoreName ? { value: dto.value } : dto;
+    const updatePayload: Partial<UpdateStoreInfoDto> = {};
+    if (dto.label !== undefined) updatePayload.label = dto.label;
+    if (dto.value !== undefined) updatePayload.value = dto.value;
 
     const doc = await this.model.findByIdAndUpdate(id, updatePayload, {
       new: true,

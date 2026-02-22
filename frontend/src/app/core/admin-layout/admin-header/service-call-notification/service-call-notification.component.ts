@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, OnInit, ElementRef, HostListener, DestroyRef } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, OnDestroy, ElementRef, HostListener, DestroyRef } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { firstValueFrom } from 'rxjs';
@@ -12,7 +12,7 @@ import { EventsWsService } from '../../../services/events-ws.service';
   templateUrl: './service-call-notification.component.html',
   styleUrls: ['./service-call-notification.component.scss'],
 })
-export class ServiceCallNotificationComponent implements OnInit {
+export class ServiceCallNotificationComponent implements OnInit, OnDestroy {
   private readonly serviceCallService = inject(ServiceCallService);
   private readonly eventsWs = inject(EventsWsService);
   private readonly translate = inject(TranslateService);
@@ -37,6 +37,13 @@ export class ServiceCallNotificationComponent implements OnInit {
   ngOnInit(): void {
     this.loadPendingCalls();
     this.subscribeToEvents();
+  }
+
+  ngOnDestroy(): void {
+    if (this.ringTimer) {
+      clearTimeout(this.ringTimer);
+      this.ringTimer = null;
+    }
   }
 
   /* ========================= Host Listeners ========================= */

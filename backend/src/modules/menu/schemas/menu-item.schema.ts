@@ -1,13 +1,23 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import type { LocalizedString } from '../../../common/types/i18n.types';
 import { CustomFieldType } from '../enums/custom-field-type.enum';
 
 export type MenuItemDocument = HydratedDocument<MenuItem>;
 
 @Schema({ _id: false })
+export class LocalizedStringSchema {
+  @Prop({ required: true, trim: true })
+  zh!: string;
+
+  @Prop({ required: true, trim: true })
+  en!: string;
+}
+
+@Schema({ _id: false })
 export class CustomFieldOption {
-  @Prop({ required: true })
-  label: string;
+  @Prop({ type: LocalizedStringSchema, required: true })
+  label!: LocalizedString;
 
   @Prop({ required: true, min: 0 })
   price: number;
@@ -15,8 +25,8 @@ export class CustomFieldOption {
 
 @Schema({ _id: false })
 export class CustomField {
-  @Prop({ required: true })
-  name: string;
+  @Prop({ type: LocalizedStringSchema, required: true })
+  name!: LocalizedString;
 
   @Prop({ required: true, enum: Object.values(CustomFieldType) })
   type: CustomFieldType;
@@ -30,14 +40,14 @@ export class CustomField {
 
 @Schema({ timestamps: true })
 export class MenuItem {
-  @Prop({ required: true, trim: true })
-  name: string;
+  @Prop({ type: LocalizedStringSchema, required: true })
+  name!: LocalizedString;
 
   @Prop({ required: true, min: 0 })
   price: number;
 
-  @Prop({ trim: true, default: '' })
-  description: string;
+  @Prop({ type: LocalizedStringSchema, default: { zh: '', en: '' } })
+  description!: LocalizedString;
 
   @Prop({ type: [String], default: [] })
   category: string[];

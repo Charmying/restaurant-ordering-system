@@ -1,15 +1,25 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
+import type { LocalizedString } from '../../../common/types/i18n.types';
 
 export type StoreInfoDocument = HydratedDocument<StoreInfo>;
 
-@Schema({ timestamps: true })
-export class StoreInfo {
+@Schema({ _id: false })
+export class LocalizedStringSchema {
   @Prop({ required: true, trim: true })
-  label: string;
+  zh!: string;
 
   @Prop({ required: true, trim: true })
-  value: string;
+  en!: string;
+}
+
+@Schema({ timestamps: true })
+export class StoreInfo {
+  @Prop({ type: LocalizedStringSchema, required: true })
+  label!: LocalizedString;
+
+  @Prop({ type: LocalizedStringSchema, required: true })
+  value!: LocalizedString;
 
   @Prop({ default: 0 })
   order: number;

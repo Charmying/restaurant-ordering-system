@@ -1,7 +1,9 @@
+import { LocalizedString } from '../../shared/types/i18n.types';
+
 export interface StoreInfoItem {
   _id: string;
-  label: string;
-  value: string;
+  label: LocalizedString;
+  value: LocalizedString;
   order: number;
   isStoreName?: boolean;
   isDeletable?: boolean;
@@ -11,8 +13,8 @@ export interface StoreInfoItem {
 
 export interface StoreInfoForm {
   _id: string;
-  label: string;
-  value: string;
+  label: LocalizedString;
+  value: LocalizedString;
 }
 
 export interface StoreInfoState {

@@ -7,6 +7,11 @@ import { MenuItem, CustomizationState, CustomField, CustomOption } from './order
 import { CartService } from './cart.service';
 import { OrderMenuService } from './order-menu.service';
 import { StoreInfoService } from '../store-info/store-info.service';
+import { LanguageService } from '../../core/services/language.service';
+import { getLocalizedValue } from '../../shared/utils/i18n.util';
+import { getCategoryI18nKey, isCategoryTranslatable } from '../../shared/utils/category-i18n.util';
+import { SupportedLanguage, LocalizedString } from '../../shared/types/i18n.types';
+import { SpecialCategory } from '../../shared/constants/category.constants';
 
 @Component({
   selector: 'app-order',
@@ -16,46 +21,50 @@ import { StoreInfoService } from '../store-info/store-info.service';
   styleUrls: ['./order.component.scss'],
 })
 export class OrderComponent {
-  private cartService = inject(CartService);
-  private orderMenuService = inject(OrderMenuService);
+  private readonly cartService = inject(CartService);
+  private readonly orderMenuService = inject(OrderMenuService);
   private readonly storeInfoService = inject(StoreInfoService);
+  private readonly languageService = inject(LanguageService);
 
-  /* ========================= State ========================= */
+  /* ========================= Public Constants ========================= */
 
-  selectedCategory = signal<string>('全部');
-  selectedItem = signal<MenuItem | null>(null);
-  showCustomizeModal = signal(false);
-  quantity = signal(1);
+  readonly SpecialCategory = SpecialCategory;
 
-  customization = signal<CustomizationState>({
+  /* ========================= View State ========================= */
+
+  readonly selectedCategory = signal<string>(SpecialCategory.ALL);
+  readonly selectedItem = signal<MenuItem | null>(null);
+  readonly showCustomizeModal = signal(false);
+  readonly quantity = signal(1);
+
+  readonly customization = signal<CustomizationState>({
     selections: {},
     note: '',
   });
 
   /* ========================= Data ========================= */
 
-  menuItems = this.orderMenuService.menuItems;
+  readonly menuItems = this.orderMenuService.menuItems;
 
-  storeInfoItems = computed(() =>
+  readonly storeInfoItems = computed(() =>
     this.storeInfoService.items().filter(item => !item.isStoreName)
   );
 
-  /* ========================= Computed ========================= */
+  /* ========================= Computed Derived State ========================= */
 
-  categories = computed(() => {
+  readonly categories = computed(() => {
     const set = new Set<string>();
 
     this.menuItems().forEach(item => {
       const cats = Array.isArray(item.category) ? item.category : [item.category];
-
       cats.forEach(c => set.add(c));
     });
 
-    return ['全部', ...Array.from(set)];
+    return [SpecialCategory.ALL, ...Array.from(set)];
   });
 
-  filteredMenuItems = computed(() => {
-    if (this.selectedCategory() === '全部') {
+  readonly filteredMenuItems = computed(() => {
+    if (this.selectedCategory() === SpecialCategory.ALL) {
       return this.menuItems();
     }
 
@@ -64,7 +73,7 @@ export class OrderComponent {
     );
   });
 
-  itemsByCategory = computed(() => {
+  readonly itemsByCategory = computed(() => {
     const map = new Map<string, MenuItem[]>();
 
     this.menuItems().forEach(item => {
@@ -81,25 +90,37 @@ export class OrderComponent {
     return map;
   });
 
-  /* ========================= UI Presenters ========================= */
+  /* ========================= Presentation ========================= */
 
-  getCategoryButtonClass(category: string): string {
-    return category === this.selectedCategory() ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
+  getLocalizedValue(value: LocalizedString | string | undefined): string {
+    const lang = this.languageService.current as SupportedLanguage;
+    return getLocalizedValue(value, lang);
   }
 
-  getOptionButtonClass(
-    field: CustomField,
-    option: CustomOption
-  ): string {
+  getCategoryButtonClass(category: string): string {
+    const isSelected = category === this.selectedCategory();
+    return isSelected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
+  }
+
+  getCategoryLabel(category: string): string {
+    return getCategoryI18nKey(category);
+  }
+
+  isCategoryTranslatable(category: string): boolean {
+    return isCategoryTranslatable(category);
+  }
+
+  getOptionButtonClass(field: CustomField, option: CustomOption): string {
     const value = this.customization().selections[field.name];
-    const selected = field.type === 'single' ? value === option.label : Array.isArray(value) && value.includes(option.label);
+    const optionLabel = this.getLocalizedValue(option.label);
+    const selected = field.type === 'single' ? value === optionLabel : Array.isArray(value) && value.includes(optionLabel);
 
     return selected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
   }
 
   /* ========================= Actions ========================= */
 
-  openCustomizeModal(item: MenuItem) {
+  openCustomizeModal(item: MenuItem): void {
     this.selectedItem.set(item);
     this.quantity.set(1);
     this.customization.set({
@@ -109,37 +130,40 @@ export class OrderComponent {
     this.showCustomizeModal.set(true);
   }
 
-  closeCustomizeModal() {
+  closeCustomizeModal(): void {
     this.showCustomizeModal.set(false);
     this.quantity.set(1);
   }
 
-  onSelectOption(field: CustomField, option: CustomOption) {
+  onSelectOption(field: CustomField, option: CustomOption): void {
     const state = structuredClone(this.customization());
+    const fieldName = this.getLocalizedValue(field.name);
+    const optionLabel = this.getLocalizedValue(option.label);
 
     if (field.type === 'single') {
-      state.selections[field.name] = option.label;
+      state.selections[fieldName] = optionLabel;
     } else {
-      const current = (state.selections[field.name] as string[]) ?? [];
-      state.selections[field.name] = current.includes(option.label) ? current.filter(v => v !== option.label) : [...current, option.label];
+      const current = (state.selections[fieldName] as string[]) ?? [];
+      state.selections[fieldName] = current.includes(optionLabel) ? current.filter(v => v !== optionLabel) : [...current, optionLabel];
     }
 
     this.customization.set(state);
   }
 
   calculateCustomizationPrice(): number {
-    const selectedItem = this.selectedItem();
-    if (!selectedItem) return 0;
+    const item = this.selectedItem();
+    if (!item) return 0;
 
     let price = 0;
     const customizations = this.customization().selections;
 
-    selectedItem.customFields?.forEach(field => {
-      const selected = customizations[field.name];
+    item.customFields?.forEach(field => {
+      const fieldName = this.getLocalizedValue(field.name);
+      const selected = customizations[fieldName];
       const options = field.type === 'single' ? [selected] : (Array.isArray(selected) ? selected : []);
 
       options.forEach(optionLabel => {
-        const option = field.options.find(o => o.label === optionLabel);
+        const option = field.options.find(o => this.getLocalizedValue(o.label) === optionLabel);
         if (option?.price) {
           price += option.price;
         }
@@ -150,33 +174,32 @@ export class OrderComponent {
   }
 
   calculateItemTotal(): number {
-    const selectedItem = this.selectedItem();
-    if (!selectedItem) return 0;
+    const item = this.selectedItem();
+    if (!item) return 0;
 
     const customizationPrice = this.calculateCustomizationPrice();
-    const basePrice = selectedItem.price + customizationPrice;
+    const basePrice = item.price + customizationPrice;
     return basePrice * this.quantity();
   }
 
   addToCart(): void {
-    const selectedItem = this.selectedItem();
-    if (!selectedItem) return;
+    const item = this.selectedItem();
+    if (!item) return;
 
-    const customizations = Object.entries(this.customization().selections)
-      .filter(([_, value]) => value !== undefined && value !== '' && (Array.isArray(value) ? value.length > 0 : true))
-      .map(([fieldName, selectedOptions]) => ({
+    const customizations = Object.entries(this.customization().selections).filter(([_, value]) => value !== undefined && value !== '' && (Array.isArray(value) ? value.length > 0 : true)).map(([fieldName, selectedOptions]) => ({
         fieldName,
         selectedOptions: Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions],
       }));
 
-    const unitPrice = selectedItem.price + this.calculateCustomizationPrice();
+    const unitPrice = item.price + this.calculateCustomizationPrice();
+
     this.cartService.addItem(
-      selectedItem._id,
-      selectedItem.name,
-      selectedItem.price,
+      item._id,
+      this.getLocalizedValue(item.name),
+      item.price,
       customizations,
       this.customization().note,
-      selectedItem.image,
+      item.image,
       this.quantity(),
       unitPrice
     );
