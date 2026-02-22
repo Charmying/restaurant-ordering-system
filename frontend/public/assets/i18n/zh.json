@@ -48,6 +48,9 @@
       "emptyCart": "您的購物車是空的",
       "emptyCartMessage": "加入一些美味的餐點開始吧",
       "continueShopping": "繼續購物",
+      "categories": {
+        "all": "全部"
+      },
       "checkout": "結帳",
       "openCart": "開啟購物車",
       "clearCart": "清空購物車",
@@ -160,7 +163,8 @@
       "title": "菜單管理",
       "subtitle": "管理餐點、分類與客製化選項",
       "categories": {
-        "all": "全部"
+        "all": "全部",
+        "other": "其他"
       },
       "actions": {
         "add": "新增餐點",
@@ -238,6 +242,7 @@
       "title": "店家資訊管理",
       "subtitle": "管理店家基本資訊與對外顯示內容",
       "storeName": "店名",
+      "storeNameLabel": "店名",
       "stats": {
         "total": "資訊總數"
       },

@@ -8,10 +8,10 @@
           @for (info of storeInfoItems(); track info._id) {
             <div class="min-w-0">
               <div class="text-[11px] sm:text-xs font-medium uppercase tracking-[0.08em] text-[rgb(var(--text-secondary))]">
-                {{ info.label }}
+                {{ getLocalizedValue(info.label) }}
               </div>
               <div class="mt-1 sm:mt-1.5 text-[13px] sm:text-[15px] font-semibold text-[rgb(var(--text-primary))] leading-relaxed break-words">
-                {{ info.value }}
+                {{ getLocalizedValue(info.value) }}
               </div>
             </div>
           }
@@ -31,15 +31,19 @@
           <button (click)="selectedCategory.set(category)"
             [ngClass]="getCategoryButtonClass(category)"
             class="px-5 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap hover:shadow-md">
-            {{ category }}
+            @if (isCategoryTranslatable(category)) {
+              {{ getCategoryLabel(category) | translate }}
+            } @else {
+              {{ category }}
+            }
           </button>
         }
       </div>
     </div>
     <!-- Menu List by Category -->
-    @if (selectedCategory() === '全部') {
+    @if (selectedCategory() === SpecialCategory.ALL) {
       @for (category of categories(); track category) {
-        @if (category !== '全部') {
+        @if (category !== SpecialCategory.ALL) {
           <div class="mb-8">
             <h3 class="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4">
               {{ category }}
@@ -74,10 +78,10 @@
         <div class="flex items-start justify-between">
           <div>
             <h3 class="text-2xl font-semibold text-[rgb(var(--text-primary))]">
-              {{ selectedItem()?.name }}
+              {{ getLocalizedValue(selectedItem()?.name) }}
             </h3>
             <p class="text-sm text-[rgb(var(--text-secondary))] mt-1">
-              {{ selectedItem()?.description }}
+              {{ getLocalizedValue(selectedItem()?.description) }}
             </p>
             <p class="text-xl font-semibold text-[rgb(var(--text-primary))] mt-3">
               NT$ {{ selectedItem()?.price }}
@@ -94,7 +98,7 @@
         @for (field of selectedItem()?.customFields ?? []; track field.name) {
           <div>
             <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-3">
-              {{ field.name }}
+              {{ getLocalizedValue(field.name) }}
               @if (field.required) {
                 <span class="text-red-500 ml-1">*</span>
               }
@@ -105,7 +109,7 @@
                   [ngClass]="getOptionButtonClass(field, option)"
                   class="py-3 px-4 rounded-xl text-sm font-medium transition-all flex flex-col items-center hover:shadow-md">
                   <span>
-                    {{ option.label }}
+                    {{ getLocalizedValue(option.label) }}
                   </span>
                   @if (option.price && option.price > 0) {
                     <span class="text-xs mt-1 opacity-75">
@@ -177,10 +181,10 @@
       }
       <div class="p-6 space-y-3">
         <h3 class="text-lg font-semibold text-[rgb(var(--text-primary))]">
-          {{ item.name }}
+          {{ getLocalizedValue(item.name) }}
         </h3>
         <p class="text-sm text-[rgb(var(--text-secondary))]">
-          {{ item.description }}
+          {{ getLocalizedValue(item.description) }}
         </p>
         <p class="text-xl font-semibold text-[rgb(var(--text-primary))]">
           NT$ {{ item.price }}

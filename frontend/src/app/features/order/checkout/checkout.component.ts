@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
+import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
@@ -20,12 +20,14 @@ const API_ERROR_TO_I18N: Record<string, string> = {
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss'],
 })
-export class CheckoutComponent {
+export class CheckoutComponent implements OnDestroy {
   private readonly router = inject(Router);
   private readonly orderContext = inject(OrderContextService);
   private readonly cartService = inject(CartService);
   private readonly checkoutService = inject(OrderCheckoutService);
   private readonly translate = inject(TranslateService);
+
+  private pendingTimeouts: ReturnType<typeof setTimeout>[] = [];
 
   /* ========================= State ========================= */
 
@@ -89,9 +91,7 @@ export class CheckoutComponent {
       const nested = body && typeof body === 'object' && body !== null && 'error' in body ? (body as { error: { message?: string } }).error : null;
       const apiMessage = typeof nested?.message === 'string' ? nested.message : null;
       const i18nKey = apiMessage ? API_ERROR_TO_I18N[apiMessage] : null;
-      const displayMessage = i18nKey
-        ? this.translate.instant(i18nKey)
-        : apiMessage ?? (err instanceof Error ? err.message : null) ?? this.translate.instant('features.order.checkoutPage.errors.submitFailed');
+      const displayMessage = i18nKey ? this.translate.instant(i18nKey) : apiMessage ?? (err instanceof Error ? err.message : null) ?? this.translate.instant('features.order.checkoutPage.errors.submitFailed');
       this.errorMessage.set(displayMessage);
       this.announceText.set(displayMessage);
       this.focusSubmitButton();
@@ -113,13 +113,20 @@ export class CheckoutComponent {
     this.router.navigate(['/']);
   }
 
+  ngOnDestroy(): void {
+    this.pendingTimeouts.forEach((id) => clearTimeout(id));
+    this.pendingTimeouts = [];
+  }
+
   /* ========================= Private Helpers ========================= */
 
   private focusSuccessButton(): void {
-    setTimeout(() => document.getElementById('checkout-success-button')?.focus(), 0);
+    const id = setTimeout(() => document.getElementById('checkout-success-button')?.focus(), 0);
+    this.pendingTimeouts.push(id);
   }
 
   private focusSubmitButton(): void {
-    setTimeout(() => document.getElementById('checkout-submit-button')?.focus(), 0);
+    const id = setTimeout(() => document.getElementById('checkout-submit-button')?.focus(), 0);
+    this.pendingTimeouts.push(id);
   }
 }

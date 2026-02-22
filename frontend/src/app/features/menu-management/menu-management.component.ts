@@ -1,58 +1,71 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FullScreenModalComponent } from '../../core/components/full-screen-modal/full-screen-modal.component';
 import { ModalComponent } from '../../core/components/modal/modal.component';
+import { LocalizedInputComponent } from '../../shared/components/localized-input/localized-input.component';
 import { MenuManagementService } from './menu-management.service';
 import { MenuManagementPresenter } from './menu-management.presenter';
 import { MenuCustomField, MenuCustomOption, MenuForm, MenuItem } from './menu-management.types';
+import { LanguageService } from '../../core/services/language.service';
+import { SupportedLanguage, LocalizedString } from '../../shared/types/i18n.types';
+import { createEmptyLocalizedString } from '../../shared/utils/i18n.util';
+import { createI18nPlaceholder } from '../../shared/utils/placeholder.util';
+import { getCategoryI18nKey, isCategoryTranslatable } from '../../shared/utils/category-i18n.util';
+import { SpecialCategory } from '../../shared/constants/category.constants';
+import { MENU_MANAGEMENT_FORM_PLACEHOLDERS } from '../../shared/constants/placeholder.constants';
 
 @Component({
   selector: 'app-menu-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, FullScreenModalComponent, ModalComponent],
+  imports: [CommonModule, FormsModule, TranslateModule, FullScreenModalComponent, ModalComponent, LocalizedInputComponent],
   templateUrl: './menu-management.component.html',
   styleUrls: ['./menu-management.component.scss'],
 })
 export class MenuManagementComponent {
   private readonly menuService = inject(MenuManagementService);
   private readonly translateService = inject(TranslateService);
+  private readonly languageService = inject(LanguageService);
 
-  /* ========================= State ========================= */
+  /* ========================= Public State ========================= */
 
   readonly menuCategories = this.menuService.menuCategories;
   readonly selectedCategory = this.menuService.selectedCategory;
   readonly filteredMenuItems = this.menuService.filteredMenuItems;
   readonly allCategoryValue = this.menuService.allCategoryValue;
 
-  showMenuModal = false;
-  isEditMode = false;
-  formError = '';
-  showDeleteModal = false;
-  itemToDelete: MenuItem | null = null;
+  /* ========================= Dialog State ========================= */
 
-  menuForm: MenuForm = this.menuService.createEmptyForm();
-  menuCategoryInput = '';
-  newField: MenuCustomField = this.menuService.createEmptyCustomField();
-  newOption: MenuCustomOption = { label: '', price: null };
+  readonly showMenuModal = signal(false);
+  readonly isEditMode = signal(false);
+  readonly formError = signal('');
+  readonly menuForm = signal<MenuForm>(this.menuService.createEmptyForm());
 
-  /* ========================= Computed ========================= */
+  readonly showDeleteModal = signal(false);
+  readonly itemToDelete = signal<MenuItem | null>(null);
 
-  get categorySuggestions(): string[] {
-    const input = (this.menuCategoryInput || '').trim().toLowerCase();
-    const selected = new Set(this.menuForm.category || []);
+  readonly newField = signal<MenuCustomField>(this.menuService.createEmptyCustomField());
+  readonly newOption = signal<MenuCustomOption>({ label: createEmptyLocalizedString(), price: null });
+  readonly menuCategoryInput = signal('');
+
+  /* ========================= Computed Values ========================= */
+
+  readonly categorySuggestions = computed(() => {
+    const input = (this.menuCategoryInput() || '').trim().toLowerCase();
+    const selected = new Set(this.menuForm().category || []);
     const categories = this.menuService.menuCategories().slice(1);
 
     return categories
       .filter(category => category && !selected.has(category))
       .filter(category => !input || category.toLowerCase().includes(input))
       .slice(0, 8);
-  }
+  });
 
-  get isFormValid(): boolean {
-    return Boolean(this.menuForm.name?.trim()) && Number(this.menuForm.price) > 0;
-  }
+  readonly isFormValid = computed(() => {
+    const form = this.menuForm();
+    return Boolean(form.name?.zh?.trim() && form.name?.en?.trim()) && Number(form.price) > 0;
+  });
 
   /* ========================= UI Presenters ========================= */
 
@@ -60,129 +73,226 @@ export class MenuManagementComponent {
     return MenuManagementPresenter.formatCurrency(amount);
   }
 
-  isArray(value: any): boolean {
-    return MenuManagementPresenter.isArray(value);
+  getLocalizedValue(value: LocalizedString | string): string {
+    const lang = this.languageService.current as SupportedLanguage;
+    return MenuManagementPresenter.getLocalizedValue(value, lang);
   }
 
-  /* ========================= Actions ========================= */
+  /* ========================= Localized Placeholder Utilities ========================= */
+
+  getNamePlaceholder(): LocalizedString {
+    return createI18nPlaceholder(this.translateService, MENU_MANAGEMENT_FORM_PLACEHOLDERS.itemName);
+  }
+
+  getDescriptionPlaceholder(): LocalizedString {
+    return createI18nPlaceholder(this.translateService, MENU_MANAGEMENT_FORM_PLACEHOLDERS.itemDescription);
+  }
+
+  getOptionNamePlaceholder(): LocalizedString {
+    return createI18nPlaceholder(this.translateService, MENU_MANAGEMENT_FORM_PLACEHOLDERS.customOptionName);
+  }
+
+  getFieldNamePlaceholder(): LocalizedString {
+    return createI18nPlaceholder(this.translateService, MENU_MANAGEMENT_FORM_PLACEHOLDERS.customFieldName);
+  }
+
+  /* ========================= Category Actions ========================= */
 
   setSelectedCategory(category: string): void {
     this.menuService.setSelectedCategory(category);
   }
 
+  getCategoryLabelKey(category: string): string {
+    return getCategoryI18nKey(category);
+  }
+
+  isCategoryTranslatable(category: string): boolean {
+    return isCategoryTranslatable(category);
+  }
+
+  /* ========================= Menu Modal Actions ========================= */
+
   openAddMenuModal(): void {
-    this.menuForm = this.menuService.createEmptyForm();
-    this.menuCategoryInput = '';
-    this.newField = this.menuService.createEmptyCustomField();
-    this.newOption = { label: '', price: null };
-    this.formError = '';
-    this.isEditMode = false;
-    this.showMenuModal = true;
+    this.menuForm.set(this.menuService.createEmptyForm());
+    this.menuCategoryInput.set('');
+    this.newField.set(this.menuService.createEmptyCustomField());
+    this.newOption.set({ label: createEmptyLocalizedString(), price: null });
+    this.formError.set('');
+    this.isEditMode.set(false);
+    this.showMenuModal.set(true);
   }
 
   openEditMenuModal(item: MenuItem): void {
-    this.menuForm = {
+    this.menuForm.set({
       ...item,
-      category: Array.isArray(item.category) ? [...item.category] : ['其他'],
-      customFields: JSON.parse(JSON.stringify(item.customFields || []))
-    };
-    this.menuCategoryInput = '';
-    this.newField = this.menuService.createEmptyCustomField();
-    this.newOption = { label: '', price: null };
-    this.formError = '';
-    this.isEditMode = true;
-    this.showMenuModal = true;
+      category: Array.isArray(item.category) ? [...item.category] : [SpecialCategory.OTHER],
+      customFields: JSON.parse(JSON.stringify(item.customFields || [])),
+    });
+    this.menuCategoryInput.set('');
+    this.newField.set(this.menuService.createEmptyCustomField());
+    this.newOption.set({ label: createEmptyLocalizedString(), price: null });
+    this.formError.set('');
+    this.isEditMode.set(true);
+    this.showMenuModal.set(true);
   }
 
   closeMenuModal(): void {
-    this.showMenuModal = false;
-    this.formError = '';
+    this.showMenuModal.set(false);
+    this.formError.set('');
   }
 
   async saveMenuItem(): Promise<void> {
-    const result = await this.menuService.saveMenuItem(this.menuForm, this.isEditMode);
+    const result = await this.menuService.saveMenuItem(this.menuForm(), this.isEditMode());
     if (!result.success) {
-      this.formError = result.error ? this.translateService.instant(result.error) : this.translateService.instant('common.noData');
+      const errorKey = result.error || 'common.noData';
+      this.formError.set(this.translateService.instant(errorKey));
       return;
     }
-    this.showMenuModal = false;
+    this.closeMenuModal();
   }
 
+  /* ========================= Delete Modal Actions ========================= */
+
   deleteMenuItem(item: MenuItem): void {
-    this.itemToDelete = item;
-    this.showDeleteModal = true;
+    this.itemToDelete.set(item);
+    this.showDeleteModal.set(true);
   }
 
   async confirmDelete(): Promise<void> {
-    if (this.itemToDelete) {
-      await this.menuService.deleteMenuItem(this.itemToDelete._id);
+    const item = this.itemToDelete();
+    if (item) {
+      await this.menuService.deleteMenuItem(item._id);
     }
     this.closeDeleteModal();
   }
 
   closeDeleteModal(): void {
-    this.showDeleteModal = false;
-    this.itemToDelete = null;
+    this.showDeleteModal.set(false);
+    this.itemToDelete.set(null);
   }
 
-  addCustomField(): void {
-    if (!this.newField.name.trim() || this.newField.options.length === 0) return;
+  /* ========================= Custom Field Actions ========================= */
 
-    this.menuForm.customFields.push(JSON.parse(JSON.stringify(this.newField)));
-    this.newField = this.menuService.createEmptyCustomField();
+  addCustomField(): void {
+    const field = this.newField();
+    if (!field.name?.zh?.trim() || !field.options || field.options.length === 0) {
+      return;
+    }
+
+    const currentForm = this.menuForm();
+    this.menuForm.set({
+      ...currentForm,
+      customFields: [...currentForm.customFields, JSON.parse(JSON.stringify(field))],
+    });
+
+    this.newField.set(this.menuService.createEmptyCustomField());
   }
 
   removeCustomField(index: number): void {
-    this.menuForm.customFields.splice(index, 1);
+    const currentForm = this.menuForm();
+    this.menuForm.set({
+      ...currentForm,
+      customFields: currentForm.customFields.filter((_, i) => i !== index),
+    });
   }
 
   addOptionToNewField(): void {
-    if (!this.newOption.label.trim()) return;
-    this.newField.options.push({ label: this.newOption.label, price: this.newOption.price });
-    this.newOption = { label: '', price: null };
+    const option = this.newOption();
+    if (!option.label?.zh?.trim()) return;
+
+    const field = this.newField();
+    this.newField.set({
+      ...field,
+      options: [...(field.options || []), { label: option.label, price: option.price }],
+    });
+
+    this.newOption.set({ label: createEmptyLocalizedString(), price: null });
   }
 
   removeOptionFromNewField(index: number): void {
-    this.newField.options.splice(index, 1);
+    const field = this.newField();
+    this.newField.set({
+      ...field,
+      options: field.options.filter((_, i) => i !== index),
+    });
   }
 
-  addOptionToField(field: MenuCustomField): void {
-    if (!field.options) field.options = [];
-    field.options.push({ label: '', price: null });
+  addOptionToField(fieldIndex: number): void {
+    const currentForm = this.menuForm();
+    const field = currentForm.customFields[fieldIndex];
+    if (!field) return;
+
+    const updatedFields = [...currentForm.customFields];
+    updatedFields[fieldIndex] = {
+      ...field,
+      options: [...field.options, { label: createEmptyLocalizedString(), price: null }],
+    };
+
+    this.menuForm.set({ ...currentForm, customFields: updatedFields });
   }
 
-  removeOptionFromField(field: MenuCustomField, index: number): void {
-    field.options.splice(index, 1);
+  removeOptionFromField(fieldIndex: number, optionIndex: number): void {
+    const currentForm = this.menuForm();
+    const field = currentForm.customFields[fieldIndex];
+    if (!field) return;
+
+    const updatedFields = [...currentForm.customFields];
+    updatedFields[fieldIndex] = {
+      ...field,
+      options: field.options.filter((_, i) => i !== optionIndex),
+    };
+
+    this.menuForm.set({ ...currentForm, customFields: updatedFields });
   }
+
+  /* ========================= Category Input Actions ========================= */
 
   addCategoryFromInput(): void {
-    const val = (this.menuCategoryInput || '').trim();
-    if (!val) return;
-    if (!this.menuForm.category) this.menuForm.category = [];
-    if (!this.menuForm.category.includes(val)) {
-      this.menuForm.category = this.menuForm.category.filter(cat => cat !== '其他');
-      this.menuForm.category.push(val);
+    const input = (this.menuCategoryInput() || '').trim();
+    if (!input) return;
+
+    const currentForm = this.menuForm();
+    const categories = currentForm.category || [];
+
+    if (!categories.includes(input)) {
+      const updated = categories.filter(cat => !SpecialCategory.OTHER || cat !== SpecialCategory.OTHER);
+      updated.push(input);
+      this.menuForm.set({ ...currentForm, category: updated });
     }
-    this.menuCategoryInput = '';
+
+    this.menuCategoryInput.set('');
   }
 
   toggleCategorySuggestion(category: string): void {
-    if (!this.menuForm.category) this.menuForm.category = [];
-    if (this.menuForm.category.includes(category)) {
-      this.menuForm.category = this.menuForm.category.filter(cat => cat !== category);
+    const currentForm = this.menuForm();
+    const categories = currentForm.category || [];
+
+    let updatedCategories: string[];
+    if (categories.includes(category)) {
+      updatedCategories = categories.filter(cat => cat !== category);
+      if (!updatedCategories.length) {
+        updatedCategories = [SpecialCategory.OTHER];
+      }
     } else {
-      this.menuForm.category = this.menuForm.category.filter(cat => cat !== '其他');
-      this.menuForm.category.push(category);
+      updatedCategories = [...categories.filter(cat => cat !== SpecialCategory.OTHER), category];
     }
-    if (!this.menuForm.category.length) this.menuForm.category = ['其他'];
-    this.menuCategoryInput = '';
+
+    this.menuForm.set({ ...currentForm, category: updatedCategories });
+    this.menuCategoryInput.set('');
   }
 
   removeCategory(category: string): void {
-    if (!this.menuForm.category) return;
-    this.menuForm.category = this.menuForm.category.filter(cat => cat !== category);
-    if (!this.menuForm.category.length) this.menuForm.category = ['其他'];
+    const currentForm = this.menuForm();
+    const cats = currentForm.category || [];
+    const filtered = cats.filter(cat => cat !== category);
+
+    this.menuForm.set({
+      ...currentForm,
+      category: filtered.length > 0 ? filtered : [SpecialCategory.OTHER],
+    });
   }
+
+  /* ========================= Image Upload ========================= */
 
   triggerFileInput(): void {
     document.getElementById('imageUpload')?.click();
@@ -195,13 +305,14 @@ export class MenuManagementComponent {
 
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
+      if (typeof e.target?.result !== 'string') return;
+
       const img = new Image();
       img.onload = () => {
         const canvas = document.createElement('canvas');
-        let width = img.width;
-        let height = img.height;
-
+        let { width, height } = img;
         const maxSize = 800;
+
         if (width > height && width > maxSize) {
           height = (height * maxSize) / width;
           width = maxSize;
@@ -213,14 +324,16 @@ export class MenuManagementComponent {
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext('2d');
-        ctx?.drawImage(img, 0, 0, width, height);
+        if (!ctx) return;
 
-        this.menuForm.image = canvas.toDataURL('image/webp', 0.85);
+        ctx.drawImage(img, 0, 0, width, height);
+        const currentForm = this.menuForm();
+        this.menuForm.set({ ...currentForm, image: canvas.toDataURL('image/webp', 0.85) });
       };
-      if (typeof e.target?.result === 'string') {
-        img.src = e.target.result;
-      }
+
+      img.src = e.target.result;
     };
+
     reader.readAsDataURL(file);
   }
 }

@@ -1,12 +1,14 @@
+import { LocalizedString } from '../../shared/types/i18n.types';
+
 export interface MenuCustomOption {
   _id?: string;
-  label: string;
+  label: LocalizedString;
   price: number | null;
 }
 
 export interface MenuCustomField {
   _id?: string;
-  name: string;
+  name: LocalizedString;
   type: 'single' | 'multiple';
   required: boolean;
   options: MenuCustomOption[];
@@ -14,9 +16,9 @@ export interface MenuCustomField {
 
 export interface MenuItem {
   _id: string;
-  name: string;
+  name: LocalizedString;
   price: number;
-  description: string;
+  description: LocalizedString;
   category: string[];
   categoryOrder: number;
   image?: string;
@@ -28,9 +30,9 @@ export interface MenuItem {
 
 export interface MenuForm {
   _id?: string;
-  name: string;
+  name: LocalizedString;
   price: number | null;
-  description: string;
+  description: LocalizedString;
   category: string[];
   categoryOrder: number;
   image?: string;

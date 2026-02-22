@@ -47,7 +47,7 @@ export class TableManagementComponent {
     return this.tableService.getStatusText(status);
   }
 
-  isArray(value: any): boolean {
+  isArray(value: unknown): boolean {
     return TableManagementPresenter.isArray(value);
   }
 

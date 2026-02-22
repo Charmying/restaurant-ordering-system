@@ -2,10 +2,20 @@ import { IsString, IsNumber, IsArray, IsBoolean, IsOptional, IsNotEmpty, IsEnum,
 import { Type } from 'class-transformer';
 import { CustomFieldType } from '../enums/custom-field-type.enum';
 
-export class CustomFieldOptionDto {
+export class LocalizedStringDto {
   @IsString()
   @IsNotEmpty()
-  label: string;
+  zh!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  en!: string;
+}
+
+export class CustomFieldOptionDto {
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  label!: LocalizedStringDto;
 
   @IsNumber()
   @Min(0)
@@ -13,9 +23,9 @@ export class CustomFieldOptionDto {
 }
 
 export class CustomFieldDto {
-  @IsString()
-  @IsNotEmpty()
-  name: string;
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  name!: LocalizedStringDto;
 
   @IsEnum(CustomFieldType)
   type: CustomFieldType;
@@ -31,17 +41,18 @@ export class CustomFieldDto {
 }
 
 export class CreateMenuItemDto {
-  @IsString()
-  @IsNotEmpty()
-  name: string;
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  name!: LocalizedStringDto;
 
   @IsNumber()
   @Min(0)
   price: number;
 
   @IsOptional()
-  @IsString()
-  description?: string = '';
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  description?: LocalizedStringDto;
 
   @IsOptional()
   @IsArray()

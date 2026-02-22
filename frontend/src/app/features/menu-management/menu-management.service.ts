@@ -3,8 +3,11 @@ import { firstValueFrom } from 'rxjs';
 import { MenuCustomField, MenuItem, MenuManagementState, MenuForm } from './menu-management.types';
 import { ApiService } from '../../core/services/api.service';
 import { CategoryManagementService } from '../category-management/category-management.service';
+import { createEmptyLocalizedString, getLocalizedValue } from '../../shared/utils/i18n.util';
+import { LanguageService } from '../../core/services/language.service';
+import { SpecialCategory } from '../../shared/constants/category.constants';
 
-const allCategory = '__all__';
+const ALL_CATEGORIES_SENTINEL = SpecialCategory.ALL;
 
 @Injectable({
   providedIn: 'root'
@@ -12,22 +15,24 @@ const allCategory = '__all__';
 export class MenuManagementService {
   private readonly api = inject(ApiService);
   private readonly categoryService = inject(CategoryManagementService);
+  private readonly languageService = inject(LanguageService);
+
   private readonly state = signal<MenuManagementState>({
     menuItems: [],
-    selectedCategory: allCategory
+    selectedCategory: ALL_CATEGORIES_SENTINEL,
   });
 
-  readonly allCategoryValue = allCategory;
+  readonly allCategoryValue = ALL_CATEGORIES_SENTINEL;
+
   readonly menuItems = computed(() => this.state().menuItems);
   readonly selectedCategory = computed(() => this.state().selectedCategory);
-
-  readonly menuCategories = computed(() => [allCategory, ...this.getSortedCategories()]);
+  readonly menuCategories = computed(() => [ALL_CATEGORIES_SENTINEL, ...this.getSortedCategories()]);
 
   readonly filteredMenuItems = computed(() => {
     const selected = this.state().selectedCategory;
     const items = this.getSortedMenuItems();
 
-    if (selected === allCategory) return items;
+    if (selected === ALL_CATEGORIES_SENTINEL) return items;
     return items.filter(item => item.category.includes(selected));
   });
 
@@ -38,72 +43,71 @@ export class MenuManagementService {
   setSelectedCategory(category: string): void {
     this.state.update(current => ({
       ...current,
-      selectedCategory: category
+      selectedCategory: category,
     }));
   }
 
   createEmptyForm(): MenuForm {
     return {
-      name: '',
+      name: createEmptyLocalizedString(),
       price: null,
-      description: '',
-      category: ['其他'],
+      description: createEmptyLocalizedString(),
+      category: [SpecialCategory.OTHER],
       categoryOrder: 999,
       image: '',
       customFields: [],
-      available: true
+      available: true,
     };
   }
 
   createEmptyCustomField(): MenuCustomField {
-    return { name: '', type: 'single', required: false, options: [] };
+    return {
+      name: createEmptyLocalizedString(),
+      type: 'single',
+      required: false,
+      options: [],
+    };
   }
 
   async saveMenuItem(form: MenuForm, isEdit: boolean): Promise<{ success: boolean; error?: string }> {
-    if (!form.name || !form.price || form.price <= 0) {
-      return { success: false, error: 'features.menuManagement.validation.required' };
-    }
+    if (!form.name?.zh?.trim() || !form.name?.en?.trim() || !form.price || form.price <= 0) return { success: false, error: 'features.menuManagement.validation.required' };
 
     const payload = this.normalizeForm(form);
-    if (!payload) {
-      return { success: false, error: 'features.menuManagement.validation.required' };
-    }
+    if (!payload) return { success: false, error: 'features.menuManagement.validation.required' };
 
     try {
       if (isEdit && form._id) {
-        const updated = await firstValueFrom(
-          this.api.put<MenuItem>(`/menu/${form._id}`, payload)
-        );
+        const updated = await firstValueFrom(this.api.put<MenuItem>(`/menu/${form._id}`, payload));
         this.updateMenuItem(updated);
         this.categoryService.refreshCategories();
         return { success: true };
       }
 
-      const created = await firstValueFrom(
-        this.api.post<MenuItem>('/menu', payload)
-      );
+      const created = await firstValueFrom(this.api.post<MenuItem>('/menu', payload));
       this.state.update(current => ({
         ...current,
-        menuItems: [created, ...current.menuItems]
+        menuItems: [created, ...current.menuItems],
       }));
       this.categoryService.refreshCategories();
       return { success: true };
     } catch (error) {
-      console.error('Failed to save menu item', error);
-      return { success: false, error: 'common.noData' };
+      console.error('Failed to save menu item:', error);
+      return { success: false, error: 'common.error' };
     }
   }
 
-  async deleteMenuItem(id: string): Promise<void> {
+  async deleteMenuItem(id: string): Promise<{ success: boolean; error?: string }> {
     try {
       await firstValueFrom(this.api.delete(`/menu/${id}`));
       this.state.update(current => ({
         ...current,
-        menuItems: current.menuItems.filter(item => item._id !== id)
+        menuItems: current.menuItems.filter(item => item._id !== id),
       }));
       this.categoryService.refreshCategories();
+      return { success: true };
     } catch (error) {
-      console.error('Failed to delete menu item', error);
+      console.error('Failed to delete menu item:', error);
+      return { success: false, error: 'common.error' };
     }
   }
 
@@ -112,7 +116,7 @@ export class MenuManagementService {
       const items = await firstValueFrom(this.api.get<MenuItem[]>('/menu/admin/all'));
       this.state.update(current => ({
         ...current,
-        menuItems: items
+        menuItems: items,
       }));
     } catch (error) {
       console.error('Failed to load menu items', error);
@@ -122,26 +126,21 @@ export class MenuManagementService {
   private updateMenuItem(form: MenuItem): void {
     this.state.update(current => ({
       ...current,
-      menuItems: current.menuItems.map(item => item._id === form._id ? form : item)
+      menuItems: current.menuItems.map(item => (item._id === form._id ? form : item)),
     }));
   }
 
   private normalizeForm(form: MenuForm): Omit<MenuItem, '_id' | 'createdAt' | '__v'> | null {
-    const categoryArray = Array.isArray(form.category) && form.category.length ? form.category : ['其他'];
-
-    const firstCategory = categoryArray[0] || '其他';
+    const categoryArray = Array.isArray(form.category) && form.category.length ? form.category : [SpecialCategory.OTHER];
+    const firstCategory = categoryArray[0] || SpecialCategory.OTHER;
     const categoryOrder = this.resolveCategoryOrder(firstCategory);
 
-    const customFields = (form.customFields || [])
-      .filter(field => field.name && field.options?.length > 0)
-      .map(field => ({
-        ...field,
-        options: field.options
-          .filter(option => option.label)
-          .map(option => ({ ...option, price: option.price ?? 0 }))
-      }));
+    const customFields = (form.customFields || []).filter(field => field.name?.zh && field.options?.length > 0).map(field => ({
+      ...field,
+      options: field.options.filter(option => option.label?.zh).map(option => ({ ...option, price: option.price ?? 0 })),
+    }));
 
-    if (!form.name || !form.price || form.price <= 0) return null;
+    if (!form.name?.zh || !form.name?.en || !form.price || form.price <= 0) return null;
 
     return {
       name: form.name,
@@ -151,7 +150,7 @@ export class MenuManagementService {
       categoryOrder,
       image: form.image,
       customFields,
-      available: form.available ?? true
+      available: form.available ?? true,
     };
   }
 
@@ -160,7 +159,8 @@ export class MenuManagementService {
 
     this.state().menuItems.forEach(item => {
       item.category.forEach(cat => {
-        if (!map.has(cat) || item.categoryOrder < (map.get(cat) ?? Infinity)) {
+        const existing = map.get(cat);
+        if (existing === undefined || item.categoryOrder < existing) {
           map.set(cat, item.categoryOrder);
         }
       });
@@ -172,9 +172,12 @@ export class MenuManagementService {
   }
 
   private getSortedMenuItems(): MenuItem[] {
+    const lang = this.languageService.current as 'zh' | 'en';
     return [...this.state().menuItems].sort((a, b) => {
       if (a.categoryOrder !== b.categoryOrder) return a.categoryOrder - b.categoryOrder;
-      return a.name.localeCompare(b.name);
+      const nameA = getLocalizedValue(a.name, lang);
+      const nameB = getLocalizedValue(b.name, lang);
+      return nameA.localeCompare(nameB);
     });
   }
 
@@ -185,8 +188,8 @@ export class MenuManagementService {
     this.state().menuItems.forEach(item => {
       item.category.forEach(cat => {
         categories.add(cat);
-        const existingOrder = categoryOrder.get(cat);
-        if (existingOrder === undefined || item.categoryOrder < existingOrder) {
+        const existing = categoryOrder.get(cat);
+        if (existing === undefined || item.categoryOrder < existing) {
           categoryOrder.set(cat, item.categoryOrder);
         }
       });

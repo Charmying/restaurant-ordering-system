@@ -48,6 +48,9 @@
       "emptyCart": "Your cart is empty",
       "emptyCartMessage": "Add some delicious items to get started",
       "continueShopping": "Continue Shopping",
+      "categories": {
+        "all": "All"
+      },
       "checkout": "Checkout",
       "openCart": "Open shopping cart",
       "clearCart": "Clear cart",
@@ -160,7 +163,8 @@
       "title": "Menu Management",
       "subtitle": "Manage menu items, categories, and customization",
       "categories": {
-        "all": "All"
+        "all": "All",
+        "other": "Other"
       },
       "actions": {
         "add": "Add Item",
@@ -238,6 +242,7 @@
       "title": "Store Information",
       "subtitle": "Manage store details and public info",
       "storeName": "Store Name",
+      "storeNameLabel": "Store Name",
       "stats": {
         "total": "Total Items"
       },

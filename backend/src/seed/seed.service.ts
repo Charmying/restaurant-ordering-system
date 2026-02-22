@@ -69,8 +69,8 @@ export class SeedService implements OnModuleInit {
     if (existing) return;
 
     await this.storeInfoModel.create({
-      label: '店名',
-      value: '餐廳點餐系統',
+      label: { zh: '店名', en: 'Store Name' },
+      value: { zh: '餐廳點餐系統', en: 'Restaurant Ordering System' },
       order: 0,
       isStoreName: true,
       isDeletable: false,

@@ -10,7 +10,7 @@ This repository currently contains a fully implemented frontend and system docum
 
 - **Customer Ordering** — QR code entry and ordering UI
 - **Admin Dashboard** — Management UI for tables, orders, menu, categories, store info, messages, reports, and users
-- **Multi-language Support** — i18n-ready architecture
+- **Multi-language Support** — i18n-ready architecture with inline multilingual content editing
 - **Theme System** — Light/dark mode with semantic tokens
 
 ---
