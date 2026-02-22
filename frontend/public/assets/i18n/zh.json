@@ -126,7 +126,10 @@
         },
         "completeCheckout": "完成結帳",
         "completeCheckoutLoading": "完成結帳中...",
-        "continueOrdering": "繼續點餐"
+        "continueOrdering": "繼續點餐",
+        "orderList": "訂單列表",
+        "quantity": "數量",
+        "unitPrice": "單價"
       },
       "emptyState": {
         "title": "沒有桌位資料",

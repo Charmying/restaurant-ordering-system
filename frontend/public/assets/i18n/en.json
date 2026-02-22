@@ -126,7 +126,10 @@
         },
         "completeCheckout": "Complete Checkout",
         "completeCheckoutLoading": "Completing checkout...",
-        "continueOrdering": "Continue Ordering"
+        "continueOrdering": "Continue Ordering",
+        "orderList": "Order List",
+        "quantity": "Quantity",
+        "unitPrice": "Unit Price"
       },
       "emptyState": {
         "title": "No Table Data",
