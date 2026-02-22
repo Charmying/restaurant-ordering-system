@@ -80,8 +80,10 @@ export class CartService {
     const updated = [...this.cartItems()];
     const index = updated.findIndex((item) => item.id === itemId);
     if (index !== -1) {
+      const item = updated[index];
+      const unitPrice = item.subtotal / item.quantity;
       updated[index].quantity = quantity;
-      updated[index].subtotal = updated[index].price * quantity;
+      updated[index].subtotal = unitPrice * quantity;
       this.cartItems.set(updated);
     }
   }

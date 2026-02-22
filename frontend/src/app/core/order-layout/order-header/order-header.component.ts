@@ -22,7 +22,6 @@ export class OrderHeaderComponent {
   private readonly router = inject(Router);
   private readonly storeInfoService = inject(StoreInfoService);
   protected cartService = inject(CartService);
-  private menuItemResolver = inject(MenuItemResolver);
   readonly storeName = this.storeInfoService.storeName;
 
   /* ========================= State ========================= */
@@ -34,7 +33,7 @@ export class OrderHeaderComponent {
   /* ========================= Computed ========================= */
 
   cart = this.cartService.cart;
-  readonly cartDisplayTotal = computed(() => this.cart().items.reduce((sum, item) => sum + this.getItemSubtotal(item), 0));
+  readonly cartDisplayTotal = computed(() => this.cart().items.reduce((sum, item) => sum + item.subtotal, 0));
 
   /* ========================= Cart Actions ========================= */
 
@@ -81,34 +80,11 @@ export class OrderHeaderComponent {
 
   /* ========================= Presenters ========================= */
 
-  getCustomizationPriceDisplay(item: CartItem): number {
-    const menuItem = this.menuItemResolver.getById(item.menuItemId);
-    if (!menuItem) return 0;
-
-    let price = 0;
-    item.customizations.forEach((custom) => {
-      const field = menuItem.customFields?.find((f) => f.name === custom.fieldName);
-      if (!field) return;
-
-      custom.selectedOptions.forEach((optionLabel) => {
-        const option = field.options.find((o) => o.label === optionLabel);
-        if (option?.price) {
-          price += option.price;
-        }
-      });
-    });
-
-    return price;
-  }
-
   getSingleItemPrice(item: CartItem): number {
-    const menuItem = this.menuItemResolver.getById(item.menuItemId);
-    if (!menuItem) return item.price;
-
-    return item.price + this.getCustomizationPriceDisplay(item);
+    return item.subtotal / item.quantity;
   }
 
   getItemSubtotal(item: CartItem): number {
-    return this.getSingleItemPrice(item) * item.quantity;
+    return item.subtotal;
   }
 }

@@ -4,6 +4,7 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OrderManagementService } from './order-management.service';
 import { OrderManagementPresenter } from './order-management.presenter';
 import { Order, OrderItem } from './order-management.types';
+import { OrderItemResolverService } from '../../shared/services/order-item-resolver.service';
 
 @Component({
   selector: 'app-order-management',
@@ -15,14 +16,11 @@ import { Order, OrderItem } from './order-management.types';
 export class OrderManagementComponent {
   private readonly orderService = inject(OrderManagementService);
   private readonly translateService = inject(TranslateService);
-
-  /* ========================= State ========================= */
+  private readonly orderItemResolver = inject(OrderItemResolverService);
 
   readonly pendingOrders = this.orderService.pendingOrders;
   readonly servedOrders = this.orderService.servedOrders;
   readonly orderStats = this.orderService.orderStats;
-
-  /* ========================= UI Presenters ========================= */
 
   formatCurrency(amount: number): string {
     return OrderManagementPresenter.formatCurrency(amount);
@@ -32,8 +30,16 @@ export class OrderManagementComponent {
     return OrderManagementPresenter.mergeOrderItems(items);
   }
 
-  getCustomizationDisplay(customization: OrderItem['customization']): string[] {
-    return OrderManagementPresenter.getCustomizationDisplay(customization, this.translateService);
+  getCustomizationDisplay(item: OrderItem): string[] {
+    return this.orderItemResolver.getLocalizedCustomization(item);
+  }
+
+  getItemTotal(item: OrderItem): number {
+    return this.orderItemResolver.getItemTotal(item);
+  }
+
+  getItemName(item: OrderItem): string {
+    return this.orderItemResolver.getLocalizedItemName(item);
   }
 
   onServeOrder(order: Order): void {
