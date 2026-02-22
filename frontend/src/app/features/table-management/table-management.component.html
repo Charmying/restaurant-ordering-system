@@ -215,7 +215,7 @@
   </main>
   @if (showQRModal() && selectedTable()) {
     <app-modal (close)="onCloseQRModal()" maxHeight="auto">
-      <div class="p-3 sm:p-4 lg:p-6 border-b border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
+      <div class="flex-shrink-0 p-3 sm:p-4 lg:p-6 border-b border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <div class="space-y-0.5">
             <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold text-[rgb(var(--text-primary))]">
@@ -233,7 +233,7 @@
           </button>
         </div>
       </div>
-      <div class="p-3 sm:p-4 lg:p-6 text-center space-y-4 sm:space-y-6 lg:space-y-8 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
+      <div class="flex-1 overflow-y-auto min-h-0 p-3 sm:p-4 lg:p-6 text-center space-y-4 sm:space-y-6 lg:space-y-8 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
         @if (selectedTable()!.qrCodeImage) {
           <div class="bg-[rgb(var(--surface-muted))] p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl lg:rounded-3xl inline-block shadow-xl">
             <img [src]="selectedTable()!.qrCodeImage" alt="QR Code" class="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56 mx-auto rounded-lg sm:rounded-xl lg:rounded-2xl shadow-2xl">
@@ -261,7 +261,7 @@
   }
   @if (showCheckoutModal() && checkoutTable()) {
     <app-modal (close)="onCloseCheckoutModal()" maxHeight="80vh">
-      <div class="p-4 sm:p-6 lg:p-8 border-b border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
+      <div class="flex-shrink-0 p-4 sm:p-6 lg:p-8 border-b border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <div class="space-y-1">
             <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
@@ -279,9 +279,9 @@
           </button>
         </div>
       </div>
-      <div class="p-4 sm:p-6 lg:p-8 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
+      <div class="flex-1 overflow-y-auto min-h-0 p-4 sm:p-6 lg:p-8 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
         @if (checkoutTable()!.orderItems && checkoutTable()!.orderItems.length > 0) {
-          <div class="space-y-3 sm:space-y-4 mb-6 sm:mb-8">
+          <div class="space-y-3 sm:space-y-4">
             <h4 class="text-lg font-semibold text-[rgb(var(--text-primary))]">
               {{ 'features.tableManagement.checkout.orderList' | translate }}
             </h4>
@@ -310,7 +310,7 @@
               }
             </div>
           </div>
-          <div class="space-y-6">
+          <!-- <div class="space-y-6">
             <div class="flex items-center justify-between">
               <span class="text-xl font-semibold text-[rgb(var(--text-primary))]">
                 {{ 'common.total' | translate }}
@@ -319,7 +319,7 @@
                 {{ formatCurrency(checkoutTable()!.totalAmount) }}
               </span>
             </div>
-          </div>
+          </div> -->
         } @else {
           <div class="text-center py-16">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-[rgb(var(--surface-muted))] rounded-3xl mb-6 shadow-inner">
@@ -336,7 +336,7 @@
           </div>
         }
       </div>
-      <div class="p-8 border-t border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
+      <div class="flex-shrink-0 p-8 border-t border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
         @if (checkoutTable()!.orderItems && checkoutTable()!.orderItems.length > 0) {
           <div class="space-y-6">
             <div class="flex items-center justify-between">
