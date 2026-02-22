@@ -73,7 +73,7 @@ export class LocalizedInputComponent implements ControlValueAccessor {
   protected getTabClass(lang: SupportedLanguage): string {
     const isActive = lang === this.activeTab();
     const baseClass = 'relative px-4 py-2 text-sm font-medium transition-colors duration-200 cursor-pointer';
-    
+
     if (isActive) return `${baseClass} text-[rgb(var(--accent))]`;
 
     return `${baseClass} text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))]`;
@@ -87,7 +87,7 @@ export class LocalizedInputComponent implements ControlValueAccessor {
   protected getInputWrapperClass(): string {
     const base = 'relative w-full rounded-lg overflow-hidden border transition-all duration-200';
     const background = 'bg-[rgb(var(--surface))]';
-    
+
     if (this.disabled) return `${base} ${background} border-[rgb(var(--surface-muted))] opacity-60 cursor-not-allowed`;
     if (this.hasError()) return `${base} ${background} border-[rgb(var(--destructive))] focus-within:ring-2 focus-within:ring-[rgb(var(--destructive))]/30`;
     if (this.isFocused()) return `${base} ${background} border-[rgb(var(--accent))] ring-2 ring-[rgb(var(--accent))]/20`;

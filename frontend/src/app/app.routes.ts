@@ -63,7 +63,6 @@ export const routes: Routes = [
             path: 'orders',
             loadComponent: () => import('./features/order-management/order-management.component').then((m) => m.OrderManagementComponent),
           },
-          
           {
             path: 'menu',
             loadComponent: () => import('./features/menu-management/menu-management.component').then((m) => m.MenuManagementComponent),

@@ -29,7 +29,7 @@ export class OrderItemResolverService {
     let extraPrice = 0;
     Object.entries(item.customization).forEach(([key, value]) => {
       if (key === 'note') return;
-      
+
       const field = menuItem.customFields?.find(f => this.matchField(f.name, key));
       if (!field) return;
 
@@ -50,7 +50,7 @@ export class OrderItemResolverService {
 
   getLocalizedCustomization(item: OrderItem): string[] {
     if (!item.customization) return [];
-    
+
     if (!item.menuItemId) {
       return this.getFallbackCustomization(item.customization);
     }
@@ -63,7 +63,7 @@ export class OrderItemResolverService {
     const result: string[] = [];
     Object.entries(item.customization).forEach(([key, value]) => {
       if (key === 'note') return;
-      
+
       const field = menuItem.customFields?.find(f => this.matchField(f.name, key));
       if (!field) {
         const displayValue = Array.isArray(value) ? value.join(', ') : value;
@@ -73,16 +73,16 @@ export class OrderItemResolverService {
 
       const fieldName = getLocalizedValue(field.name, this.languageService.current as SupportedLanguage);
       const options = Array.isArray(value) ? value : [value];
-      
+
       const optionLabels = options.map((opt) => {
         if (!opt) return '';
         const option = field.options.find(o => this.matchOption(o.label, opt));
         return option ? getLocalizedValue(option.label, this.languageService.current as SupportedLanguage) : opt;
       }).filter(Boolean);
-      
+
       result.push(`${fieldName}: ${optionLabels.join(', ')}`);
     });
-    
+
     return result;
   }
 
@@ -118,7 +118,7 @@ export class OrderItemResolverService {
 
   private getFallbackCustomization(customization: OrderItem['customization']): string[] {
     if (!customization) return [];
-    
+
     const result: string[] = [];
     Object.entries(customization).forEach(([key, value]) => {
       if (key === 'note') return;

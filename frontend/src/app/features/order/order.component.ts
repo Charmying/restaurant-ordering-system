@@ -192,7 +192,7 @@ export class OrderComponent {
       .map(([fieldName, selectedOptions]) => {
         const field = item.customFields?.find(f => this.getLocalizedValue(f.name) === fieldName);
         const options = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions];
-        
+
         return {
           fieldName,
           selectedOptions: options,
