@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageToggleComponent } from '../../components/language-toggle/language-toggle.component';
 import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
@@ -20,6 +20,7 @@ import { StoreInfoService } from '../../../features/store-info/store-info.servic
 })
 export class OrderHeaderComponent {
   private readonly router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
   private readonly storeInfoService = inject(StoreInfoService);
   protected cartService = inject(CartService);
   readonly storeName = this.storeInfoService.storeName;
@@ -75,7 +76,8 @@ export class OrderHeaderComponent {
 
   onCheckout(): void {
     this.closeCart();
-    void this.router.navigate(['/order/checkout']);
+    const queryParams = { ...this.route.snapshot.queryParams };
+    void this.router.navigate(['/order/checkout'], { queryParams });
   }
 
   /* ========================= Presenters ========================= */
