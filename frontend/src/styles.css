@@ -26,7 +26,7 @@
   --primary-hover: 30 41 59;
   --primary-active: 51 65 85;
   --primary-contrast: 255 255 255;
-  
+
   --accent: 59 130 246;
   --accent-hover: 37 99 235;
   --accent-active: 29 78 216;
@@ -110,7 +110,7 @@
   --primary-hover: 229 229 234;
   --primary-active: 209 209 214;
   --primary-contrast: 18 18 18;
-  
+
   --accent: 10 132 255;
   --accent-hover: 64 156 255;
   --accent-active: 102 178 255;
@@ -427,67 +427,67 @@ p {
 
 /* Scale */
 @keyframes scale-in {
-  from { 
-    opacity: 0; 
-    transform: scale(0.95); 
+  from {
+    opacity: 0;
+    transform: scale(0.95);
   }
-  to { 
-    opacity: 1; 
-    transform: scale(1); 
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 @keyframes scale-out {
-  from { 
-    opacity: 1; 
-    transform: scale(1); 
+  from {
+    opacity: 1;
+    transform: scale(1);
   }
-  to { 
-    opacity: 0; 
-    transform: scale(0.95); 
+  to {
+    opacity: 0;
+    transform: scale(0.95);
   }
 }
 
 /* Slide */
 @keyframes slide-up {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(1.5rem);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes slide-down {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(-1.5rem);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }
 }
 
 @keyframes slide-left {
-  from { 
+  from {
     opacity: 0;
     transform: translateX(1.5rem);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateX(0);
   }
 }
 
 @keyframes slide-right {
-  from { 
+  from {
     opacity: 0;
     transform: translateX(-1.5rem);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateX(0);
   }
@@ -546,47 +546,47 @@ p {
 
 /* ========================= Animation Utilities ========================= */
 
-.animate-fade-in { 
+.animate-fade-in {
   animation: fade-in 300ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-fade-out { 
+.animate-fade-out {
   animation: fade-out 300ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-scale-in { 
+.animate-scale-in {
   animation: scale-in 300ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-scale-out { 
+.animate-scale-out {
   animation: scale-out 300ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-slide-up { 
+.animate-slide-up {
   animation: slide-up 400ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-slide-down { 
+.animate-slide-down {
   animation: slide-down 400ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-slide-left { 
+.animate-slide-left {
   animation: slide-left 400ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-slide-right { 
+.animate-slide-right {
   animation: slide-right 400ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
-.animate-spin { 
+.animate-spin {
   animation: spin 1s linear infinite; 
 }
 
-.animate-pulse { 
+.animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; 
 }
 
-.animate-bounce { 
+.animate-bounce {
   animation: bounce 1s infinite; 
 }
 
@@ -601,9 +601,9 @@ p {
 
 /* ========================= Transitions & Performance ========================= */
 
-.transition-smooth { 
-  transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1), 
-              color 200ms cubic-bezier(0.4, 0, 0.2, 1), 
+.transition-smooth {
+  transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
+              color 200ms cubic-bezier(0.4, 0, 0.2, 1),
               border-color 200ms cubic-bezier(0.4, 0, 0.2, 1); 
 }
 
@@ -619,7 +619,7 @@ p {
   transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.will-animate { 
+.will-animate {
   will-change: transform, opacity; 
 }
 
@@ -689,7 +689,7 @@ p {
     background: white;
     color: black;
   }
-  
+
   .no-print {
     display: none !important;
   }

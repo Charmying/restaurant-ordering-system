@@ -32,15 +32,15 @@ export class TableManagementComponent {
 
   /* ========================= Computed ========================= */
 
-  readonly availableTables = computed(() => 
+  readonly availableTables = computed(() =>
     this.tables().filter(table => table.status === 'available')
   );
 
-  readonly occupiedTables = computed(() => 
+  readonly occupiedTables = computed(() =>
     this.tables().filter(table => table.status === 'occupied')
   );
 
-  readonly checkoutTables = computed(() => 
+  readonly checkoutTables = computed(() =>
     this.tables().filter(table => table.status === 'checkout')
   );
 
