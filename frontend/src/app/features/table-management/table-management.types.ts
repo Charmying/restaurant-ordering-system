@@ -1,3 +1,5 @@
+import { OrderItem } from '../../features/order-management/order-management.types';
+
 export interface Table {
   _id: string;
   tableNumber: string;
@@ -9,17 +11,6 @@ export interface Table {
   orderItems: OrderItem[];
   updatedAt: string;
   __v: number;
-}
-
-export interface OrderItem {
-  _id?: string;
-  name: string;
-  price: number;
-  quantity: number;
-  customization?: {
-    [key: string]: string | string[] | undefined;
-    note?: string;
-  };
 }
 
 export interface TableManagementState {

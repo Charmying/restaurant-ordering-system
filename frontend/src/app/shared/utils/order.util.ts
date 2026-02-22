@@ -1,4 +1,4 @@
-import { OrderItem } from '../../features/table-management/table-management.types';
+import { OrderItem } from '../../features/order-management/order-management.types';
 import { TranslateService } from '@ngx-translate/core';
 
 export class OrderUtil {

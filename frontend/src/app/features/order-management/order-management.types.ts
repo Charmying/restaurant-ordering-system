@@ -4,6 +4,7 @@ export interface OrderItem {
   name: string;
   price: number;
   quantity: number;
+  subtotal?: number;
   customization?: {
     [key: string]: string | string[] | undefined;
     note?: string;

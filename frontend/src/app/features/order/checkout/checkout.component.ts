@@ -53,11 +53,11 @@ export class CheckoutComponent implements OnDestroy {
   /* ========================= UI Presenters ========================= */
 
   getSingleItemPrice(item: CartItem): number {
-    return this.checkoutService.getSingleItemPrice(item);
+    return item.subtotal / item.quantity;
   }
 
   getItemSubtotal(item: CartItem): number {
-    return this.getSingleItemPrice(item) * item.quantity;
+    return item.subtotal;
   }
 
   getCustomizationSummary(item: CartItem): string {
@@ -66,7 +66,7 @@ export class CheckoutComponent implements OnDestroy {
   }
 
   getDisplayTotal(): number {
-    return this.cart().items.reduce((sum, item) => sum + this.getItemSubtotal(item), 0);
+    return this.cart().items.reduce((sum, item) => sum + item.subtotal, 0);
   }
 
   /* ========================= Actions ========================= */

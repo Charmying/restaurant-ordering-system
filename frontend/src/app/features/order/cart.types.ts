@@ -1,6 +1,8 @@
 export interface CartItemCustomization {
   fieldName: string;
   selectedOptions: string[];
+  fieldId?: string;
+  optionIds?: string[];
 }
 
 export interface CartItem {

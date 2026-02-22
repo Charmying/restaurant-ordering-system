@@ -5,7 +5,9 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
 import { TableManagementService } from './table-management.service';
 import { TableManagementPresenter } from './table-management.presenter';
-import { Table, OrderItem } from './table-management.types';
+import { Table } from './table-management.types';
+import { OrderItem } from '../../features/order-management/order-management.types';
+import { OrderItemResolverService } from '../../shared/services/order-item-resolver.service';
 
 @Component({
   selector: 'app-table-management',
@@ -16,6 +18,7 @@ import { Table, OrderItem } from './table-management.types';
 export class TableManagementComponent {
   private readonly tableService = inject(TableManagementService);
   private readonly translateService = inject(TranslateService);
+  private readonly orderItemResolver = inject(OrderItemResolverService);
 
   /* ========================= State ========================= */
 
@@ -60,7 +63,15 @@ export class TableManagementComponent {
   }
 
   calculateOrderTotal(orderItems: OrderItem[]): number {
-    return TableManagementPresenter.calculateOrderTotal(orderItems);
+    return TableManagementPresenter.calculateOrderTotal(orderItems, this.orderItemResolver);
+  }
+
+  getItemUnitPrice(orderItem: OrderItem): number {
+    return this.orderItemResolver.getItemUnitPrice(orderItem);
+  }
+
+  getItemTotal(orderItem: OrderItem): number {
+    return this.orderItemResolver.getItemTotal(orderItem);
   }
 
   /* ========================= Actions ========================= */

@@ -182,14 +182,14 @@
               </button>
             }
           </div>
-          @if (table.status === 'checkout' && table.totalAmount > 0) {
+          @if (table.status === 'checkout' && table.orderItems && table.orderItems.length > 0) {
             <div class="mt-3 sm:mt-4 lg:mt-6 pt-3 sm:pt-4 lg:pt-6 border-t border-[rgb(var(--border))]/60">
               <div class="text-center">
                 <p class="text-xs sm:text-sm text-[rgb(var(--text-secondary))] font-medium">
                   {{ 'features.tableManagement.table.consumption' | translate }}
                 </p>
                 <p class="text-base sm:text-lg lg:text-2xl font-bold text-[rgb(var(--text-primary))] mt-0.5 sm:mt-1">
-                  {{ formatCurrency(table.totalAmount) }}
+                  {{ formatCurrency(calculateOrderTotal(table.orderItems)) }}
                 </p>
               </div>
             </div>
@@ -299,10 +299,10 @@
                     </div>
                     <div class="text-right">
                       <p class="font-semibold text-[rgb(var(--text-primary))]">
-                        {{ formatCurrency(order.price * order.quantity) }}
+                        {{ formatCurrency(getItemTotal(order)) }}
                       </p>
                       <p class="text-xs text-[rgb(var(--text-secondary))]">
-                        {{ 'features.tableManagement.checkout.unitPrice' | translate }}: {{ formatCurrency(order.price) }}
+                        {{ 'features.tableManagement.checkout.unitPrice' | translate }}: {{ formatCurrency(getItemUnitPrice(order)) }}
                       </p>
                     </div>
                   </div>
@@ -344,7 +344,7 @@
                 {{ 'common.total' | translate }}
               </span>
               <span class="text-3xl font-bold text-[rgb(var(--text-primary))]">
-                {{ formatCurrency(checkoutTable()!.totalAmount) }}
+                {{ formatCurrency(calculateOrderTotal(checkoutTable()!.orderItems)) }}
               </span>
             </div>
             <button (click)="onCompleteCheckout()"

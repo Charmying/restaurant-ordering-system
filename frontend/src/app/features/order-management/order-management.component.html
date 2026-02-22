@@ -122,15 +122,15 @@
                   <div class="space-y-1">
                     <div class="flex justify-between text-xs sm:text-sm text-[rgb(var(--text-primary))]">
                       <span>
-                        {{ item.name }} x {{ item.quantity }}
+                        {{ getItemName(item) }} x {{ item.quantity }}
                       </span>
                       <span class="font-medium">
-                        {{ formatCurrency(item.price * item.quantity) }}
+                        {{ formatCurrency(getItemTotal(item)) }}
                       </span>
                     </div>
-                    @if (getCustomizationDisplay(item.customization).length) {
+                    @if (getCustomizationDisplay(item).length) {
                       <div class="text-xs text-[rgb(var(--text-secondary))] pl-3 space-y-0.5">
-                        @for (detail of getCustomizationDisplay(item.customization); track $index) {
+                        @for (detail of getCustomizationDisplay(item); track $index) {
                           <div>
                             {{ detail }}
                           </div>
@@ -200,15 +200,15 @@
                   <div class="space-y-1">
                     <div class="flex justify-between text-xs sm:text-sm text-[rgb(var(--text-primary))]">
                       <span>
-                        {{ item.name }} x {{ item.quantity }}
+                        {{ getItemName(item) }} x {{ item.quantity }}
                       </span>
                       <span class="font-medium">
-                        {{ formatCurrency(item.price * item.quantity) }}
+                        {{ formatCurrency(getItemTotal(item)) }}
                       </span>
                     </div>
-                    @if (getCustomizationDisplay(item.customization).length) {
+                    @if (getCustomizationDisplay(item).length) {
                       <div class="text-xs text-[rgb(var(--text-secondary))] pl-3 space-y-0.5">
-                        @for (detail of getCustomizationDisplay(item.customization); track $index) {
+                        @for (detail of getCustomizationDisplay(item); track $index) {
                           <div>
                             {{ detail }}
                           </div>

@@ -37,24 +37,25 @@ export class OrderCheckoutService {
     if (!cart.items.length) return null;
 
     const items = cart.items.map((item) => {
-      const unitPrice = this.getSingleItemPrice(item);
-      const subtotal = unitPrice * item.quantity;
       const customization: Record<string, unknown> = {};
 
       if (item.note?.trim()) {
         customization['note'] = item.note.trim();
       }
+
       item.customizations.forEach((c) => {
-        customization[c.fieldName] = c.selectedOptions.length === 1 ? c.selectedOptions[0] : [...c.selectedOptions];
+        const key = c.fieldId || c.fieldName;
+        const values = c.optionIds || c.selectedOptions;
+        customization[key] = values.length === 1 ? values[0] : [...values];
       });
 
       return {
         menuItemId: item.menuItemId,
         name: item.name,
-        price: unitPrice,
+        price: item.price,
         quantity: item.quantity,
         customization: Object.keys(customization).length ? customization : undefined,
-        subtotal,
+        subtotal: item.subtotal,
       };
     });
 

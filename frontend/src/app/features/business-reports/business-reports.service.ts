@@ -2,12 +2,19 @@ import { Injectable, signal, computed, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { BusinessReport, BusinessReportsState, ReportDateRange } from './business-reports.types';
 import { ApiService } from '../../core/services/api.service';
+import { MenuManagementService } from '../menu-management/menu-management.service';
+import { LanguageService } from '../../core/services/language.service';
+import { getLocalizedValue } from '../../shared/utils/i18n.util';
+import { SupportedLanguage } from '../../shared/types/i18n.types';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusinessReportsService {
   private readonly api = inject(ApiService);
+  private readonly menuService = inject(MenuManagementService);
+  private readonly languageService = inject(LanguageService);
+
   private readonly state = signal<BusinessReportsState>({
     report: {
       totalRevenue: 0,
@@ -97,30 +104,42 @@ export class BusinessReportsService {
     }
   }
 
-  private buildReport(
-    orders: Array<{ items: Array<{ name: string; price: number; quantity: number; subtotal?: number }> }>,
-    summary?: { totalRevenue: number; totalOrders: number; avgOrderValue: number }
-  ): BusinessReport {
-    const itemMap = new Map<string, { quantity: number; revenue: number }>();
+  private buildReport(orders: Array<{ items: Array<{ menuItemId?: string; name: string; price: number; quantity: number; subtotal?: number }> }>, summary?: { totalRevenue: number; totalOrders: number; avgOrderValue: number }): BusinessReport {
+    const itemMap = new Map<string, { menuItemId?: string; quantity: number; revenue: number }>();
     let totalItems = 0;
 
     orders.forEach(order => {
       order.items?.forEach(item => {
         totalItems += item.quantity;
         const revenue = item.subtotal ?? item.price * item.quantity;
-        const existing = itemMap.get(item.name) ?? { quantity: 0, revenue: 0 };
-        itemMap.set(item.name, {
+
+        const key = item.menuItemId || item.name;
+        const existing = itemMap.get(key) ?? { menuItemId: item.menuItemId, quantity: 0, revenue: 0 };
+
+        itemMap.set(key, {
+          menuItemId: item.menuItemId,
           quantity: existing.quantity + item.quantity,
           revenue: existing.revenue + revenue
         });
       });
     });
 
-    const itemStats = Array.from(itemMap.entries()).map(([name, data]) => ({
-      name,
-      quantity: data.quantity,
-      revenue: data.revenue
-    }));
+    const itemStats = Array.from(itemMap.entries()).map(([key, data]) => {
+      let name = key;
+
+      if (data.menuItemId) {
+        const menuItem = this.menuService.menuItems().find(m => m._id === data.menuItemId);
+        if (menuItem) {
+          name = getLocalizedValue(menuItem.name, this.languageService.current as SupportedLanguage);
+        }
+      }
+
+      return {
+        name,
+        quantity: data.quantity,
+        revenue: data.revenue
+      };
+    });
 
     return {
       totalRevenue: summary?.totalRevenue ?? 0,

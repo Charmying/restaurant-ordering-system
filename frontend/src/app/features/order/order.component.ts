@@ -187,10 +187,22 @@ export class OrderComponent {
     const item = this.selectedItem();
     if (!item) return;
 
-    const customizations = Object.entries(this.customization().selections).filter(([_, value]) => value !== undefined && value !== '' && (Array.isArray(value) ? value.length > 0 : true)).map(([fieldName, selectedOptions]) => ({
-        fieldName,
-        selectedOptions: Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions],
-      }));
+    const customizations = Object.entries(this.customization().selections)
+      .filter(([_, value]) => value !== undefined && value !== '' && (Array.isArray(value) ? value.length > 0 : true))
+      .map(([fieldName, selectedOptions]) => {
+        const field = item.customFields?.find(f => this.getLocalizedValue(f.name) === fieldName);
+        const options = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions];
+        
+        return {
+          fieldName,
+          selectedOptions: options,
+          fieldId: field ? JSON.stringify(field.name) : undefined,
+          optionIds: field ? options.map(opt => {
+            const option = field.options.find(o => this.getLocalizedValue(o.label) === opt);
+            return option ? JSON.stringify(option.label) : opt;
+          }) : undefined,
+        };
+      });
 
     const unitPrice = item.price + this.calculateCustomizationPrice();
 
