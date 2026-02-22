@@ -1,99 +1,92 @@
-<div class="min-h-screen bg-[rgb(var(--surface))] transition-colors">
+<div class="min-h-screen bg-surface transition-smooth">
   <div aria-live="polite" aria-atomic="true" class="sr-only" [attr.aria-label]="announceText()">
     {{ announceText() }}
   </div>
-  <div class="max-w-2xl mx-auto px-4 sm:px-6 py-8">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 py-8 animate-fade-in">
     @if (!hasValidContext()) {
-      <div class="rounded-2xl border border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface-elevated))] p-8 text-center">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-amber-500/20 flex items-center justify-center">
-          <svg class="w-8 h-8 text-amber-600 dark:text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="card rounded-2xl p-8 text-center">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[rgb(var(--warning-bg))] flex items-center justify-center">
+          <svg class="w-8 h-8 text-[rgb(var(--warning-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
-        <h2 class="text-xl font-semibold text-[rgb(var(--text-primary))] mb-2">
+        <h2 class="text-xl font-semibold text-primary mb-2">
           {{ 'features.order.checkoutPage.needQR.title' | translate }}
         </h2>
-        <p class="text-[rgb(var(--text-secondary))] mb-6">
+        <p class="text-secondary mb-6">
           {{ 'features.order.checkoutPage.needQR.description' | translate }}
         </p>
         <div class="flex flex-col sm:flex-row gap-3 justify-center">
-          <a routerLink="/" class="inline-flex justify-center items-center px-6 py-3 rounded-xl font-medium bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] hover:opacity-90 transition">
+          <a routerLink="/" class="btn btn-primary">
             {{ 'features.order.checkoutPage.needQR.goHome' | translate }}
           </a>
-          <a routerLink="/order" class="inline-flex justify-center items-center px-6 py-3 rounded-xl font-medium border border-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--surface-elevated))] transition">
+          <a routerLink="/order" class="btn btn-secondary">
             {{ 'features.order.checkoutPage.needQR.browseMenu' | translate }}
           </a>
         </div>
       </div>
     } @else if (submitted()) {
-      <div class="rounded-2xl border border-green-200/60 dark:border-green-800/60 bg-green-50/50 dark:bg-green-900/10 p-8 text-center">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center">
-          <svg class="w-8 h-8 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <div class="card rounded-2xl p-8 text-center border-[rgb(var(--success-border))] bg-[rgb(var(--success-bg))]">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[rgb(var(--success))] bg-opacity-20 flex items-center justify-center">
+          <svg class="w-8 h-8 text-[rgb(var(--success-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
-        <h2 class="text-xl font-semibold text-[rgb(var(--text-primary))] mb-2">
+        <h2 class="text-xl font-semibold text-primary mb-2">
           {{ 'features.order.checkoutPage.success.title' | translate }}
         </h2>
-        <p class="text-[rgb(var(--text-secondary))] mb-6">
+        <p class="text-secondary mb-6">
           {{ 'features.order.checkoutPage.success.description' | translate }}
         </p>
-        <button id="checkout-success-button" (click)="goToMenu()"
-          class="inline-flex justify-center items-center px-6 py-3 rounded-xl font-medium bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] hover:opacity-90 transition">
+        <button id="checkout-success-button" (click)="goToMenu()" class="btn btn-primary">
           {{ 'features.order.checkoutPage.success.continueOrdering' | translate }}
         </button>
       </div>
     } @else if (cart().items.length === 0) {
-      <div class="rounded-2xl border border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface-elevated))] p-8 text-center">
-        <p class="text-[rgb(var(--text-secondary))] mb-4">
+      <div class="card rounded-2xl p-8 text-center">
+        <p class="text-secondary mb-4">
           {{ 'features.order.checkoutPage.emptyCart' | translate }}
         </p>
-        <button (click)="goToMenu()"
-          class="inline-flex justify-center items-center px-6 py-3 rounded-xl font-medium bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] hover:opacity-90 transition">
+        <button (click)="goToMenu()" class="btn btn-primary">
           {{ 'features.order.continueShopping' | translate }}
         </button>
       </div>
     } @else {
-    <h1 class="text-2xl font-semibold text-[rgb(var(--text-primary))] mb-6">
+    <h1 class="text-2xl font-semibold text-primary mb-6">
       {{ 'features.order.checkoutPage.title' | translate }}
     </h1>
-    <div class="mb-6 p-4 rounded-xl bg-[rgb(var(--surface-elevated))] border border-[rgb(var(--surface-muted))]">
-      <span class="text-sm text-[rgb(var(--text-secondary))]">
+    <div class="mb-6 p-4 rounded-xl bg-surface-elevated border border-default">
+      <span class="text-sm text-secondary">
         {{ 'features.order.checkoutPage.tableNumber' | translate }}
       </span>
-      <p class="text-xl font-semibold text-[rgb(var(--text-primary))] mt-1">
+      <p class="text-xl font-semibold text-primary mt-1">
         {{ tableNumber() }}
       </p>
     </div>
     @if (errorMessage()) {
-      <div class="mb-6 p-4 rounded-xl bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-300 text-sm" role="alert">
-        <p class="mb-3">
-          {{ errorMessage() }}
-        </p>
+      <div class="mb-6 p-4 rounded-xl bg-[rgb(var(--error-bg))] border border-[rgb(var(--error-border))] text-[rgb(var(--error-text))] text-sm" role="alert">
+        <p class="mb-3">{{ errorMessage() }}</p>
         <p class="text-xs opacity-90 mb-2">
           {{ 'features.order.checkoutPage.errors.checkConnection' | translate }}
         </p>
-        <button type="button" (click)="retrySubmit()" [disabled]="submitting()"
-          class="px-4 py-2 rounded-lg bg-red-600 text-white text-sm font-medium hover:bg-red-700 disabled:opacity-50 transition">
+        <button type="button" (click)="retrySubmit()" [disabled]="submitting()" class="btn btn-error text-sm">
           {{ 'features.order.checkoutPage.retry' | translate }}
         </button>
       </div>
     }
-    <div class="rounded-2xl border border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface-elevated))] overflow-hidden mb-6">
-      <div class="px-4 py-3 border-b border-[rgb(var(--surface-muted))]">
-        <span class="text-sm font-medium text-[rgb(var(--text-secondary))]">
+    <div class="card rounded-2xl overflow-hidden mb-6">
+      <div class="px-4 py-3 border-b border-default">
+        <span class="text-sm font-medium text-secondary">
           {{ 'features.order.checkoutPage.orderSummary' | translate }}
         </span>
       </div>
-      <ul class="divide-y divide-[rgb(var(--surface-muted))]">
+      <ul class="divide-y divide-[rgb(var(--border))]">
         @for (item of cart().items; track item.id) {
           <li class="px-4 py-4 flex justify-between items-start gap-4">
             <div class="min-w-0">
-              <p class="font-medium text-[rgb(var(--text-primary))]">
-                {{ item.name }} × {{ item.quantity }}
-              </p>
+              <p class="font-medium text-primary">{{ item.name }} × {{ item.quantity }}</p>
               @if (item.customizations.length > 0 || item.note) {
-                <p class="text-sm text-[rgb(var(--text-secondary))] mt-0.5">
+                <p class="text-sm text-secondary mt-0.5">
                   @if (getCustomizationSummary(item)) {
                     {{ getCustomizationSummary(item) }}
                   }
@@ -109,18 +102,13 @@
           </li>
         }
       </ul>
-      <div class="px-4 py-4 border-t border-[rgb(var(--surface-muted))] flex justify-between items-center">
-        <span class="font-semibold text-[rgb(var(--text-primary))]">
-          {{ 'features.order.total' | translate }}
-        </span>
-        <span class="text-xl font-bold text-[rgb(var(--primary))]">
-          NT$ {{ getDisplayTotal() | number:'1.0-0' }}
-        </span>
+      <div class="px-4 py-4 border-t border-default flex justify-between items-center">
+        <span class="font-semibold text-primary">{{ 'features.order.total' | translate }}</span>
+        <span class="text-xl font-bold text-[rgb(var(--primary))]">NT$ {{ getDisplayTotal() | number:'1.0-0' }}</span>
       </div>
     </div>
     <button id="checkout-submit-button" type="button" (click)="submitOrder()" [disabled]="!canSubmit()"
-      class="w-full py-4 rounded-2xl font-semibold text-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] hover:shadow-lg active:scale-[0.99]"
-      [attr.aria-busy]="submitting()">
+      class="btn btn-primary w-full py-4 rounded-2xl text-lg" [attr.aria-busy]="submitting()">
       @if (submitting()) {
         {{ 'features.order.checkoutPage.submitting' | translate }}
       } @else {
@@ -128,8 +116,7 @@
       }
     </button>
     <div class="mt-4 text-center">
-      <button type="button" (click)="goToMenu()"
-        class="text-sm text-[rgb(var(--text-secondary))] hover:underline">
+      <button type="button" (click)="goToMenu()" class="text-sm text-secondary hover:underline">
         {{ 'features.order.continueShopping' | translate }}
       </button>
     </div>

@@ -1,16 +1,16 @@
-<div class="min-h-screen bg-[rgb(var(--surface))] transition-colors">
+<div class="min-h-screen bg-surface transition-smooth">
   <!-- Store Information -->
   @if (storeInfoItems().length > 0) {
-    <section class="bg-[rgb(var(--surface-elevated))] animate-fade-in"
+    <section class="bg-surface-elevated animate-fade-in"
       [attr.aria-label]="'features.order.storeInfo' | translate">
       <div class="max-w-7xl mx-auto px-6 py-5 sm:py-7 lg:py-8">
         <dl class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-6 sm:gap-x-10 gap-y-5 sm:gap-y-6">
           @for (info of storeInfoItems(); track info._id) {
             <div class="min-w-0">
-              <div class="text-[11px] sm:text-xs font-medium uppercase tracking-[0.08em] text-[rgb(var(--text-secondary))]">
+              <div class="text-[11px] sm:text-xs font-medium uppercase tracking-[0.08em] text-secondary">
                 {{ getLocalizedValue(info.label) }}
               </div>
-              <div class="mt-1 sm:mt-1.5 text-[13px] sm:text-[15px] font-semibold text-[rgb(var(--text-primary))] leading-relaxed break-words">
+              <div class="mt-1 sm:mt-1.5 text-[13px] sm:text-[15px] font-semibold text-primary leading-relaxed break-words">
                 {{ getLocalizedValue(info.value) }}
               </div>
             </div>
@@ -21,7 +21,7 @@
   }
   <!-- Main -->
   <main class="max-w-7xl mx-auto px-6 py-8">
-    <h2 class="text-2xl font-semibold text-[rgb(var(--text-primary))] mb-6">
+    <h2 class="text-2xl font-semibold text-primary mb-6">
       {{ 'features.order.menu' | translate }} ({{ filteredMenuItems().length }})
     </h2>
     <!-- Categories -->
@@ -45,7 +45,7 @@
       @for (category of categories(); track category) {
         @if (category !== SpecialCategory.ALL) {
           <div class="mb-8">
-            <h3 class="text-xl font-semibold text-[rgb(var(--text-primary))] mb-4">
+            <h3 class="text-xl font-semibold text-primary mb-4">
               {{ category }}
             </h3>
             <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -73,34 +73,32 @@
   <!-- Customize Modal -->
   @if (showCustomizeModal()) {
     <app-modal (close)="closeCustomizeModal()">
-      <!-- Header -->
-      <div class="p-6 border-b border-[rgb(var(--surface-muted))]">
+      <div class="p-6 border-b border-default">
         <div class="flex items-start justify-between">
           <div>
-            <h3 class="text-2xl font-semibold text-[rgb(var(--text-primary))]">
+            <h3 class="text-2xl font-semibold text-primary">
               {{ getLocalizedValue(selectedItem()?.name) }}
             </h3>
-            <p class="text-sm text-[rgb(var(--text-secondary))] mt-1">
+            <p class="text-sm text-secondary mt-1">
               {{ getLocalizedValue(selectedItem()?.description) }}
             </p>
-            <p class="text-xl font-semibold text-[rgb(var(--text-primary))] mt-3">
+            <p class="text-xl font-semibold text-primary mt-3">
               NT$ {{ selectedItem()?.price }}
             </p>
           </div>
           <button (click)="closeCustomizeModal()"
-            class="p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition">
+            class="p-2 rounded-full interactive">
             ✕
           </button>
         </div>
       </div>
-      <!-- Content -->
       <div class="flex-1 overflow-y-auto p-6 space-y-6">
         @for (field of selectedItem()?.customFields ?? []; track field.name) {
           <div>
-            <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-3">
+            <label class="block text-sm font-medium text-secondary mb-3">
               {{ getLocalizedValue(field.name) }}
               @if (field.required) {
-                <span class="text-red-500 ml-1">*</span>
+                <span class="text-[rgb(var(--error))] ml-1">*</span>
               }
             </label>
             <div class="grid grid-cols-2 gap-2">
@@ -122,39 +120,37 @@
           </div>
         }
         <div>
-          <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-3">
+          <label class="block text-sm font-medium text-secondary mb-3">
             {{ 'features.order.remark' | translate }}
           </label>
-          <textarea class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))]"
+          <textarea class="input"
             rows="3"
             [(ngModel)]="customization().note"
             [placeholder]="'features.order.remarkPlaceholder' | translate"
           ></textarea>
         </div>
-        <!-- Quantity Control -->
         <div>
-          <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-3">
+          <label class="block text-sm font-medium text-secondary mb-3">
             {{ 'features.order.quantity' | translate }}
           </label>
           <div class="flex items-center gap-4">
             <button (click)="decrementQuantity()"
-              class="w-12 h-12 rounded-full bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] font-semibold transition-all hover:bg-[rgb(var(--surface-elevated))] active:scale-[0.95]">
+              class="w-12 h-12 rounded-full bg-surface-muted text-primary font-semibold transition-all interactive active:scale-95">
               −
             </button>
-            <span class="text-2xl font-semibold text-[rgb(var(--text-primary))] min-w-[3rem] text-center">
+            <span class="text-2xl font-semibold text-primary min-w-[3rem] text-center">
               {{ quantity() }}
             </span>
             <button (click)="incrementQuantity()"
-              class="w-12 h-12 rounded-full bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] font-semibold transition-all hover:bg-[rgb(var(--surface-elevated))] active:scale-[0.95]">
+              class="w-12 h-12 rounded-full bg-surface-muted text-primary font-semibold transition-all interactive active:scale-95">
               +
             </button>
           </div>
         </div>
       </div>
-      <!-- Footer -->
-      <div class="p-6 border-t border-[rgb(var(--surface-muted))] bg-[rgb(var(--surface))]">
+      <div class="p-6 border-t border-default bg-surface">
         <div class="flex items-center justify-between mb-4">
-          <span class="text-sm text-[rgb(var(--text-secondary))]">
+          <span class="text-sm text-secondary">
             {{ 'features.order.total' | translate }}
           </span>
           <span class="text-2xl font-semibold text-[rgb(var(--primary))]">
@@ -162,31 +158,30 @@
           </span>
         </div>
         <button (click)="addToCart()"
-          class="w-full bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] py-4 rounded-2xl font-semibold transition-all active:scale-[0.97] hover:shadow-lg">
+          class="btn btn-primary w-full py-4 rounded-2xl">
           {{ 'features.order.addToCart' | translate }}
         </button>
       </div>
     </app-modal>
   }
-  <!-- Menu Card Template -->
   <ng-template #menuCard let-item="item">
     <div (click)="openCustomizeModal(item)"
-      class="group bg-[rgb(var(--surface-elevated))] rounded-3xl overflow-hidden cursor-pointer border border-[rgb(var(--surface-muted))] transition-all duration-300 hover:shadow-2xl hover:scale-[1.03]">
+      class="card card-interactive rounded-3xl overflow-hidden cursor-pointer">
       @if (item.image) {
-        <div class="aspect-[4/3] bg-[rgb(var(--surface-muted))]">
+        <div class="aspect-[4/3] bg-surface-muted">
           <img [src]="item.image" [alt]="item.name" class="w-full h-full object-cover" />
         </div>
       } @else {
         <div class="aspect-[4/3] bg-gradient-to-br from-[rgb(var(--surface-muted))] to-[rgb(var(--surface-elevated))]"></div>
       }
       <div class="p-6 space-y-3">
-        <h3 class="text-lg font-semibold text-[rgb(var(--text-primary))]">
+        <h3 class="text-lg font-semibold text-primary">
           {{ getLocalizedValue(item.name) }}
         </h3>
-        <p class="text-sm text-[rgb(var(--text-secondary))]">
+        <p class="text-sm text-secondary">
           {{ getLocalizedValue(item.description) }}
         </p>
-        <p class="text-xl font-semibold text-[rgb(var(--text-primary))]">
+        <p class="text-xl font-semibold text-primary">
           NT$ {{ item.price }}
         </p>
       </div>

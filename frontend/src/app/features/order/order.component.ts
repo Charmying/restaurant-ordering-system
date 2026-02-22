@@ -99,7 +99,7 @@ export class OrderComponent {
 
   getCategoryButtonClass(category: string): string {
     const isSelected = category === this.selectedCategory();
-    return isSelected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
+    return isSelected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-surface-elevated text-primary';
   }
 
   getCategoryLabel(category: string): string {
@@ -111,11 +111,12 @@ export class OrderComponent {
   }
 
   getOptionButtonClass(field: CustomField, option: CustomOption): string {
-    const value = this.customization().selections[field.name];
+    const fieldName = this.getLocalizedValue(field.name);
+    const value = this.customization().selections[fieldName];
     const optionLabel = this.getLocalizedValue(option.label);
     const selected = field.type === 'single' ? value === optionLabel : Array.isArray(value) && value.includes(optionLabel);
 
-    return selected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]';
+    return selected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] shadow-md' : 'bg-surface-elevated text-primary';
   }
 
   /* ========================= Actions ========================= */
