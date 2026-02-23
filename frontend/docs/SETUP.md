@@ -1,5 +1,7 @@
 # Project Initialization & Local Setup
 
+**English** | [繁體中文](./SETUP.zh-TW.md)
+
 This frontend was initialized with Angular CLI and Tailwind CSS support.
 
 ```bash
@@ -52,7 +54,6 @@ npm test
 ## Troubleshooting
 
 ### Port Already in Use
-
 If port 4200 is taken, run:
 
 ```bash
@@ -60,7 +61,6 @@ npm start -- --port 4201
 ```
 
 ### Build or Install Errors
-
 Clear cache and reinstall dependencies:
 
 ```bash

@@ -1,78 +1,116 @@
 # Restaurant Ordering System
 
-A restaurant ordering system frontend built with modern web technologies, emphasizing scalability, maintainability, and developer experience.
+**English** | [繁體中文](./README.zh-TW.md)
+
+A production-ready restaurant management and ordering system built with enterprise-grade architecture. This system provides seamless customer ordering experiences through QR codes while offering comprehensive management capabilities for restaurant operations.
 
 ---
 
-## Overview
+## 🎯 What is This?
 
-This repository currently contains a fully implemented frontend and system documentation. The backend boundary is reserved but not implemented yet.
-
-- **Customer Ordering** — QR code entry and ordering UI
-- **Admin Dashboard** — Management UI for tables, orders, menu, categories, store info, messages, reports, and users
-- **Multi-language Support** — i18n-ready architecture with inline multilingual content editing
-- **Theme System** — Light/dark mode with semantic tokens
+A full-stack restaurant ordering platform that bridges the gap between customer convenience and operational excellence. Customers scan QR codes to order, while staff manage everything through a comprehensive dashboard.
 
 ---
 
-## Architecture Principles
+## ⚡ Quick Start
 
-### 1. Separation of Concerns
-- Clear boundaries between frontend, backend, and documentation
-- Feature-based organization within each boundary
-- Shared utilities for cross-cutting concerns
+### Prerequisites
+- Node.js v18+
+- npm v10+
+- MongoDB (local or cloud)
 
-### 2. Type Safety
-- TypeScript strict mode enabled
-- Explicit type definitions for all domain models
-- No implicit any types
+### Get Running in 3 Steps
 
-### 3. Scalability
-- Lazy-loaded routes for optimal bundle size
-- Signal-based reactivity for fine-grained updates
-- Modular feature architecture
+```bash
+# 1. Clone the repository
+git clone https://github.com/Charmying/restaurant-ordering-system
+cd restaurant-ordering-system
 
-### 4. Developer Experience
-- Consistent naming conventions
-- Self-documenting code structure
-- Project documentation in `docs/` and `frontend/docs/`
+# 2. Start Backend
+cd backend
+npm install
+cp .env.example .env
+# Edit .env with your MongoDB URI and JWT secrets
+npm run start
+# API runs on http://localhost:4000
 
----
-
-## Structure
-
-```text
-restaurant-ordering-system/
-├── backend/              # Server-side boundary
-├── docs/                 # System-level documentation
-│   ├── architecture/     # Architectural decision records (ADRs)
-│   ├── color-system.md   # Design system tokens and guidelines
-│   └── README.md         # Documentation index
-├── frontend/             # Client-side boundary
-│   ├── docs/             # Frontend-specific documentation
-│   ├── src/              # Application source code
-│   └── README.md         # Frontend setup and architecture
-└── README.md             # This file
+# 3. Start Frontend (in new terminal)
+cd frontend
+npm install
+npm run start
+# App runs on http://localhost:4200
 ```
 
 ---
 
-## Technology Stack
+## 🌟 Core Features
 
-### Frontend
-- **Framework**: Angular 21 (standalone components, signals)
-- **Styling**: Tailwind CSS v4 with semantic design tokens
-- **i18n**: @ngx-translate/core with JSON resources
-- **Testing**: Vitest + jsdom
-- **Build**: esbuild-based Angular CLI
+- **📱 QR Code Ordering** — Customers scan table QR codes to browse menu and place orders
+- **🎛️ Admin Dashboard** — Complete management for tables, orders, menu, categories, store settings, analytics, and users
+- **🌍 Multi-language** — English and Traditional Chinese with inline content editing
+- **🎨 Light/Dark Theme** — Sophisticated theme system with semantic design tokens
+- **⚡ Real-time Updates** — WebSocket-powered live order and status updates
+- **🔒 Secure Authentication** — JWT-based auth with role-based access control
 
 ---
 
-## Documentation
+## 🛠️ Technology Stack
 
-- [i18n Naming Conventions](./docs/architecture/i18n-naming.md)
-- [Color System](./docs/color-system.md)
-- [Frontend Architecture](./frontend/README.md)
-- [Dependencies Reference](./frontend/docs/dependencies.md)
-- [Frontend i18n Usage](./frontend/docs/i18n.md)
-- [Frontend Setup Guide](./frontend/docs/setup.md)
+### Frontend
+- Angular 21 (standalone components, signals)
+- Tailwind CSS v4
+- @ngx-translate/core
+- Socket.IO client
+
+### Backend
+- NestJS 11
+- MongoDB + Mongoose
+- JWT + Passport.js
+- Socket.IO
+- Swagger/OpenAPI
+
+---
+
+## 📚 Documentation
+
+### 🚀 Getting Started
+- [Frontend Setup](./frontend/docs/SETUP.md) — Frontend development environment
+- [Backend Setup](./backend/docs/SETUP.md) — Backend development environment
+
+### 🏗️ Architecture
+- [System Architecture](./docs/README.md) — High-level system design
+- [Frontend Architecture](./frontend/README.md) — Angular structure and patterns
+- [Backend Architecture](./backend/README.md) — NestJS structure and patterns
+
+### 📖 Development Guides
+- [Color System](./docs/color-system.md) — Design tokens and theming
+- [i18n Conventions](./docs/architecture/i18n-naming.md) — Translation key patterns
+- [API Documentation](./backend/docs/API.md) — REST API reference
+- [WebSocket Events](./backend/docs/WEBSOCKET.md) — Real-time event specifications
+
+### 🔐 Security & Operations
+- [Authentication Guide](./backend/docs/AUTH.md) — Security model and authorization
+- [Database Schema](./backend/docs/DATABASE.md) — Data models and relationships
+- [Operations Guide](./backend/docs/OPERATIONS.md) — Deployment and maintenance
+
+---
+
+## 📁 Project Structure
+
+```text
+restaurant-ordering-system/
+├── backend/               # NestJS API server
+│   ├── src/               # Application source code
+│   ├── docs/              # Backend documentation
+│   └── README.md
+├── frontend/              # Angular client application
+│   ├── src/               # Application source code
+│   ├── docs/              # Frontend documentation
+│   └── README.md
+├── docs/                  # System-level documentation
+│   ├── architecture/      # Architectural decisions
+│   └── README.md
+├── CHANGELOG.md           # Version history
+├── LICENSE                # License information
+└── README.md              # This file
+```

@@ -1,5 +1,7 @@
 # Operations Runbook
 
+**English** | [繁體中文](./OPERATIONS.zh-TW.md)
+
 Last Verified: 2026-02-17
 
 This runbook defines standard operational procedures for backend deployment and incident response.
@@ -55,13 +57,11 @@ This runbook defines standard operational procedures for backend deployment and 
 ## Incident Response
 
 ### Severity Model
-
 - Sev-1: full outage or data integrity risk
 - Sev-2: major feature unavailable with workaround
 - Sev-3: minor degradation
 
 ### First 10 Minutes
-
 1. Confirm current symptoms and blast radius.
 2. Freeze non-essential deploys.
 3. Check recent deploy and config changes.
@@ -69,7 +69,6 @@ This runbook defines standard operational procedures for backend deployment and 
 5. Decide rollback vs hotfix path.
 
 ### Common Failure Modes
-
 - **Boot failure**: env validation errors or DB URI issues
 - **Auth spike**: invalid JWT secrets, token mismatch, or clock skew
 - **Realtime issues**: namespace mismatch (`/events`) or client reconnect loops

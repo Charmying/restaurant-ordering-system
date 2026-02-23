@@ -1,5 +1,7 @@
 # Authentication and Authorization
 
+**English** | [繁體中文](./AUTH.zh-TW.md)
+
 The backend uses dual JWT tokens (access + refresh) and role hierarchy authorization.
 
 ---
@@ -16,7 +18,6 @@ The backend uses dual JWT tokens (access + refresh) and role hierarchy authoriza
 ## Authentication Lifecycle
 
 ### Login
-
 `POST /api/auth/login`
 
 - Validates username/password.
@@ -25,7 +26,6 @@ The backend uses dual JWT tokens (access + refresh) and role hierarchy authoriza
 - Persists refresh token on user record.
 
 ### Refresh
-
 `POST /api/auth/refresh`
 
 - Verifies refresh token signature.
@@ -34,13 +34,11 @@ The backend uses dual JWT tokens (access + refresh) and role hierarchy authoriza
 - Replaces persisted refresh token.
 
 ### Authenticated Request
-
 - `JwtAuthGuard` validates access token.
 - `JwtStrategy` validates user existence.
 - `RolesGuard` enforces role metadata when present.
 
 ### Logout
-
 `POST /api/auth/logout`
 
 - Clears stored refresh token.
@@ -69,8 +67,6 @@ interface JwtPayload {
 }
 ```
 
-Payload is used by guards and `@CurrentUser(...)` decorator extraction.
-
 ---
 
 ## Authorization Model
@@ -93,12 +89,10 @@ hasSufficientRole(userRole, requiredRole)
 ## Guard Behavior
 
 ### `JwtAuthGuard` (global)
-
 - Applies to all routes unless `@Public()`.
 - Reads bearer token from `Authorization` header.
 
 ### `RolesGuard` (global)
-
 - Executes after auth guard.
 - If no `@Roles(...)` metadata exists, passes.
 - If roles are defined, user must satisfy at least one required role after hierarchy expansion.
