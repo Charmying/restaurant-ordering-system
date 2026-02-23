@@ -1,7 +1,8 @@
 # API Contract Guide
 
-All routes are prefixed with `/api`.
-The authoritative endpoint contract is generated at runtime:
+**English** | [繁體中文](./API.zh-TW.md)
+
+All routes are prefixed with `/api`. The authoritative endpoint contract is generated at runtime:
 
 - Swagger UI: `/api/docs`
 - OpenAPI JSON: `/api/docs-json`
@@ -51,13 +52,11 @@ All errors are normalized by `AllExceptionsFilter`:
 ## Endpoint Matrix
 
 ### Health
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | GET | `/api/health` | Public | Returns status, server timestamp, uptime |
 
 ### Auth
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | POST | `/api/auth/login` | Public | Username/password login |
@@ -66,7 +65,6 @@ All errors are normalized by `AllExceptionsFilter`:
 | GET | `/api/auth/verify` | Auth | Returns current JWT payload |
 
 ### Users
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | GET | `/api/users` | Auth | Superadmin sees all, manager sees employees, employee forbidden |
@@ -75,7 +73,6 @@ All errors are normalized by `AllExceptionsFilter`:
 | DELETE | `/api/users/:id` | Manager+ | Cannot delete equal/higher role |
 
 ### Menu
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | GET | `/api/menu` | Public | Only `available: true`, sorted by `categoryOrder`, then `createdAt desc` |
@@ -86,7 +83,6 @@ All errors are normalized by `AllExceptionsFilter`:
 | DELETE | `/api/menu/:id` | Manager+ | Deletes menu item |
 
 ### Orders
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | POST | `/api/orders` | Public | Requires occupied table and matching QR token |
@@ -100,7 +96,6 @@ All errors are normalized by `AllExceptionsFilter`:
 | POST | `/api/orders/reset` | Superadmin | Deletes all orders |
 
 ### Tables
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | GET | `/api/tables` | Auth | Sorted by table number |
@@ -111,14 +106,12 @@ All errors are normalized by `AllExceptionsFilter`:
 | POST | `/api/tables/:tableNumber/force-reset` | Auth | Resets table regardless of status |
 
 ### Categories
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | GET | `/api/categories/order` | Public | Returns merged category order (saved + derived) |
 | PUT | `/api/categories/order` | Manager+ | Updates canonical order and syncs `menu.categoryOrder` |
 
 ### Messages
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | GET | `/api/messages` | Auth | Sorted pinned first, then newest |
@@ -130,7 +123,6 @@ All errors are normalized by `AllExceptionsFilter`:
 | DELETE | `/api/messages/all` | Superadmin | Deletes all messages |
 
 ### Service Calls
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | POST | `/api/service-calls` | Public | Upsert behavior for pending call per table |
@@ -138,7 +130,6 @@ All errors are normalized by `AllExceptionsFilter`:
 | PUT | `/api/service-calls/:id/handle` | Employee+ | Sets `handledAt` |
 
 ### Store Info
-
 | Method | Path | Access | Notes |
 |---|---|---|---|
 | GET | `/api/store-info` | Public | Sorted by `order` |
@@ -153,11 +144,6 @@ All errors are normalized by `AllExceptionsFilter`:
 - DTO validation uses class-validator with global `ValidationPipe`.
 - Unknown fields are rejected (`forbidNonWhitelisted: true`).
 - Query params are transformed (`enableImplicitConversion: true`).
-
-Special note for reports endpoint:
-
-- `period` supports `today | week | month | custom | all`.
-- Current implementation does not hard-fail missing `startDate/endDate` when `period=custom`; service falls back to no custom date filter in that case.
 
 ---
 

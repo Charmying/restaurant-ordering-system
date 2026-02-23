@@ -1,5 +1,7 @@
 # System Architecture
 
+**English** | [繁體中文](./ARCHITECTURE.zh-TW.md)
+
 This document defines backend architecture decisions that are expected to remain stable across features.
 
 ---
@@ -74,7 +76,6 @@ Any thrown exception
 ## API Envelope Contract
 
 ### Success
-
 ```json
 {
   "success": true,
@@ -83,7 +84,6 @@ Any thrown exception
 ```
 
 ### Error
-
 ```json
 {
   "success": false,
@@ -94,8 +94,6 @@ Any thrown exception
   }
 }
 ```
-
-Error code mapping is implemented in `src/common/filters/all-exceptions.filter.ts`.
 
 ---
 

@@ -1,5 +1,7 @@
 # Database Seeding
 
+**English** | [繁體中文](./SEED.zh-TW.md)
+
 Seeding is implemented in `src/seed/seed.service.ts` and runs in two modes:
 
 1. Automatically on app startup (`OnModuleInit`)
@@ -20,12 +22,10 @@ Seeding is implemented in `src/seed/seed.service.ts` and runs in two modes:
 ## Step Details
 
 ### Tables
-
 - Inserts 10 tables (`tableNumber` 1-10, status `available`)
 - Runs only when `tables` collection is empty
 
 ### Superadmin
-
 - Uses env values:
     - `SUPERADMIN_USERNAME` (default `Charmy`)
     - `SUPERADMIN_PASSWORD` (default `Charmying`)
@@ -36,7 +36,6 @@ Seeding is implemented in `src/seed/seed.service.ts` and runs in two modes:
     - superadmin exists + `RESET_SUPERADMIN=false` -> skip
 
 ### Store Name
-
 - Ensures one default record exists:
     - `label: 店名`
     - `value: 餐廳點餐系統`

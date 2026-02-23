@@ -1,5 +1,7 @@
 # Project Setup and Local Development
 
+**English** | [繁體中文](./SETUP.zh-TW.md)
+
 The backend is a NestJS service that exposes:
 
 - REST API under `/api/*`
@@ -22,7 +24,6 @@ Recommended:
 ---
 
 ## Quick Start
-
 ### 1. Install dependencies
 
 ```bash
@@ -30,7 +31,6 @@ npm install
 ```
 
 ### 2. Create environment file
-
 macOS/Linux:
 
 ```bash
@@ -44,7 +44,6 @@ Copy-Item .env.example .env
 ```
 
 ### 3. Fill required variables
-
 At minimum:
 
 - `MONGO_URI`
@@ -52,7 +51,6 @@ At minimum:
 - `JWT_REFRESH_SECRET` (min 32 chars)
 
 ### 4. Start development server
-
 ```bash
 npm run start:dev
 ```
@@ -122,7 +120,6 @@ Production checklist:
 ## Troubleshooting
 
 ### Port already in use
-
 Set another port in `.env`:
 
 ```env
@@ -130,17 +127,14 @@ PORT=4001
 ```
 
 ### MongoDB connection failed
-
 ```bash
 mongosh "mongodb://localhost:27017/restaurant-ordering"
 ```
 
 ### Environment validation failed
-
 Inspect startup logs and compare variables with `src/config/env.validation.ts`.
 
 ### Clean reinstall
-
 macOS/Linux:
 
 ```bash

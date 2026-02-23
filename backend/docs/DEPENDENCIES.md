@@ -1,5 +1,7 @@
 # Dependency Architecture
 
+**English** | [繁體中文](./DEPENDENCIES.zh-TW.md)
+
 This document explains why dependencies exist and the constraints for introducing new ones.
 
 ---
@@ -7,39 +9,32 @@ This document explains why dependencies exist and the constraints for introducin
 ## Runtime Dependencies
 
 ### Platform
-
 - `@nestjs/common`, `@nestjs/core`, `@nestjs/platform-express`
     - framework runtime, DI, controller/guard/filter/interceptor primitives
 
 ### Configuration
-
 - `@nestjs/config`
     - typed configuration access in services
 - `joi`
     - startup-time environment contract validation
 
 ### Data Layer
-
 - `@nestjs/mongoose`, `mongoose`
     - schema definitions, model injection, query and aggregation
 
 ### Auth
-
 - `@nestjs/jwt`, `@nestjs/passport`, `passport`, `passport-jwt`
     - JWT signing/verification and authentication strategy integration
 
 ### Realtime
-
 - `@nestjs/websockets`, `@nestjs/platform-socket.io`, `socket.io`
     - server-side event broadcasting namespace
 
 ### API Documentation
-
 - `@nestjs/swagger`
     - OpenAPI generation and Swagger UI
 
 ### Security and Validation
-
 - `bcryptjs`
     - password hashing
 - `helmet`
@@ -48,7 +43,6 @@ This document explains why dependencies exist and the constraints for introducin
     - DTO validation and request transformation
 
 ### Utilities
-
 - `qrcode`
     - QR image generation for table activation flow
 - `uuid`
@@ -61,22 +55,18 @@ This document explains why dependencies exist and the constraints for introducin
 ## Development Dependencies
 
 ### Toolchain
-
 - `@nestjs/cli`, `@nestjs/schematics`
 - `typescript`, `ts-node`, `tsconfig-paths`
 
 ### Code Quality
-
 - `eslint`, `@eslint/js`, `typescript-eslint`
 - `prettier`, `eslint-config-prettier`, `eslint-plugin-prettier`
 - `globals`
 
 ### Testing
-
 - `@nestjs/testing`, `jest`, `ts-jest`, `supertest`
 
 ### Typings
-
 - `@types/*` packages for runtime libraries and test tooling
 
 ---

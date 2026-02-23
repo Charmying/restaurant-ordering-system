@@ -1,5 +1,7 @@
 # i18n Naming Convention
 
+**English** | [繁體中文](./i18n-naming.zh-TW.md)
+
 ## Principles
 
 1. **Keys represent structural intent, not UI copy**
@@ -38,13 +40,11 @@ language.{section}.{element}
 ## Examples
 
 ### Layout (Shared across pages)
-
 ```text
 layout.header.title
 ```
 
 ### Common (Shared actions and statuses)
-
 ```text
 common.cancel
 common.save
@@ -53,7 +53,6 @@ common.noData
 ```
 
 ### Feature
-
 ```text
 features.home.hero.title
 features.home.hero.subtitle
