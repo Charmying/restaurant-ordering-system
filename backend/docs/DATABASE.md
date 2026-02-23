@@ -1,5 +1,7 @@
 # Database Design
 
+**English** | [繁體中文](./DATABASE.zh-TW.md)
+
 The backend uses MongoDB with Mongoose schemas under `src/modules/**/schemas`.
 All schemas currently enable `timestamps: true`.
 
@@ -23,7 +25,6 @@ All schemas currently enable `timestamps: true`.
 ## Schema Contracts
 
 ### User
-
 - `username` unique, trimmed, min 2 max 50
 - `password` min 6, `select: false`
 - `role` enum (`employee`, `manager`, `superadmin`), default `employee`
@@ -33,7 +34,6 @@ All schemas currently enable `timestamps: true`.
 - index: `{ role: 1 }`
 
 ### Order
-
 - `tableNumber`, `items[]`, `total`, `token` required
 - `status` enum default `pending`
 - `completedAt` set when completed
@@ -49,7 +49,6 @@ Order item subdocument (`_id: false`):
 - optional `customization` object
 
 ### MenuItem
-
 - required: `name`, `price`
 - optional with defaults: `description`, `category[]`, `categoryOrder`, `image`, `customFields[]`, `available`
 - indexes:
@@ -57,10 +56,7 @@ Order item subdocument (`_id: false`):
     - `{ available: 1 }`
     - `{ categoryOrder: 1 }`
 
-Custom fields are embedded, `_id: false`.
-
 ### Table
-
 - `tableNumber` unique
 - `status` enum default `available`
 - QR/session fields: `qrCodeUrl`, `qrCodeToken`, `qrCodeImage`
@@ -70,26 +66,22 @@ Custom fields are embedded, `_id: false`.
     - `{ tableNumber: 1 }`
 
 ### Message
-
 - fields: `userId`, `username`, `content`, `isPinned`
 - index: `{ isPinned: -1, createdAt: -1 }`
 
 ### ServiceCall
-
 - fields: `tableNumber`, `status` (`pending|handled`), `handledAt`
 - indexes:
     - `{ status: 1, createdAt: 1 }`
     - unique partial `{ tableNumber: 1, status: 1 }` where `status = pending`
 
 ### StoreInfo
-
 - fields: `label`, `value`, `order`, `isStoreName`, `isDeletable`
 - indexes:
     - `{ order: 1 }`
     - unique partial `{ isStoreName: 1 }` where `isStoreName = true`
 
 ### CategoryOrder
-
 - field: `categories: string[]`
 - treated as singleton via `findOneAndUpdate(..., { upsert: true })`
 
@@ -98,15 +90,13 @@ Custom fields are embedded, `_id: false`.
 ## State Lifecycles
 
 ### Table Status
-
 ```text
 available -> occupied -> checkout -> available
-     ^                         |
-     +------ force-reset ------+
+    ^                       |
+    +----- force-reset -----+
 ```
 
 ### Order Status
-
 ```text
 pending -> served -> completed
    |         |

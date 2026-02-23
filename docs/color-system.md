@@ -1,5 +1,7 @@
 # Color System
 
+**English** | [繁體中文](./color-system.zh-TW.md)
+
 A semantic color system designed for light and dark themes. Tokens are defined as CSS variables in `frontend/src/styles.css` and applied via the `data-theme` attribute on `<html>`.
 
 ## Core Principles
@@ -14,7 +16,6 @@ A semantic color system designed for light and dark themes. Tokens are defined a
 ## Base Tokens
 
 ### Surface
-
 ```css
 --surface: 255 255 255;
 --surface-elevated: 245 245 247;
@@ -22,14 +23,12 @@ A semantic color system designed for light and dark themes. Tokens are defined a
 ```
 
 ### Text
-
 ```css
 --text-primary: 17 17 17;
 --text-secondary: 85 85 85;
 ```
 
 ### Border
-
 ```css
 --border: 220 220 224;
 ```
@@ -39,7 +38,6 @@ A semantic color system designed for light and dark themes. Tokens are defined a
 ## Interactive Elements
 
 ### Brand / Accent
-
 ```css
 --primary: 17 24 39;
 --primary-contrast: 255 255 255;
@@ -52,14 +50,12 @@ A semantic color system designed for light and dark themes. Tokens are defined a
 ## Status Colors
 
 ### Destructive
-
 ```css
 --destructive: 255 59 48;
 --destructive-bg: 255 245 244;
 ```
 
 ### Ranking / Pinned (Dashboard)
-
 ```css
 --rank-1-bg: 254 249 195;
 --rank-1-text: 133 77 14;
@@ -81,23 +77,19 @@ A semantic color system designed for light and dark themes. Tokens are defined a
 ## Effects
 
 ### Shadows
-
 - Card: `shadow-2xl`
 - Button: `shadow-lg` → `shadow-xl` on hover
 - Modal: `shadow-2xl` with backdrop blur
 
 ### Transitions
-
 - Duration: `200ms` (fast), `300ms` (standard)
 - Easing: `cubic-bezier(0.4, 0, 0.2, 1)`
 - Scale: `scale-[1.03]` (hover), `scale-[0.98]` (active)
 
 ### Radius
-
 - `rounded-lg`, `rounded-xl`, `rounded-2xl` used across layouts
 
 ### Scrollbar
-
 Scrollbar styling is handled by platform defaults; avoid custom styling unless required for accessibility.
 
 ---
@@ -127,15 +119,13 @@ Themes are driven by CSS variables in `frontend/src/styles.css`:
 - Light theme: `:root { ... }`
 - Dark theme: `[data-theme='dark'] { ... }`
 
-Theme switching is handled by the frontend `ThemeService`, which applies the `data-theme`
-attribute on `<html>` and persists the user's preference.
+Theme switching is handled by the frontend `ThemeService`, which applies the `data-theme` attribute on `<html>` and persists the user's preference.
 
 ---
 
 ## Usage Examples
 
 ### In Component Styles
-
 ```css
 .card {
   background-color: rgb(var(--surface-elevated));
@@ -145,7 +135,6 @@ attribute on `<html>` and persists the user's preference.
 ```
 
 ### In Templates (Tailwind Arbitrary Values)
-
 ```html
 <div class="bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))]">
   Content

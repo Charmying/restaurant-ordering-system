@@ -1,5 +1,7 @@
 # WebSocket Event Contract
 
+**English** | [繁體中文](./WEBSOCKET.zh-TW.md)
+
 Backend realtime messaging is implemented with Socket.IO (`@nestjs/websockets`).
 
 ---
@@ -45,7 +47,6 @@ No room segmentation is currently implemented.
 ## Event Catalog
 
 ### Order
-
 | Event | Payload | Trigger |
 |---|---|---|
 | `order:created` | full order object | order created |
@@ -54,7 +55,6 @@ No room segmentation is currently implemented.
 | `order:cancelled` | full order object | order cancelled |
 
 ### Table
-
 | Event | Payload | Trigger |
 |---|---|---|
 | `table:activated` | `{ tableNumber }` | table activated |
@@ -63,7 +63,6 @@ No room segmentation is currently implemented.
 | `table:forceReset` | `{ tableNumber }` | table force-reset |
 
 ### Menu
-
 | Event | Payload | Trigger |
 |---|---|---|
 | `menu.created` | `{ id, name }` | menu item created |
@@ -71,14 +70,12 @@ No room segmentation is currently implemented.
 | `menu.deleted` | `{ id }` | menu item deleted |
 
 ### User
-
 | Event | Payload | Trigger |
 |---|---|---|
 | `user.created` | `{ id, username, role }` | user created |
 | `user.deleted` | `{ id }` | user deleted |
 
 ### Message
-
 | Event | Payload | Trigger |
 |---|---|---|
 | `newMessage` | full message object | message created |
@@ -88,7 +85,6 @@ No room segmentation is currently implemented.
 | `allMessagesDeleted` | `{}` | all messages deleted |
 
 ### Service Call
-
 | Event | Payload | Trigger |
 |---|---|---|
 | `serviceCall` | full service call object | service call created/upserted |
