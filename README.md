@@ -2,6 +2,8 @@
 
 **English** | [繁體中文](./README.zh-TW.md)
 
+[Page Function Description](./docs/page-function-description/page-function-description.md) — Page functionality overviewA full-stack restaurant ordering and management system developed as a personal engineering project. The system demonstrates frontend and backend integration, database management, authentication, and real-time communication. It has undergone local functional testing but has not yet been validated in a production restaurant environment.
+
 A full-stack restaurant ordering and management system developed as a personal engineering project. The system demonstrates frontend and backend integration, database management, authentication, and real-time communication. It has undergone local functional testing but has not yet been validated in a production restaurant environment.
 
 ---
@@ -85,6 +87,7 @@ npm run start
 ### 📖 Development Guides
 - [Color System](./docs/color-system.md) — Design tokens and theming
 - [i18n Conventions](./docs/architecture/i18n-naming.md) — Translation key patterns
+- [Page Function Description](./docs/page-function-description/page-function-description.md) — Page functionality overview
 - [API Documentation](./backend/docs/API.md) — REST API reference
 - [WebSocket Events](./backend/docs/WEBSOCKET.md) — Real-time event specifications
 

@@ -318,6 +318,7 @@ npm run lint
 - [**System Architecture**](../docs/README.md) — High-level system design
 - [**Color System**](../docs/color-system.md) — Design tokens and theming
 - [**i18n Conventions**](../docs/architecture/i18n-naming.md) — Translation standards
+- [**Page Function Description**](../docs/page-function-description/page-function-description.md) — Page functionality overview
 
 ### Frontend Documentation
 - [**Frontend Architecture**](../frontend/README.md) — Angular client architecture

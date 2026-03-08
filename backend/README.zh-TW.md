@@ -318,6 +318,7 @@ npm run lint
 - [**系統架構**](../docs/README.zh-TW.md) — 高階系統設計
 - [**色彩系統**](../docs/color-system.zh-TW.md) — 設計 token 與主題
 - [**i18n 慣例**](../docs/architecture/i18n-naming.zh-TW.md) — 翻譯標準
+- [**頁面功能說明**](../docs/page-function-description/page-function-description.zh-TW.md) — 各頁面功能簡介
 
 ### 前端文件
 - [**前端架構**](../frontend/README.zh-TW.md) — Angular 客戶端架構
