@@ -2,6 +2,8 @@
 
 **English** | [繁體中文](./README.zh-TW.md)
 
+[Page Function Description](./docs/page-function-description/page-function-description.md) — Page functionality overview
+
 A production-ready restaurant management and ordering system built with enterprise-grade architecture. This system provides seamless customer ordering experiences through QR codes while offering comprehensive management capabilities for restaurant operations.
 
 ---
@@ -85,6 +87,7 @@ npm run start
 ### 📖 Development Guides
 - [Color System](./docs/color-system.md) — Design tokens and theming
 - [i18n Conventions](./docs/architecture/i18n-naming.md) — Translation key patterns
+- [Page Function Description](./docs/page-function-description/page-function-description.md) — Page functionality overview
 - [API Documentation](./backend/docs/API.md) — REST API reference
 - [WebSocket Events](./backend/docs/WEBSOCKET.md) — Real-time event specifications
 

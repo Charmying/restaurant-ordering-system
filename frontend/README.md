@@ -249,6 +249,7 @@ npm run lint
 - [**Architecture Overview**](../docs/README.md) — System-level architecture
 - [**Color System**](../docs/color-system.md) — Design tokens and theming
 - [**i18n Conventions**](../docs/architecture/i18n-naming.md) — Translation standards
+- [**Page Function Description**](../docs/page-function-description/page-function-description.md) — Page functionality overview
 
 ### Backend Documentation
 - [**Backend Architecture**](../backend/README.md) — API and server architecture

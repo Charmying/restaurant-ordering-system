@@ -2,6 +2,8 @@
 
 [English](./README.md) | **繁體中文**
 
+[頁面功能說明](./docs/page-function-description/page-function-description.zh-TW.md) — 各頁面功能簡介
+
 一個採用企業級架構打造的生產就緒餐廳管理與點餐系統。本系統透過 QR Code 提供無縫的顧客點餐體驗，同時為餐廳營運提供全面的管理功能。
 
 ---
@@ -85,6 +87,7 @@ npm run start
 ### 📖 開發指南
 - [色彩系統](./docs/color-system.zh-TW.md) — 設計 token 與主題
 - [i18n 慣例](./docs/architecture/i18n-naming.zh-TW.md) — 翻譯鍵命名模式
+- [頁面功能說明](./docs/page-function-description/page-function-description.zh-TW.md) — 各頁面功能簡介
 - [API 文件](./backend/docs/API.zh-TW.md) — REST API 參考
 - [WebSocket 事件](./backend/docs/WEBSOCKET.zh-TW.md) — 即時事件規格
 
