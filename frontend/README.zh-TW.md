@@ -249,6 +249,7 @@ npm run lint
 - [**架構概覽**](../docs/README.zh-TW.md) — 系統層級架構
 - [**色彩系統**](../docs/color-system.zh-TW.md) — 設計 token 與主題
 - [**i18n 慣例**](../docs/architecture/i18n-naming.zh-TW.md) — 翻譯標準
+- [**頁面功能說明**](../docs/page-function-description/page-function-description.zh-TW.md) — 各頁面功能簡介
 
 ### 後端文件
 - [**後端架構**](../backend/README.zh-TW.md) — API 與伺服器架構
