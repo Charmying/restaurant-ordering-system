@@ -30,4 +30,3 @@ export class Table {
 
 export const TableSchema = SchemaFactory.createForClass(Table);
 TableSchema.index({ status: 1 });
-TableSchema.index({ tableNumber: 1 });
