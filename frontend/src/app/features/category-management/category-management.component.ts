@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { TranslateModule } from '@ngx-translate/core';
 import { CategoryManagementService } from './category-management.service';
 import { CategoryManagementPresenter } from './category-management.presenter';
+import { getCategoryI18nKey, isCategoryTranslatable as isSpecialCategoryTranslatable } from '../../shared/utils/category-i18n.util';
 
 @Component({
   selector: 'app-category-management',
@@ -65,5 +66,13 @@ export class CategoryManagementComponent {
   onCategoryDragEnd(): void {
     this.draggedCategoryIndex = null;
     this.dragOverIndex = null;
+  }
+
+  getCategoryLabelKey(category: string): string {
+    return getCategoryI18nKey(category);
+  }
+
+  isCategoryTranslatable(category: string): boolean {
+    return isSpecialCategoryTranslatable(category);
   }
 }

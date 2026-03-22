@@ -54,7 +54,11 @@
               <div class="flex flex-wrap gap-2 mt-2 items-center">
                 @if (item.category && item.category.length) {
                   <span class="px-2.5 py-1 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-secondary))] rounded text-xs">
-                    {{ item.category[0] }}
+                    @if (isCategoryTranslatable(item.category[0])) {
+                      {{ getCategoryLabelKey(item.category[0]) | translate }}
+                    } @else {
+                      {{ item.category[0] }}
+                    }
                   </span>
                   @if (item.category.length > 1) {
                     <span class="px-2.5 py-1 bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-secondary))] rounded text-xs">

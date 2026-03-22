@@ -69,7 +69,11 @@
                 {{ i + 1 }}
               </div>
               <span class="text-base sm:text-lg font-semibold text-[rgb(var(--text-primary))]">
-                {{ category }}
+                @if (isCategoryTranslatable(category)) {
+                  {{ getCategoryLabelKey(category) | translate }}
+                } @else {
+                  {{ category }}
+                }
               </span>
             </div>
           </div>
