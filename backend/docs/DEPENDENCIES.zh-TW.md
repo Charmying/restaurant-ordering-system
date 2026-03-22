@@ -2,7 +2,7 @@
 
 [English](./DEPENDENCIES.md) | **繁體中文**
 
-本文件解釋依賴存在的原因與引入新依賴的限制。
+本文件解釋依賴存在的原因與引入新依賴的限制。套件宣告於 NestJS 服務的 **`backend/node-api/package.json`**。若日後新增其他後端（例如 `java-api/`），各服務應維護各自的相依清單。
 
 ---
 

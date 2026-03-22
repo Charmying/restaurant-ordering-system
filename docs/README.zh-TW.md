@@ -30,13 +30,13 @@
 ## 🔍 依角色快速導覽
 
 ### 前端開發者
-1. [前端架構](../frontend/README.zh-TW.md) — Angular 設定與元件組織
+1. [前端總覽](../frontend/README.zh-TW.md) — 客戶端應用（`angular-app` 等）
 2. [色彩系統](./color-system.zh-TW.md) — 設計 token 與主題
 3. [i18n 慣例](./architecture/i18n-naming.zh-TW.md) — 翻譯鍵模式
 4. [前端設定](../frontend/docs/SETUP.zh-TW.md) — 本地開發環境
 
 ### 後端開發者
-1. [後端架構](../backend/README.zh-TW.md) — NestJS 設定與模組組織
+1. [後端總覽](../backend/README.zh-TW.md) — 伺服器應用（`node-api` 等）
 2. [API 文件](../backend/docs/API.zh-TW.md) — REST API 端點與契約
 3. [資料庫架構](../backend/docs/DATABASE.zh-TW.md) — 資料模型與關聯
 4. [認證](../backend/docs/AUTH.zh-TW.md) — 安全與授權
@@ -46,8 +46,8 @@
 1. [系統概覽](../README.zh-TW.md) — 完整系統理解
 2. [色彩系統](./color-system.zh-TW.md) — UI/UX 一致性
 3. [i18n 慣例](./architecture/i18n-naming.zh-TW.md) — 翻譯模式
-4. [前端架構](../frontend/README.zh-TW.md) — 客戶端結構
-5. [後端架構](../backend/README.zh-TW.md) — 伺服器端結構
+4. [前端總覽](../frontend/README.zh-TW.md) — 客戶端結構
+5. [後端總覽](../backend/README.zh-TW.md) — 伺服器端結構
 6. [API 文件](../backend/docs/API.zh-TW.md) — 整合點
 
 ### DevOps 工程師

@@ -29,7 +29,7 @@ git clone https://github.com/Charmying/restaurant-ordering-system
 cd restaurant-ordering-system
 
 # 2. Start Backend
-cd backend
+cd backend/node-api
 npm install
 cp .env.example .env
 # Edit .env with your MongoDB URI and JWT secrets
@@ -37,7 +37,7 @@ npm run start
 # API runs on http://localhost:4000
 
 # 3. Start Frontend (in new terminal)
-cd frontend
+cd frontend/angular-app
 npm install
 npm run start
 # App runs on http://localhost:4200
@@ -81,8 +81,8 @@ npm run start
 
 ### 🏗️ Architecture
 - [System Architecture](./docs/README.md) — High-level system design
-- [Frontend Architecture](./frontend/README.md) — Angular structure and patterns
-- [Backend Architecture](./backend/README.md) — NestJS structure and patterns
+- [Frontend overview](./frontend/README.md) — Client applications (`angular-app`, …)
+- [Backend overview](./backend/README.md) — Server applications (`node-api`, …)
 
 ### 📖 Development Guides
 - [Color System](./docs/color-system.md) — Design tokens and theming
@@ -102,18 +102,18 @@ npm run start
 
 ```text
 restaurant-ordering-system/
-├── backend/               # NestJS API server
-│   ├── src/               # Application source code
-│   ├── docs/              # Backend documentation
+├── backend/
+│   ├── docs/              # Shared backend engineering documentation
+│   ├── node-api/          # NestJS service (source, package.json)
 │   └── README.md
-├── frontend/              # Angular client application
-│   ├── src/               # Application source code
-│   ├── docs/              # Frontend documentation
+├── frontend/
+│   ├── docs/              # Shared frontend setup / dependency docs
+│   ├── angular-app/       # Angular client (source, package.json)
 │   └── README.md
 ├── docs/                  # System-level documentation
-│   ├── architecture/      # Architectural decisions
+│   ├── architecture/
 │   └── README.md
-├── CHANGELOG.md           # Version history
-├── LICENSE                # License information
-└── README.md              # This file
+├── CHANGELOG.md
+├── LICENSE
+└── README.md
 ```

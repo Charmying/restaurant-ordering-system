@@ -2,6 +2,18 @@
 
 [English](./SETUP.md) | **繁體中文**
 
+## Monorepo 目錄
+
+可執行的 NestJS 服務位於 **`node-api/`**（在 repo 的 `backend/` 底下）。以下所有 `npm` 指令請在該目錄執行：
+
+```bash
+cd node-api
+```
+
+環境與套件設定見 `node-api/.env`、`node-api/package.json`。
+
+---
+
 後端是一個 NestJS 服務，提供：
 
 - REST API 於 `/api/*`
@@ -27,6 +39,7 @@
 
 ### 1. 安裝依賴
 ```bash
+cd node-api
 npm install
 ```
 
@@ -34,12 +47,14 @@ npm install
 macOS/Linux：
 
 ```bash
+cd node-api
 cp .env.example .env
 ```
 
 Windows PowerShell：
 
 ```powershell
+cd node-api
 Copy-Item .env.example .env
 ```
 
@@ -52,6 +67,7 @@ Copy-Item .env.example .env
 
 ### 4. 啟動開發伺服器
 ```bash
+cd node-api
 npm run start:dev
 ```
 
@@ -63,7 +79,7 @@ Swagger：`http://localhost:4000/api/docs`
 
 ## 環境變數
 
-變數在啟動時由 Joi 驗證 (`src/config/env.validation.ts`)。
+變數在啟動時由 Joi 驗證 (`node-api/src/config/env.validation.ts`)。
 無效或缺少必要值會提早停止程序。
 
 | 變數 | 必要 | 預設 | 注意事項 |
@@ -104,6 +120,7 @@ Swagger：`http://localhost:4000/api/docs`
 ## 生產啟動序列
 
 ```bash
+cd node-api
 npm run build
 npm run start:prod
 ```
@@ -132,12 +149,13 @@ mongosh "mongodb://localhost:27017/restaurant-ordering"
 ```
 
 ### 環境變數驗證失敗
-檢查啟動日誌並與 `src/config/env.validation.ts` 比較變數。
+檢查啟動日誌並與 `node-api/src/config/env.validation.ts` 比較變數。
 
 ### 清除重新安裝
 macOS/Linux：
 
 ```bash
+cd node-api
 rm -rf node_modules package-lock.json dist
 npm install
 ```
@@ -145,6 +163,7 @@ npm install
 Windows PowerShell：
 
 ```powershell
+cd node-api
 Remove-Item -Recurse -Force node_modules, dist
 Remove-Item -Force package-lock.json
 npm install

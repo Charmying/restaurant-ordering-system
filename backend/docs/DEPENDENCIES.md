@@ -2,7 +2,7 @@
 
 **English** | [繁體中文](./DEPENDENCIES.zh-TW.md)
 
-This document explains why dependencies exist and the constraints for introducing new ones.
+This document explains why dependencies exist and the constraints for introducing new ones. They are declared in **`backend/node-api/package.json`** for the NestJS service. Additional backends (for example `java-api/`) would maintain their own manifests.
 
 ---
 
