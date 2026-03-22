@@ -22,6 +22,8 @@
 
 ## 原始碼結構
 
+以下路徑皆相對於 **`backend/node-api/`**（NestJS 套件根目錄）。
+
 ```text
 src/
     main.ts                  # bootstrap、全域 middleware/pipes、swagger、CORS

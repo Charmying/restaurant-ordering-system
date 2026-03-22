@@ -30,13 +30,13 @@ This documentation serves as the single source of truth for:
 ## 🔍 Quick Navigation by Role
 
 ### For Frontend Developers
-1. [Frontend Architecture](../frontend/README.md) — Angular setup and component organization
+1. [Frontend overview](../frontend/README.md) — Client applications (`angular-app`, future stacks)
 2. [Color System](./color-system.md) — Design tokens and theming
 3. [i18n Conventions](./architecture/i18n-naming.md) — Translation key patterns
 4. [Frontend Setup](../frontend/docs/SETUP.md) — Local development environment
 
 ### For Backend Developers
-1. [Backend Architecture](../backend/README.md) — NestJS setup and module organization
+1. [Backend overview](../backend/README.md) — Server applications (`node-api`, future stacks)
 2. [API Documentation](../backend/docs/API.md) — REST API endpoints and contracts
 3. [Database Schema](../backend/docs/DATABASE.md) — Data models and relationships
 4. [Authentication](../backend/docs/AUTH.md) — Security and authorization

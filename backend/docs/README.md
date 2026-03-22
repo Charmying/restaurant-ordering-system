@@ -2,7 +2,11 @@
 
 **English** | [繁體中文](./README.zh-TW.md)
 
-Comprehensive engineering and operations documentation for the NestJS backend service. This directory serves as the canonical source of truth for backend architecture, API specifications, deployment procedures, and operational guidance.
+## Scope
+
+This folder documents the **`node-api/`** service (NestJS, MongoDB, Socket.IO as implemented today). It is the **authoritative engineering reference for that codebase**, not a language-neutral spec for every future backend.
+
+When you add **`java-api/`**, **`python-api/`**, or similar: create **`java-api/docs/`** (or equivalent) for that stack’s setup, layout, and dependencies. Link it from **[`../README.md`](../README.md)** and optionally add a short pointer here. If multiple services must implement the **same HTTP or realtime contract**, keep the **contract** in the repository root **`docs/`** (for example OpenAPI or an event dictionary) and treat each `*/docs` as **implementation notes** for that runtime.
 
 ---
 
@@ -74,7 +78,7 @@ Comprehensive engineering and operations documentation for the NestJS backend se
 - [i18n Conventions](../../docs/architecture/i18n-naming.md) — Translation standards
 
 ### Frontend Documentation
-- [Frontend Architecture](../../frontend/README.md) — Angular client architecture
+- [Frontend overview](../../frontend/README.md) — Client applications index
 - [Frontend Setup](../../frontend/docs/SETUP.md) — Frontend development setup
 - [Frontend Dependencies](../../frontend/docs/DEPENDENCIES.md) — Frontend package documentation
 

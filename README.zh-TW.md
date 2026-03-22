@@ -29,7 +29,7 @@ git clone https://github.com/Charmying/restaurant-ordering-system
 cd restaurant-ordering-system
 
 # 2. 啟動後端
-cd backend
+cd backend/node-api
 npm install
 cp .env.example .env
 # 編輯 .env 填入你的 MongoDB URI 和 JWT secrets
@@ -37,7 +37,7 @@ npm run start
 # API 運行於 http://localhost:4000
 
 # 3. 啟動前端 (開新終端機)
-cd frontend
+cd frontend/angular-app
 npm install
 npm run start
 # 應用程式運行於 http://localhost:4200
@@ -81,8 +81,8 @@ npm run start
 
 ### 🏗️ 架構
 - [系統架構](./docs/README.zh-TW.md) — 高階系統設計
-- [前端架構](./frontend/README.zh-TW.md) — Angular 結構與模式
-- [後端架構](./backend/README.zh-TW.md) — NestJS 結構與模式
+- [前端總覽](./frontend/README.zh-TW.md) — 客戶端應用（`angular-app` 等）
+- [後端總覽](./backend/README.zh-TW.md) — 伺服器應用（`node-api` 等）
 
 ### 📖 開發指南
 - [色彩系統](./docs/color-system.zh-TW.md) — 設計 token 與主題
@@ -102,18 +102,18 @@ npm run start
 
 ```text
 restaurant-ordering-system/
-├── backend/                     # NestJS API 伺服器
-│   ├── src/                     # 應用程式原始碼
-│   ├── docs/                    # 後端文件
+├── backend/
+│   ├── docs/                    # 後端工程共用文件
+│   ├── node-api/                # NestJS 服務（原始碼、package.json）
 │   └── README.zh-TW.md
-├── frontend/                    # Angular 客戶端應用程式
-│   ├── src/                     # 應用程式原始碼
-│   ├── docs/                    # 前端文件
+├── frontend/
+│   ├── docs/                    # 前端設定／依賴等共用文件
+│   ├── angular-app/             # Angular 客戶端（原始碼、package.json）
 │   └── README.zh-TW.md
 ├── docs/                        # 系統層級文件
-│   ├── architecture/            # 架構決策
+│   ├── architecture/
 │   └── README.zh-TW.md
-├── CHANGELOG.zh-TW.md           # 版本歷史
-├── LICENSE                      # 授權資訊
-└── README.zh-TW.md              # 專案說明 (中文)
+├── CHANGELOG.zh-TW.md
+├── LICENSE
+└── README.zh-TW.md
 ```

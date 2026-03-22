@@ -22,6 +22,8 @@ This document defines backend architecture decisions that are expected to remain
 
 ## Source Structure
 
+All paths below are relative to **`backend/node-api/`** (the NestJS package root).
+
 ```text
 src/
     main.ts                  # bootstrap, global middleware/pipes, swagger, CORS

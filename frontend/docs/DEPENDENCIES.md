@@ -2,7 +2,7 @@
 
 **English** | [繁體中文](./DEPENDENCIES.zh-TW.md)
 
-This document summarizes `package.json` dependencies and how they are used in the frontend.
+This document summarizes dependencies declared in **`frontend/angular-app/package.json`** and how they are used in the Angular client. If additional frontend apps are added (for example React), each will have its own manifest; extend this document or add a sibling file under `frontend/docs/` as needed.
 
 ---
 

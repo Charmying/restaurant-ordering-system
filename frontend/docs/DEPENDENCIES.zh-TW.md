@@ -2,7 +2,7 @@
 
 [English](./DEPENDENCIES.md) | **繁體中文**
 
-本文件總結前端 `package.json` 依賴套件及其使用方式。
+本文件總結 **`frontend/angular-app/package.json`** 中的依賴套件及其於 Angular 客戶端的使用方式。若日後新增其他前端應用（例如 React），各應用會有各自的 manifest；請擴充本文件或在 `frontend/docs/` 下新增對應說明。
 
 ---
 

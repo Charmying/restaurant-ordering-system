@@ -2,6 +2,18 @@
 
 [English](./SETUP.md) | **繁體中文**
 
+## Monorepo 目錄
+
+可安裝依賴並執行的 Angular 應用位於 **`angular-app/`**（在 repo 的 `frontend/` 底下）。以下所有 `npm` 指令請在該目錄執行：
+
+```bash
+cd angular-app
+```
+
+套件設定見 `angular-app/package.json`（本 repo 於該檔宣告 `npm@10.9.4`）。
+
+---
+
 本前端使用 Angular CLI 初始化並支援 Tailwind CSS。
 
 ```bash
@@ -19,7 +31,7 @@ npx @angular/cli@latest new restaurant-ordering-system
 ## 前置需求
 
 - Node.js (Angular CLI 需要)
-- npm (專案在 `package.json` 中宣告 `npm@10.9.4`)
+- npm（見 `angular-app/package.json` 中的工具鏈版本）
 - 支援 ES2022 的現代瀏覽器
 
 ---
@@ -27,6 +39,7 @@ npx @angular/cli@latest new restaurant-ordering-system
 ## 本地開發
 
 ```bash
+cd angular-app
 npm install
 npm start
 ```
@@ -38,6 +51,7 @@ npm start
 ## 建置與測試
 
 ```bash
+cd angular-app
 npm run build
 npm test
 ```
@@ -46,8 +60,8 @@ npm test
 
 ## 注意事項
 
-- 靜態資源從 `public/` 提供 (在 `angular.json` 中配置)
-- 設計 token 位於 `src/styles.css` 並透過 CSS 變數套用
+- 靜態資源從 `angular-app/public/` 提供（於 `angular-app/angular.json` 設定）
+- 設計 token 位於 `angular-app/src/styles.css` 並透過 CSS 變數套用
 
 ---
 
@@ -57,6 +71,7 @@ npm test
 如果埠號 4200 被佔用，執行：
 
 ```bash
+cd angular-app
 npm start -- --port 4201
 ```
 
@@ -64,6 +79,7 @@ npm start -- --port 4201
 清除快取並重新安裝依賴：
 
 ```bash
+cd angular-app
 rm -rf node_modules package-lock.json
 npm install
 ```

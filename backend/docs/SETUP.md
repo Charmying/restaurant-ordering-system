@@ -2,6 +2,18 @@
 
 **English** | [繁體中文](./SETUP.zh-TW.md)
 
+## Monorepo layout
+
+The runnable NestJS service lives in **`node-api/`** (under the repository `backend/` folder). Run every `npm` command below from that directory:
+
+```bash
+cd node-api
+```
+
+Environment and package metadata are in `node-api/.env` and `node-api/package.json`.
+
+---
+
 The backend is a NestJS service that exposes:
 
 - REST API under `/api/*`
@@ -27,6 +39,7 @@ Recommended:
 ### 1. Install dependencies
 
 ```bash
+cd node-api
 npm install
 ```
 
@@ -34,12 +47,14 @@ npm install
 macOS/Linux:
 
 ```bash
+cd node-api
 cp .env.example .env
 ```
 
 Windows PowerShell:
 
 ```powershell
+cd node-api
 Copy-Item .env.example .env
 ```
 
@@ -52,6 +67,7 @@ At minimum:
 
 ### 4. Start development server
 ```bash
+cd node-api
 npm run start:dev
 ```
 
@@ -63,7 +79,7 @@ Swagger: `http://localhost:4000/api/docs`
 
 ## Environment Variables
 
-Variables are validated by Joi at startup (`src/config/env.validation.ts`).
+Variables are validated by Joi at startup (`node-api/src/config/env.validation.ts`).
 Invalid or missing required values stop the process early.
 
 | Variable | Required | Default | Notes |
@@ -104,6 +120,7 @@ Invalid or missing required values stop the process early.
 ## Production Boot Sequence
 
 ```bash
+cd node-api
 npm run build
 npm run start:prod
 ```
@@ -132,12 +149,13 @@ mongosh "mongodb://localhost:27017/restaurant-ordering"
 ```
 
 ### Environment validation failed
-Inspect startup logs and compare variables with `src/config/env.validation.ts`.
+Inspect startup logs and compare variables with `node-api/src/config/env.validation.ts`.
 
 ### Clean reinstall
 macOS/Linux:
 
 ```bash
+cd node-api
 rm -rf node_modules package-lock.json dist
 npm install
 ```
@@ -145,6 +163,7 @@ npm install
 Windows PowerShell:
 
 ```powershell
+cd node-api
 Remove-Item -Recurse -Force node_modules, dist
 Remove-Item -Force package-lock.json
 npm install
