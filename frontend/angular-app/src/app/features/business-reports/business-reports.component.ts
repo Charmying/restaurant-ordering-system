@@ -1,5 +1,5 @@
-import { Component, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, computed, signal, ChangeDetectionStrategy } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
@@ -10,9 +10,10 @@ import { ReportDateRange } from './business-reports.types';
 @Component({
   selector: 'app-business-reports',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ModalComponent],
+  imports: [FormsModule, TranslateModule, ModalComponent, NgClass],
   templateUrl: './business-reports.component.html',
-  styleUrls: ['./business-reports.component.scss'],
+  styleUrl: './business-reports.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BusinessReportsComponent {
   private readonly reportsService = inject(BusinessReportsService);
@@ -50,10 +51,10 @@ export class BusinessReportsComponent {
 
   /* ========================= Local State ========================= */
 
-  showResetModal = false;
-  resetPassword = '';
-  showAlertModal = false;
-  alertMessage = '';
+  readonly showResetModal = signal(false);
+  readonly resetPassword = signal('');
+  readonly showAlertModal = signal(false);
+  readonly alertMessage = signal('');
 
   /* ========================= Actions ========================= */
 
@@ -102,12 +103,12 @@ export class BusinessReportsComponent {
   /* ========================= Modal Actions ========================= */
 
   openResetModal(): void {
-    this.resetPassword = '';
-    this.showResetModal = true;
+    this.resetPassword.set('');
+    this.showResetModal.set(true);
   }
 
   closeResetModal(): void {
-    this.showResetModal = false;
+    this.showResetModal.set(false);
   }
 
   async resetReports(): Promise<void> {
@@ -124,11 +125,11 @@ export class BusinessReportsComponent {
   }
 
   showAlert(messageKey: string): void {
-    this.alertMessage = this.translateService.instant(messageKey);
-    this.showAlertModal = true;
+    this.alertMessage.set(this.translateService.instant(messageKey));
+    this.showAlertModal.set(true);
   }
 
   closeAlertModal(): void {
-    this.showAlertModal = false;
+    this.showAlertModal.set(false);
   }
 }

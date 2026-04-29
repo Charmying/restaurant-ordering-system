@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Dark mode: use [data-theme='dark'] attribute instead of .dark class */
+@custom-variant dark (&:where([data-theme='dark'], [data-theme='dark'] *));
+
 /* ========================= Design Tokens (Foundation) ========================= */
 
 :root {
@@ -84,6 +87,27 @@
   --bg-primary: 255 255 255;
   --btn-primary-bg: 15 23 42;
   --btn-primary-fg: 255 255 255;
+
+  /* Header Glass */
+  --header-bg: rgba(255, 255, 255, 0.85);
+  --header-border: rgba(226, 232, 240, 0.8);
+  --header-text: 15 23 42;
+
+  /* Rank Colors */
+  --rank-1-bg: 254 240 138;
+  --rank-1-text: 133 77 14;
+  --rank-2-bg: 226 232 240;
+  --rank-2-text: 51 65 85;
+  --rank-3-bg: 254 215 170;
+  --rank-3-text: 154 52 18;
+
+  /* Pinned Message Colors */
+  --pinned-bg: 255 251 235;
+  --pinned-border: 252 211 77;
+  --pinned-text: 180 83 9;
+  --pinned-badge-bg: 254 243 199;
+  --pinned-badge-text: 146 64 14;
+  --pinned-icon: 245 158 11;
 }
 
 [data-theme='dark'] {
@@ -168,6 +192,27 @@
   --bg-primary: 18 18 18;
   --btn-primary-bg: 255 255 255;
   --btn-primary-fg: 18 18 18;
+
+  /* Header Glass */
+  --header-bg: rgba(18, 18, 18, 0.85);
+  --header-border: rgba(44, 44, 46, 0.8);
+  --header-text: 255 255 255;
+
+  /* Rank Colors */
+  --rank-1-bg: 120 83 12;
+  --rank-1-text: 254 240 138;
+  --rank-2-bg: 44 44 46;
+  --rank-2-text: 209 209 214;
+  --rank-3-bg: 120 53 15;
+  --rank-3-text: 254 215 170;
+
+  /* Pinned Message Colors */
+  --pinned-bg: 69 26 3;
+  --pinned-border: 120 53 15;
+  --pinned-text: 253 186 116;
+  --pinned-badge-bg: 92 45 10;
+  --pinned-badge-text: 253 186 116;
+  --pinned-icon: 251 191 36;
 }
 
 /* ========================= Base / Reset ========================= */
@@ -412,6 +457,14 @@ p {
   border: 1px solid rgba(var(--border), 0.5);
 }
 
+.header-glass {
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-color: var(--header-border);
+  background: var(--header-bg);
+  color: var(--header-text);
+}
+
 /* ========================= Animations – Keyframes ========================= */
 
 /* Fade */
@@ -547,47 +600,47 @@ p {
 /* ========================= Animation Utilities ========================= */
 
 .animate-fade-in {
-  animation: fade-in 300ms cubic-bezier(0.4, 0, 0.2, 1); 
+  animation: fade-in 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-fade-out {
-  animation: fade-out 300ms cubic-bezier(0.4, 0, 0.2, 1); 
+  animation: fade-out 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-scale-in {
-  animation: scale-in 300ms cubic-bezier(0.4, 0, 0.2, 1); 
+  animation: scale-in 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-scale-out {
-  animation: scale-out 300ms cubic-bezier(0.4, 0, 0.2, 1); 
+  animation: scale-out 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-slide-up {
-  animation: slide-up 400ms cubic-bezier(0.4, 0, 0.2, 1); 
+  animation: slide-up 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-slide-down {
-  animation: slide-down 400ms cubic-bezier(0.4, 0, 0.2, 1); 
+  animation: slide-down 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-slide-left {
-  animation: slide-left 400ms cubic-bezier(0.4, 0, 0.2, 1); 
+  animation: slide-left 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-slide-right {
-  animation: slide-right 400ms cubic-bezier(0.4, 0, 0.2, 1); 
+  animation: slide-right 400ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .animate-spin {
-  animation: spin 1s linear infinite; 
+  animation: spin 1s linear infinite;
 }
 
 .animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; 
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
 .animate-bounce {
-  animation: bounce 1s infinite; 
+  animation: bounce 1s infinite;
 }
 
 .animate-bell-ring {
@@ -604,7 +657,7 @@ p {
 .transition-smooth {
   transition: background-color 200ms cubic-bezier(0.4, 0, 0.2, 1),
               color 200ms cubic-bezier(0.4, 0, 0.2, 1),
-              border-color 200ms cubic-bezier(0.4, 0, 0.2, 1); 
+              border-color 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .transition-all {
@@ -620,7 +673,7 @@ p {
 }
 
 .will-animate {
-  will-change: transform, opacity; 
+  will-change: transform, opacity;
 }
 
 /* ========================= Scrollbar Styling ========================= */

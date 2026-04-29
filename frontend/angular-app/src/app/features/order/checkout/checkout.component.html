@@ -6,7 +6,7 @@
     @if (!hasValidContext()) {
       <div class="card rounded-2xl p-8 text-center">
         <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[rgb(var(--warning-bg))] flex items-center justify-center">
-          <svg class="w-8 h-8 text-[rgb(var(--warning-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-8 h-8 text-[rgb(var(--warning-text))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
           </svg>
         </div>
@@ -27,8 +27,8 @@
       </div>
     } @else if (submitted()) {
       <div class="card rounded-2xl p-8 text-center border-[rgb(var(--success-border))] bg-[rgb(var(--success-bg))]">
-        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[rgb(var(--success))] bg-opacity-20 flex items-center justify-center">
-          <svg class="w-8 h-8 text-[rgb(var(--success-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[rgb(var(--success))]/20 flex items-center justify-center">
+          <svg aria-hidden="true" class="w-8 h-8 text-[rgb(var(--success-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
           </svg>
         </div>
@@ -38,7 +38,7 @@
         <p class="text-secondary mb-6">
           {{ 'features.order.checkoutPage.success.description' | translate }}
         </p>
-        <button id="checkout-success-button" (click)="goToMenu()" class="btn btn-primary">
+        <button type="button" id="checkout-success-button" (click)="goToMenu()" class="btn btn-primary">
           {{ 'features.order.checkoutPage.success.continueOrdering' | translate }}
         </button>
       </div>
@@ -47,7 +47,7 @@
         <p class="text-secondary mb-4">
           {{ 'features.order.checkoutPage.emptyCart' | translate }}
         </p>
-        <button (click)="goToMenu()" class="btn btn-primary">
+        <button type="button" (click)="goToMenu()" class="btn btn-primary">
           {{ 'features.order.continueShopping' | translate }}
         </button>
       </div>

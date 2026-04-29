@@ -24,7 +24,7 @@
                 </p>
               </div>
               <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--surface-muted))]/50 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
                 </svg>
               </div>
@@ -53,9 +53,9 @@
             (drop)="onCategoryDrop($event, i)"
             (dragend)="onCategoryDragEnd()"
             class="bg-[rgb(var(--surface))] border-2 border-[rgb(var(--border))]/60 rounded-xl p-4 sm:p-5 cursor-move hover:shadow-lg transition-all duration-200"
-            [class.opacity-50]="draggedCategoryIndex === i"
-            [class.scale-105]="dragOverIndex === i && draggedCategoryIndex !== i"
-            [class.border-[rgb(var(--accent))]]="dragOverIndex === i && draggedCategoryIndex !== i">
+            [class.opacity-50]="draggedCategoryIndex() === i"
+            [class.scale-105]="dragOverIndex() === i && draggedCategoryIndex() !== i"
+            [class.border-[rgb(var(--accent))]]="dragOverIndex() === i && draggedCategoryIndex() !== i">
             <div class="flex items-center gap-4">
               <div class="flex flex-col gap-0.5">
                 <div class="w-1 h-1 rounded-full bg-[rgb(var(--text-secondary))]"></div>
@@ -82,7 +82,7 @@
       @if (!categories().length) {
         <div class="text-center py-8 sm:py-12">
           <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-[rgb(var(--surface-muted))] rounded-xl sm:rounded-2xl mb-4 shadow-inner">
-            <svg class="w-6 h-6 sm:w-8 sm:h-8 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg aria-hidden="true" class="w-6 h-6 sm:w-8 sm:h-8 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
             </svg>
           </div>

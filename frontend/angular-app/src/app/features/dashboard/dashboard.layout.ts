@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { NavItems, NavItem } from './nav-config';
@@ -9,7 +9,8 @@ import { StoreInfoService } from '../store-info/store-info.service';
   standalone: true,
   imports: [RouterModule, TranslateModule],
   templateUrl: './dashboard.layout.html',
-  styleUrls: ['./dashboard.layout.scss'],
+  styleUrl: './dashboard.layout.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardLayout {
   private readonly storeInfoService = inject(StoreInfoService);

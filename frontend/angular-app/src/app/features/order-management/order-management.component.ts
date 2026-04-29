@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { OrderManagementService } from './order-management.service';
 import { OrderManagementPresenter } from './order-management.presenter';
@@ -9,9 +9,10 @@ import { OrderItemResolverService } from '../../shared/services/order-item-resol
 @Component({
   selector: 'app-order-management',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [TranslateModule, DatePipe],
   templateUrl: './order-management.component.html',
-  styleUrls: ['./order-management.component.scss'],
+  styleUrl: './order-management.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderManagementComponent {
   private readonly orderService = inject(OrderManagementService);

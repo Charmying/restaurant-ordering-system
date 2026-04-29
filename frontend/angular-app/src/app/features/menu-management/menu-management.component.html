@@ -11,14 +11,14 @@
               {{ 'features.menuManagement.subtitle' | translate }}
             </p>
           </div>
-          <button (click)="openAddMenuModal()"
+          <button type="button" (click)="openAddMenuModal()"
             class="px-4 sm:px-5 py-2 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-lg sm:rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 hover:shadow-lg active:scale-[0.98]">
             {{ 'features.menuManagement.actions.add' | translate }}
           </button>
         </div>
         <div class="flex flex-wrap gap-2">
           @for (category of menuCategories(); track category) {
-            <button (click)="setSelectedCategory(category)"
+            <button type="button" (click)="setSelectedCategory(category)"
               [class]="'px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-300 hover:shadow-md ' + (selectedCategory() === category ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]' : 'bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))]')">
               @if (isCategoryTranslatable(category)) {
                 {{ getCategoryLabelKey(category) | translate }}
@@ -36,8 +36,8 @@
       @for (item of filteredMenuItems(); track item._id) {
         <div class="bg-[rgb(var(--surface))]/80 backdrop-blur-sm rounded-xl border border-[rgb(var(--border))]/60 overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300">
           @if (item.image) {
-            <div class="aspect-[4/3] bg-[rgb(var(--surface-muted))]">
-              <img [src]="item.image" [alt]="item.name" class="w-full h-full object-cover">
+            <div class="aspect-4/3 bg-[rgb(var(--surface-muted))]">
+              <img [src]="item.image" [attr.alt]="getLocalizedValue(item.name)" loading="lazy" class="w-full h-full object-cover">
             </div>
           }
           <div class="p-4 sm:p-5 space-y-3">
@@ -78,11 +78,11 @@
               </div>
             </div>
             <div class="flex gap-2">
-              <button (click)="openEditMenuModal(item)"
+              <button type="button" (click)="openEditMenuModal(item)"
                 class="flex-1 px-3 py-2 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:bg-[rgb(var(--surface-elevated))]">
                 {{ 'features.menuManagement.actions.edit' | translate }}
               </button>
-              <button (click)="deleteMenuItem(item)"
+              <button type="button" (click)="deleteMenuItem(item)"
                 class="flex-1 px-3 py-2 bg-[rgb(var(--destructive-bg))] text-[rgb(var(--destructive))] rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:bg-[rgb(var(--destructive))]/10">
                 {{ 'features.menuManagement.actions.delete' | translate }}
               </button>
@@ -94,7 +94,7 @@
     @if (!filteredMenuItems().length) {
       <div class="text-center py-10 sm:py-16">
         <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 bg-[rgb(var(--surface-muted))] rounded-2xl mb-4 shadow-inner">
-          <svg class="w-6 h-6 sm:w-8 sm:h-8 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg aria-hidden="true" class="w-6 h-6 sm:w-8 sm:h-8 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 5h18M3 12h18M3 19h18"></path>
           </svg>
         </div>
@@ -156,8 +156,9 @@
                       } @else {
                         {{ cat }}
                       }
-                      <button (click)="removeCategory(cat)"
-                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-gray-400 hover:text-[rgb(var(--destructive))] transition-all duration-200 text-xs">
+                      <button type="button" (click)="removeCategory(cat)"
+                        [attr.aria-label]="'common.remove' | translate"
+                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-[rgb(var(--text-tertiary))] hover:text-[rgb(var(--destructive))] transition-all duration-200 text-xs">
                         ×
                       </button>
                     </span>
@@ -168,11 +169,12 @@
                     class="w-full px-4 py-3 rounded-xl border border-transparent bg-transparent text-[rgb(var(--text-primary))] text-sm focus:outline-none"
                     [(ngModel)]="menuCategoryInput"
                     (keyup.enter)="addCategoryFromInput()"
+                    [attr.aria-label]="'features.menuManagement.placeholders.categoryInput' | translate"
                     [placeholder]="'features.menuManagement.placeholders.categoryInput' | translate">
                   @if (categorySuggestions().length > 0 && menuCategoryInput().trim().length > 0) {
                     <div class="absolute left-0 right-0 mt-2 bg-[rgb(var(--surface))] border border-[rgb(var(--border))]/60 rounded-xl shadow-md z-30">
                       @for (sug of categorySuggestions(); track sug) {
-                        <button (click)="toggleCategorySuggestion(sug)"
+                        <button type="button" (click)="toggleCategorySuggestion(sug)"
                           class="w-full text-left px-4 py-2 text-sm text-[rgb(var(--text-primary))] hover:bg-[rgb(var(--surface-muted))] transition-all">
                           @if (isCategoryTranslatable(sug)) {
                             {{ getCategoryLabelKey(sug) | translate }}
@@ -198,7 +200,7 @@
             </button>
             @if (menuForm().image) {
               <div class="mt-2 relative aspect-video bg-[rgb(var(--surface-muted))] rounded-xl overflow-hidden">
-                <img [src]="menuForm().image" alt="Preview" class="w-full h-full object-cover">
+                <img [src]="menuForm().image" [attr.alt]="'features.menuManagement.fields.imagePreview' | translate" loading="lazy" class="w-full h-full object-cover">
               </div>
             }
             <p class="text-xs text-[rgb(var(--text-secondary))] mt-1">
@@ -227,8 +229,9 @@
                       </span>
                     }
                   </div>
-                  <button (click)="removeCustomField(fieldIndex)"
-                    class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-gray-400 hover:text-[rgb(var(--destructive))] transition-all duration-300 text-xl font-light">
+                  <button type="button" (click)="removeCustomField(fieldIndex)"
+                    [attr.aria-label]="'common.remove' | translate"
+                    class="w-9 h-9 shrink-0 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-[rgb(var(--text-tertiary))] hover:text-[rgb(var(--destructive))] transition-all duration-300 text-xl font-light">
                     ×
                   </button>
                 </div>
@@ -243,14 +246,16 @@
                       <input type="number"
                         class="w-20 sm:w-24 px-3 py-2.5 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
                         [(ngModel)]="option.price"
+                        [attr.aria-label]="'features.menuManagement.placeholders.optionPrice' | translate"
                         [placeholder]="'features.menuManagement.placeholders.optionPrice' | translate">
-                      <button (click)="removeOptionFromField(fieldIndex, optionIndex)"
-                        class="w-9 h-9 flex-shrink-0 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-gray-400 hover:text-[rgb(var(--destructive))] transition-all duration-300 font-light">
+                      <button type="button" (click)="removeOptionFromField(fieldIndex, optionIndex)"
+                        [attr.aria-label]="'common.remove' | translate"
+                        class="w-9 h-9 shrink-0 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-[rgb(var(--text-tertiary))] hover:text-[rgb(var(--destructive))] transition-all duration-300 font-light">
                         ×
                       </button>
                     </div>
                   }
-                  <button (click)="addOptionToField(fieldIndex)"
+                  <button type="button" (click)="addOptionToField(fieldIndex)"
                     class="text-sm text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--text-primary))] font-medium transition-all duration-300">
                     {{ 'features.menuManagement.actions.addOption' | translate }}
                   </button>
@@ -300,8 +305,8 @@
                   class="w-20 sm:w-24 h-fit self-center px-3 py-2.5 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] text-sm focus:outline-none focus:ring-2 focus:ring-[rgb(var(--primary))] transition-all"
                   [(ngModel)]="newOption().price"
                   [placeholder]="'features.menuManagement.placeholders.optionPrice' | translate">
-                <button (click)="addOptionToNewField()"
-                  class="h-fit self-center px-4 sm:px-5 py-2.5 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl text-sm font-medium flex-shrink-0 shadow-md">
+                  <button type="button" (click)="addOptionToNewField()"
+                  class="h-fit self-center px-4 sm:px-5 py-2.5 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl text-sm font-medium shrink-0 shadow-md">
                   +
                 </button>
               </div>
@@ -315,8 +320,9 @@
                           +{{ formatCurrency(option.price) }}
                         </span>
                       }
-                      <button (click)="removeOptionFromNewField($index)"
-                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-gray-500 hover:text-[rgb(var(--destructive))] transition-all duration-300 font-light">
+                      <button type="button" (click)="removeOptionFromNewField($index)"
+                        [attr.aria-label]="'common.remove' | translate"
+                        class="w-5 h-5 flex items-center justify-center rounded-full hover:bg-[rgb(var(--destructive-bg))] text-[rgb(var(--text-secondary))] hover:text-[rgb(var(--destructive))] transition-all duration-300 font-light">
                         ×
                       </button>
                     </span>
@@ -324,22 +330,22 @@
                 </div>
               }
             </div>
-            <button (click)="addCustomField()"
+            <button type="button" (click)="addCustomField()"
               [disabled]="!newField().name.zh || newField().options.length === 0"
-              class="w-full px-4 py-3 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-all text-sm font-semibold shadow-md hover:shadow-lg">
+              class="w-full px-4 py-3 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl disabled:opacity-50 disabled:cursor-not-allowed transition-all text-sm font-semibold shadow-md hover:shadow-lg">
               {{ 'features.menuManagement.actions.addField' | translate }}
             </button>
           </div>
         </div>
       </div>
       <div slot="footer" class="p-5 sm:p-8 flex flex-col sm:flex-row gap-3">
-        <button (click)="closeMenuModal()"
+        <button type="button" (click)="closeMenuModal()"
           class="flex-1 px-4 py-3 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl font-semibold transition-all active:scale-[0.98]">
           {{ 'common.cancel' | translate }}
         </button>
-        <button (click)="saveMenuItem()"
+        <button type="button" (click)="saveMenuItem()"
           [disabled]="!isFormValid()"
-          class="flex-1 px-4 py-3 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl font-semibold transition-all active:scale-[0.98] disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed">
+          class="flex-1 px-4 py-3 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-xl font-semibold transition-all active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed">
           {{ 'features.menuManagement.actions.save' | translate }}
         </button>
       </div>
@@ -352,17 +358,18 @@
           <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
             {{ 'features.menuManagement.modal.deleteTitle' | translate }}
           </h3>
-          <button (click)="closeDeleteModal()"
+          <button type="button" (click)="closeDeleteModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-1.5 sm:p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
         <div class="space-y-4">
           <div class="flex items-start gap-4">
-            <div class="flex-shrink-0 w-12 h-12 bg-[rgb(var(--destructive-bg))] rounded-full flex items-center justify-center">
-              <svg class="w-6 h-6 text-[rgb(var(--destructive))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="shrink-0 w-12 h-12 bg-[rgb(var(--destructive-bg))] rounded-full flex items-center justify-center">
+              <svg aria-hidden="true" class="w-6 h-6 text-[rgb(var(--destructive))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
               </svg>
             </div>
@@ -379,11 +386,11 @@
           </div>
         </div>
         <div class="flex gap-3">
-          <button (click)="closeDeleteModal()"
+          <button type="button" (click)="closeDeleteModal()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl hover:bg-[rgb(var(--surface-elevated))] transition-all font-semibold">
             {{ 'features.menuManagement.actions.cancel' | translate }}
           </button>
-          <button (click)="confirmDelete()"
+          <button type="button" (click)="confirmDelete()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--destructive))] text-white rounded-xl hover:bg-[rgb(var(--destructive))]/90 transition-all font-semibold shadow-md">
             {{ 'features.menuManagement.actions.delete' | translate }}
           </button>

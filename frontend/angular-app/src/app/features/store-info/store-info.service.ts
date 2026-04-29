@@ -55,8 +55,7 @@ export class StoreInfoService implements OnDestroy {
 
       this.notifyOtherTabs();
       return newItem;
-    } catch (error) {
-      console.error('Failed to create store info', error);
+    } catch {
       return null;
     }
   }
@@ -74,8 +73,7 @@ export class StoreInfoService implements OnDestroy {
 
       this.notifyOtherTabs();
       return updated;
-    } catch (error) {
-      console.error('Failed to update store info', error);
+    } catch {
       return null;
     }
   }
@@ -138,8 +136,7 @@ export class StoreInfoService implements OnDestroy {
         ...current,
         items,
       }));
-    } catch (error) {
-      console.error('Failed to load store info', error);
+    } catch {
     }
   }
 

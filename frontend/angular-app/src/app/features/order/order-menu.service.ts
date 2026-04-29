@@ -21,8 +21,7 @@ export class OrderMenuService {
       const items = await firstValueFrom(this.api.get<MenuItem[]>('/menu'));
       const availableItems = items.filter(item => item.available !== false);
       this.menuSignal.set(availableItems);
-    } catch (error) {
-      console.error('Failed to load menu for ordering', error);
+    } catch {
     }
   }
 

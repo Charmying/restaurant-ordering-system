@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { CategoryManagementService } from './category-management.service';
 import { CategoryManagementPresenter } from './category-management.presenter';
@@ -8,9 +7,10 @@ import { getCategoryI18nKey, isCategoryTranslatable as isSpecialCategoryTranslat
 @Component({
   selector: 'app-category-management',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [TranslateModule],
   templateUrl: './category-management.component.html',
-  styleUrls: ['./category-management.component.scss'],
+  styleUrl: './category-management.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CategoryManagementComponent {
   private readonly categoryService = inject(CategoryManagementService);
@@ -20,13 +20,13 @@ export class CategoryManagementComponent {
   readonly categories = this.categoryService.categories;
   readonly totalCount = this.categoryService.totalCount;
 
-  draggedCategoryIndex: number | null = null;
-  dragOverIndex: number | null = null;
+  readonly draggedCategoryIndex = signal<number | null>(null);
+  readonly dragOverIndex = signal<number | null>(null);
 
   /* ========================= Actions ========================= */
 
   onCategoryDragStart(event: DragEvent, index: number): void {
-    this.draggedCategoryIndex = index;
+    this.draggedCategoryIndex.set(index);
     if (event.dataTransfer) {
       event.dataTransfer.effectAllowed = 'move';
     }
@@ -34,38 +34,38 @@ export class CategoryManagementComponent {
 
   onCategoryDragOver(event: DragEvent, index: number): void {
     event.preventDefault();
-    this.dragOverIndex = index;
+    this.dragOverIndex.set(index);
     if (event.dataTransfer) {
       event.dataTransfer.dropEffect = 'move';
     }
   }
 
   onCategoryDragLeave(): void {
-    this.dragOverIndex = null;
+    this.dragOverIndex.set(null);
   }
 
   onCategoryDrop(event: DragEvent, dropIndex: number): void {
     event.preventDefault();
-    if (this.draggedCategoryIndex === null || this.draggedCategoryIndex === dropIndex) {
-      this.draggedCategoryIndex = null;
-      this.dragOverIndex = null;
+    if (this.draggedCategoryIndex() === null || this.draggedCategoryIndex() === dropIndex) {
+      this.draggedCategoryIndex.set(null);
+      this.dragOverIndex.set(null);
       return;
     }
 
     const next = CategoryManagementPresenter.reorder(
       this.categories(),
-      this.draggedCategoryIndex,
+      this.draggedCategoryIndex()!,
       dropIndex
     );
 
     this.categoryService.setCategories(next);
-    this.draggedCategoryIndex = null;
-    this.dragOverIndex = null;
+    this.draggedCategoryIndex.set(null);
+    this.dragOverIndex.set(null);
   }
 
   onCategoryDragEnd(): void {
-    this.draggedCategoryIndex = null;
-    this.dragOverIndex = null;
+    this.draggedCategoryIndex.set(null);
+    this.dragOverIndex.set(null);
   }
 
   getCategoryLabelKey(category: string): string {

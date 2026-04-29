@@ -10,7 +10,7 @@
               <div class="text-[11px] sm:text-xs font-medium uppercase tracking-[0.08em] text-secondary">
                 {{ getLocalizedValue(info.label) }}
               </div>
-              <div class="mt-1 sm:mt-1.5 text-[13px] sm:text-[15px] font-semibold text-primary leading-relaxed break-words">
+              <div class="mt-1 sm:mt-1.5 text-[13px] sm:text-[15px] font-semibold text-primary leading-relaxed wrap-break-word">
                 {{ getLocalizedValue(info.value) }}
               </div>
             </div>
@@ -28,7 +28,7 @@
     <div class="mb-6 -mx-6 px-6 overflow-x-auto">
       <div class="flex gap-2 min-w-max pb-2">
         @for (category of categories(); track category) {
-          <button (click)="selectedCategory.set(category)"
+          <button type="button" (click)="selectedCategory.set(category)"
             [ngClass]="getCategoryButtonClass(category)"
             class="px-5 py-2.5 rounded-full text-sm font-medium transition-all whitespace-nowrap hover:shadow-md">
             @if (isCategoryTranslatable(category)) {
@@ -90,7 +90,8 @@
               NT$ {{ selectedItem()?.price }}
             </p>
           </div>
-          <button (click)="closeCustomizeModal()"
+          <button type="button" (click)="closeCustomizeModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-2 rounded-full interactive">
             ✕
           </button>
@@ -107,7 +108,7 @@
             </label>
             <div class="grid grid-cols-2 gap-2">
               @for (option of field.options; track option.label) {
-                <button (click)="onSelectOption(field, option)"
+                <button type="button" (click)="onSelectOption(field, option)"
                   [ngClass]="getOptionButtonClass(field, option)"
                   class="py-3 px-4 rounded-xl text-sm font-medium transition-all flex flex-col items-center hover:shadow-md">
                   <span>
@@ -124,12 +125,13 @@
           </div>
         }
         <div>
-          <label class="block text-sm font-medium text-secondary mb-3">
+          <label for="order-note" class="block text-sm font-medium text-secondary mb-3">
             {{ 'features.order.remark' | translate }}
           </label>
-          <textarea class="input"
+          <textarea id="order-note" class="input"
             rows="3"
-            [(ngModel)]="customization().note"
+            [ngModel]="customization().note"
+            (ngModelChange)="updateNote($event)"
             [placeholder]="'features.order.remarkPlaceholder' | translate"
           ></textarea>
         </div>
@@ -138,14 +140,16 @@
             {{ 'features.order.quantity' | translate }}
           </label>
           <div class="flex items-center gap-4">
-            <button (click)="decrementQuantity()"
+            <button type="button" (click)="decrementQuantity()"
+              [attr.aria-label]="'features.order.decreaseQuantity' | translate"
               class="w-12 h-12 rounded-full bg-surface-muted text-primary font-semibold transition-all interactive active:scale-95">
               −
             </button>
-            <span class="text-2xl font-semibold text-primary min-w-[3rem] text-center">
+            <span class="text-2xl font-semibold text-primary min-w-12 text-center">
               {{ quantity() }}
             </span>
-            <button (click)="incrementQuantity()"
+            <button type="button" (click)="incrementQuantity()"
+              [attr.aria-label]="'features.order.increaseQuantity' | translate"
               class="w-12 h-12 rounded-full bg-surface-muted text-primary font-semibold transition-all interactive active:scale-95">
               +
             </button>
@@ -161,7 +165,7 @@
             NT$ {{ calculateItemTotal() | number:'1.0-0' }}
           </span>
         </div>
-        <button (click)="addToCart()"
+        <button type="button" (click)="addToCart()"
           class="btn btn-primary w-full py-4 rounded-2xl">
           {{ 'features.order.addToCart' | translate }}
         </button>
@@ -170,13 +174,17 @@
   }
   <ng-template #menuCard let-item="item">
     <div (click)="openCustomizeModal(item)"
+      (keydown)="onMenuCardKeydown($event, item)"
+      role="button"
+      tabindex="0"
+      [attr.aria-label]="getLocalizedValue(item.name)"
       class="card card-interactive rounded-3xl overflow-hidden cursor-pointer">
       @if (item.image) {
-        <div class="aspect-[4/3] bg-surface-muted">
-          <img [src]="item.image" [alt]="item.name" class="w-full h-full object-cover" />
+        <div class="aspect-4/3 bg-surface-muted">
+          <img [src]="item.image" [attr.alt]="getLocalizedValue(item.name)" loading="lazy" class="w-full h-full object-cover" />
         </div>
       } @else {
-        <div class="aspect-[4/3] bg-gradient-to-br from-[rgb(var(--surface-muted))] to-[rgb(var(--surface-elevated))]"></div>
+        <div class="aspect-4/3 bg-linear-to-br from-[rgb(var(--surface-muted))] to-[rgb(var(--surface-elevated))]"></div>
       }
       <div class="p-6 space-y-3">
         <h3 class="text-lg font-semibold text-primary">

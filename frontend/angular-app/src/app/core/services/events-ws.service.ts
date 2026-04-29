@@ -103,8 +103,7 @@ export class EventsWsService implements OnDestroy {
     this.socket.on('menu.deleted', (payload: unknown) => {
       this.menuDeleted$.next(payload);
     });
-    this.socket.on('connect_error', (err: Error) => {
-      console.warn('[EventsWs] connect_error', err.message);
+    this.socket.on('connect_error', () => {
     });
   }
 

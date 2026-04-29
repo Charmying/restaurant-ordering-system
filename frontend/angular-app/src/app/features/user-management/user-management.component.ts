@@ -1,5 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, computed, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
@@ -10,9 +9,10 @@ import { AuthService } from '../../core/services/auth.service';
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ModalComponent],
+  imports: [FormsModule, TranslateModule, ModalComponent],
   templateUrl: './user-management.component.html',
-  styleUrls: ['./user-management.component.scss'],
+  styleUrl: './user-management.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UserManagementComponent {
   private readonly userService = inject(UserManagementService);
@@ -29,17 +29,17 @@ export class UserManagementComponent {
     return { _id: user.userId, username: user.username, role: user.role as UserRole };
   });
 
-  showAddUserModal = false;
-  showChangePasswordModal = false;
-  showEditUsernameModal = false;
-  showDeleteModal = false;
-  showAlertModal = false;
+  readonly showAddUserModal = signal(false);
+  readonly showChangePasswordModal = signal(false);
+  readonly showEditUsernameModal = signal(false);
+  readonly showDeleteModal = signal(false);
+  readonly showAlertModal = signal(false);
 
   userForm: UserForm = { username: '', password: '', role: 'employee' };
   changePasswordForm: ChangePasswordForm = { userId: '', currentPassword: '', newPassword: '' };
   editUsernameForm = { userId: '', username: '' };
   userToDelete: UserItem | null = null;
-  alertMessage = '';
+  readonly alertMessage = signal('');
 
   /* ========================= Computed ========================= */
 
@@ -82,9 +82,9 @@ export class UserManagementComponent {
 
   getRoleClasses(role: UserRole): string {
     const roleStyles: Record<UserRole, string> = {
-      employee: 'bg-blue-100 text-blue-800',
-      manager: 'bg-green-100 text-green-800',
-      superadmin: 'bg-purple-100 text-purple-800'
+      employee: 'bg-[rgb(var(--info-bg))] text-[rgb(var(--info-text))]',
+      manager: 'bg-[rgb(var(--success-bg))] text-[rgb(var(--success-text))]',
+      superadmin: 'bg-[rgb(var(--accent))]/10 text-[rgb(var(--accent))]'
     };
     return roleStyles[role];
   }
@@ -99,11 +99,11 @@ export class UserManagementComponent {
 
   openAddUserModal(): void {
     this.userForm = { username: '', password: '', role: 'employee' };
-    this.showAddUserModal = true;
+    this.showAddUserModal.set(true);
   }
 
   closeAddUserModal(): void {
-    this.showAddUserModal = false;
+    this.showAddUserModal.set(false);
   }
 
   async saveUser(): Promise<void> {
@@ -118,16 +118,16 @@ export class UserManagementComponent {
       return;
     }
     this.userForm = { username: '', password: '', role: 'employee' };
-    this.showAddUserModal = false;
+    this.showAddUserModal.set(false);
   }
 
   openEditUsernameModal(user: UserItem): void {
     this.editUsernameForm = { userId: user._id, username: user.username };
-    this.showEditUsernameModal = true;
+    this.showEditUsernameModal.set(true);
   }
 
   closeEditUsernameModal(): void {
-    this.showEditUsernameModal = false;
+    this.showEditUsernameModal.set(false);
   }
 
   async saveUsername(): Promise<void> {
@@ -141,16 +141,16 @@ export class UserManagementComponent {
       this.showAlert('features.userManagement.errors.usernameNotSupported');
       return;
     }
-    this.showEditUsernameModal = false;
+    this.showEditUsernameModal.set(false);
   }
 
   openChangePasswordModal(user: UserItem): void {
     this.changePasswordForm = { userId: user._id, currentPassword: '', newPassword: '' };
-    this.showChangePasswordModal = true;
+    this.showChangePasswordModal.set(true);
   }
 
   closeChangePasswordModal(): void {
-    this.showChangePasswordModal = false;
+    this.showChangePasswordModal.set(false);
   }
 
   async changePassword(): Promise<void> {
@@ -170,14 +170,14 @@ export class UserManagementComponent {
     }
     this.showAlert('features.userManagement.actions.passwordChanged');
     this.changePasswordForm = { userId: '', currentPassword: '', newPassword: '' };
-    this.showChangePasswordModal = false;
+    this.showChangePasswordModal.set(false);
   }
 
   /* ========================= User Actions ========================= */
 
   deleteUser(user: UserItem): void {
     this.userToDelete = user;
-    this.showDeleteModal = true;
+    this.showDeleteModal.set(true);
   }
 
   async confirmDelete(): Promise<void> {
@@ -185,20 +185,20 @@ export class UserManagementComponent {
       await this.userService.deleteUser(this.userToDelete._id);
       this.userToDelete = null;
     }
-    this.showDeleteModal = false;
+    this.showDeleteModal.set(false);
   }
 
   closeDeleteModal(): void {
     this.userToDelete = null;
-    this.showDeleteModal = false;
+    this.showDeleteModal.set(false);
   }
 
   showAlert(messageKey: string): void {
-    this.alertMessage = this.translateService.instant(messageKey);
-    this.showAlertModal = true;
+    this.alertMessage.set(this.translateService.instant(messageKey));
+    this.showAlertModal.set(true);
   }
 
   closeAlertModal(): void {
-    this.showAlertModal = false;
+    this.showAlertModal.set(false);
   }
 }

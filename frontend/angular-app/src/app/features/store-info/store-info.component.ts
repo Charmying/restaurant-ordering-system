@@ -1,5 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
@@ -16,9 +15,10 @@ import { STORE_INFO_FORM_PLACEHOLDERS } from '../../shared/constants/placeholder
 @Component({
   selector: 'app-store-info',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ModalComponent, LocalizedInputComponent],
+  imports: [FormsModule, TranslateModule, ModalComponent, LocalizedInputComponent],
   templateUrl: './store-info.component.html',
-  styleUrls: ['./store-info.component.scss'],
+  styleUrl: './store-info.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class StoreInfoComponent {
   private readonly storeInfoService = inject(StoreInfoService);
@@ -40,6 +40,8 @@ export class StoreInfoComponent {
   readonly validationMessage = signal('');
   readonly infoToDelete = signal<StoreInfoItem | null>(null);
   readonly isEditingStoreName = signal(false);
+  readonly isSaving = signal(false);
+  readonly isDeleting = signal(false);
 
   readonly infoForm = signal<StoreInfoForm>({
     _id: '',
@@ -99,11 +101,13 @@ export class StoreInfoComponent {
     const item = this.infoToDelete();
     if (!item) return;
 
+    this.isDeleting.set(true);
     try {
       await this.storeInfoService.deleteInfo(item._id);
       this.closeDeleteModal();
-    } catch (error) {
-      console.error('Failed to delete store info:', error);
+    } catch {
+    } finally {
+      this.isDeleting.set(false);
     }
   }
 
@@ -125,6 +129,7 @@ export class StoreInfoComponent {
       return;
     }
 
+    this.isSaving.set(true);
     try {
       if (this.showEditInfoModal()) {
         await this.storeInfoService.updateInfo(form._id, form.label, form.value);
@@ -133,10 +138,11 @@ export class StoreInfoComponent {
         await this.storeInfoService.addInfo(form.label, form.value);
         this.showAddInfoModal.set(false);
       }
-    } catch (error) {
-      console.error('Failed to save store info:', error);
+    } catch {
       this.validationMessage.set(this.translateService.instant('common.error'));
       this.showValidationModal.set(true);
+    } finally {
+      this.isSaving.set(false);
     }
   }
 

@@ -23,25 +23,25 @@ export class ApiService {
   get<T>(path: string, options?: ApiRequestOptions): Observable<T> {
     return this.http
       .get<ApiResponse<T>>(this.buildUrl(path), options)
-      .pipe(map(this.unwrapResponse), catchError(this.handleError<T>('GET', path)));
+      .pipe(map(this.unwrapResponse), catchError(this.handleError));
   }
 
   post<T>(path: string, body?: unknown, options?: ApiRequestOptions): Observable<T> {
     return this.http
       .post<ApiResponse<T>>(this.buildUrl(path), body ?? {}, options)
-      .pipe(map(this.unwrapResponse), catchError(this.handleError<T>('POST', path)));
+      .pipe(map(this.unwrapResponse), catchError(this.handleError));
   }
 
   put<T>(path: string, body?: unknown, options?: ApiRequestOptions): Observable<T> {
     return this.http
       .put<ApiResponse<T>>(this.buildUrl(path), body ?? {}, options)
-      .pipe(map(this.unwrapResponse), catchError(this.handleError<T>('PUT', path)));
+      .pipe(map(this.unwrapResponse), catchError(this.handleError));
   }
 
   delete<T>(path: string, options?: ApiRequestOptions): Observable<T> {
     return this.http
       .delete<ApiResponse<T>>(this.buildUrl(path), options)
-      .pipe(map(this.unwrapResponse), catchError(this.handleError<T>('DELETE', path)));
+      .pipe(map(this.unwrapResponse), catchError(this.handleError));
   }
 
   private buildUrl(path: string): string {
@@ -57,10 +57,5 @@ export class ApiService {
     return response as T;
   }
 
-  private handleError<T>(method: string, path: string) {
-    return (error: unknown) => {
-      console.error(`[API] ${method} ${path} failed`, error);
-      return throwError(() => error);
-    };
-  }
+  private readonly handleError = (error: unknown): Observable<never> => throwError(() => error);
 }

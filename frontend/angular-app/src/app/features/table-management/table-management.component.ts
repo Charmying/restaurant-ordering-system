@@ -1,5 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
@@ -12,8 +11,9 @@ import { OrderItemResolverService } from '../../shared/services/order-item-resol
 @Component({
   selector: 'app-table-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ModalComponent],
+  imports: [FormsModule, TranslateModule, ModalComponent],
   templateUrl: './table-management.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableManagementComponent {
   private readonly tableService = inject(TableManagementService);
@@ -86,6 +86,16 @@ export class TableManagementComponent {
     }
   }
 
+  onTableKeydown(event: KeyboardEvent, table: Table): void {
+    if (event.key === ' ') event.preventDefault();
+    if (event.key === 'Enter' || event.key === ' ') this.onTableClick(table);
+  }
+
+  getTableLabel(table: Table): string {
+    const label = this.translateService.instant('features.tableManagement.table.number');
+    return `${label} ${table.tableNumber}`;
+  }
+
   startCheckout(table: Table): void {
     this.tableService.startCheckout(table);
   }
@@ -104,9 +114,7 @@ export class TableManagementComponent {
 
     try {
       await navigator.clipboard.writeText(table.qrCodeUrl);
-      console.log('QR Code link copied to clipboard');
-    } catch (err) {
-      console.error('Failed to copy QR Code link:', err);
+    } catch {
     }
   }
 

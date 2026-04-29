@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageToggleComponent } from '../../components/language-toggle/language-toggle.component';
 import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle.component';
@@ -9,7 +9,8 @@ import { StoreInfoService } from '../../../features/store-info/store-info.servic
   standalone: true,
   imports: [TranslateModule, LanguageToggleComponent, ThemeToggleComponent],
   templateUrl: './normal-header.component.html',
-  styleUrls: ['./normal-header.component.scss'],
+  styleUrl: './normal-header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NormalHeaderComponent {
   private readonly storeInfoService = inject(StoreInfoService);

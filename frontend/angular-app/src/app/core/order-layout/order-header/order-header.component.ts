@@ -1,5 +1,5 @@
-import { Component, computed, inject, signal } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { DecimalPipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageToggleComponent } from '../../components/language-toggle/language-toggle.component';
@@ -14,9 +14,10 @@ import { StoreInfoService } from '../../../features/store-info/store-info.servic
 @Component({
   selector: 'app-order-header',
   standalone: true,
-  imports: [CommonModule, TranslateModule, LanguageToggleComponent, ThemeToggleComponent, FullScreenModalComponent, ServiceBellComponent],
+  imports: [TranslateModule, LanguageToggleComponent, ThemeToggleComponent, FullScreenModalComponent, ServiceBellComponent, DecimalPipe],
   templateUrl: './order-header.component.html',
-  styleUrls: ['./order-header.component.scss'],
+  styleUrl: './order-header.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderHeaderComponent {
   private readonly router = inject(Router);
@@ -27,13 +28,13 @@ export class OrderHeaderComponent {
 
   /* ========================= State ========================= */
 
-  showCart = signal(false);
-  showRemoveConfirm = signal(false);
-  selectedRemoveItemId = signal<string | null>(null);
+  readonly showCart = signal(false);
+  readonly showRemoveConfirm = signal(false);
+  readonly selectedRemoveItemId = signal<string | null>(null);
 
   /* ========================= Computed ========================= */
 
-  cart = this.cartService.cart;
+  readonly cart = this.cartService.cart;
   readonly cartDisplayTotal = computed(() => this.cart().items.reduce((sum, item) => sum + item.subtotal, 0));
 
   /* ========================= Cart Actions ========================= */

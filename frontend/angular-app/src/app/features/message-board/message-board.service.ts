@@ -35,8 +35,7 @@ export class MessageBoardService {
         ...current,
         messages: [message, ...current.messages]
       }));
-    } catch (error) {
-      console.error('Failed to create message', error);
+    } catch {
     }
   }
 
@@ -51,8 +50,7 @@ export class MessageBoardService {
           item._id === id ? updated : item
         )
       }));
-    } catch (error) {
-      console.error('Failed to update message', error);
+    } catch {
     }
   }
 
@@ -70,8 +68,7 @@ export class MessageBoardService {
           item._id === id ? updated : item
         )
       }));
-    } catch (error) {
-      console.error('Failed to toggle pin', error);
+    } catch {
     }
   }
 
@@ -82,8 +79,7 @@ export class MessageBoardService {
         ...current,
         messages: current.messages.filter(item => item._id !== id)
       }));
-    } catch (error) {
-      console.error('Failed to delete message', error);
+    } catch {
     }
   }
 
@@ -94,8 +90,7 @@ export class MessageBoardService {
         ...current,
         messages: []
       }));
-    } catch (error) {
-      console.error('Failed to delete all messages', error);
+    } catch {
     }
   }
 
@@ -106,8 +101,7 @@ export class MessageBoardService {
         ...current,
         messages: MessageBoardPresenter.sortByCreatedAtDesc(messages)
       }));
-    } catch (error) {
-      console.error('Failed to load messages', error);
+    } catch {
     }
   }
 }

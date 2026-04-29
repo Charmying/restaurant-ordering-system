@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { NormalHeaderComponent } from './normal-header/normal-header.component';
 
@@ -7,6 +7,7 @@ import { NormalHeaderComponent } from './normal-header/normal-header.component';
   standalone: true,
   imports: [RouterOutlet, NormalHeaderComponent],
   templateUrl: './normal-layout.component.html',
-  styleUrls: ['./normal-layout.component.scss'],
+  styleUrl: './normal-layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NormalLayoutComponent {}

@@ -2,6 +2,10 @@
   "layout": {
     "header": {
       "title": "Restaurant Ordering System"
+    },
+    "sidebar": {
+      "open": "Open menu",
+      "close": "Close menu"
     }
   },
   "common": {
@@ -12,7 +16,13 @@
     "total": "Total",
     "note": "Note",
     "notification": "Notification",
-    "ok": "OK"
+    "ok": "OK",
+    "error": "Operation failed, please try again",
+    "requiredField": "Required field",
+    "languageSelection": "Language selection",
+    "close": "Close",
+    "remove": "Remove",
+    "back": "Back"
   },
   "language": {
     "current": {
@@ -27,12 +37,14 @@
         "subtitle": "Simple. Fast. Elegant."
       },
       "entry": {
-        "customer": "Customer Ordering",
-        "customer.description": "Scan QR code to start ordering",
-        "customer.comingSoon": "Coming Soon",
-        "admin": "Admin Portal",
-        "admin.description": "Manage menus and order system",
-        "admin.comingSoon": "Coming Soon"
+        "customer": {
+          "title": "Customer Ordering",
+          "description": "Scan QR code to start ordering"
+        },
+        "admin": {
+          "title": "Admin Portal",
+          "description": "Manage menus and order system"
+        }
       }
     },
     "order": {
@@ -55,6 +67,8 @@
       "openCart": "Open shopping cart",
       "clearCart": "Clear cart",
       "removeItem": "Remove Item",
+      "decreaseQuantity": "Decrease quantity",
+      "increaseQuantity": "Increase quantity",
       "storeInfo": "Store Information",
       "removeItemConfirm": "Are you sure you want to remove this item?",
       "checkoutPage": {
@@ -115,7 +129,8 @@
         "title": "Table {{tableNumber}} QR Code",
         "subtitle": "Customers can scan this QR Code to enter ordering system",
         "copyLink": "Copy Link",
-        "downloadImage": "Download Image"
+        "downloadImage": "Download Image",
+        "imageAlt": "QR Code"
       },
       "checkout": {
         "title": "Table {{tableNumber}} Checkout",
@@ -200,7 +215,8 @@
         "required": "Required",
         "optionList": "Option List",
         "single": "Single",
-        "multiple": "Multiple"
+        "multiple": "Multiple",
+        "imagePreview": "Image preview"
       },
       "placeholders": {
         "name": "e.g. Bubble Milk Tea",
@@ -437,7 +453,8 @@
       "time": {
         "justNow": "Just now",
         "minutesAgo": "{{count}} min ago",
-        "hoursAgo": "{{count}} hr ago"
+        "hoursAgo": "{{count}} hr ago",
+        "daysAgo": "{{count}} day(s) ago"
       }
     },
     "login": {
@@ -469,6 +486,10 @@
         "reports": "Business Reports",
         "users": "User Management"
       }
+    },
+    "themeToggle": {
+      "switchToDark": "Switch to dark mode",
+      "switchToLight": "Switch to light mode"
     }
   }
 }

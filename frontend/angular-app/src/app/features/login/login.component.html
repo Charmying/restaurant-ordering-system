@@ -8,38 +8,42 @@
         {{ 'features.login.subtitle' | translate }}
       </p>
     </div>
-    <form (submit)="login(); $event.preventDefault()" class="space-y-8">
+    <form (ngSubmit)="login()" class="space-y-8">
       <div class="space-y-4">
         <div>
-          <label class="block text-sm font-medium mb-2 text-secondary">
+          <label for="login-username" class="block text-sm font-medium mb-2 text-secondary">
             {{ 'features.login.form.username' | translate }}
           </label>
-          <input type="text"
+          <input id="login-username"
+            type="text"
             class="input"
-            [(ngModel)]="username"
+            [ngModel]="username()" (ngModelChange)="username.set($event)"
             name="username"
+            autocomplete="username"
             [placeholder]="'features.login.form.usernamePlaceholder' | translate">
         </div>
         <div>
-          <label class="block text-sm font-medium mb-2 text-secondary">
+          <label for="login-password" class="block text-sm font-medium mb-2 text-secondary">
             {{ 'features.login.form.password' | translate }}
           </label>
-          <input type="password"
+          <input id="login-password"
+            type="password"
             class="input"
-            [(ngModel)]="password"
+            [ngModel]="password()" (ngModelChange)="password.set($event)"
             name="password"
+            autocomplete="current-password"
             [placeholder]="'features.login.form.passwordPlaceholder' | translate">
         </div>
-        @if (loginError) {
+        @if (loginError()) {
           <div class="badge badge-error">
-            {{ loginError | translate }}
+            {{ loginError() | translate }}
           </div>
         }
       </div>
       <button type="submit"
-        [disabled]="isSubmitting"
+        [disabled]="isSubmitting()"
         class="btn btn-primary w-full py-4 rounded-2xl">
-        @if (isSubmitting) {
+        @if (isSubmitting()) {
           {{ 'common.processing' | translate }}
         } @else {
           {{ 'features.login.form.submit' | translate }}

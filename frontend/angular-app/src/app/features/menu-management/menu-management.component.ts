@@ -1,5 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FullScreenModalComponent } from '../../core/components/full-screen-modal/full-screen-modal.component';
@@ -19,9 +18,10 @@ import { MENU_MANAGEMENT_FORM_PLACEHOLDERS } from '../../shared/constants/placeh
 @Component({
   selector: 'app-menu-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, FullScreenModalComponent, ModalComponent, LocalizedInputComponent],
+  imports: [FormsModule, TranslateModule, FullScreenModalComponent, ModalComponent, LocalizedInputComponent],
   templateUrl: './menu-management.component.html',
-  styleUrls: ['./menu-management.component.scss'],
+  styleUrl: './menu-management.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuManagementComponent {
   private readonly menuService = inject(MenuManagementService);

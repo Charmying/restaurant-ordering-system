@@ -1,5 +1,5 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
+import { DecimalPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
@@ -16,9 +16,10 @@ import { SpecialCategory } from '../../shared/constants/category.constants';
 @Component({
   selector: 'app-order',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ModalComponent],
+  imports: [FormsModule, TranslateModule, ModalComponent, DecimalPipe, NgClass, NgTemplateOutlet],
   templateUrl: './order.component.html',
-  styleUrls: ['./order.component.scss'],
+  styleUrl: './order.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderComponent {
   private readonly cartService = inject(CartService);
@@ -83,7 +84,7 @@ export class OrderComponent {
         if (!map.has(cat)) {
           map.set(cat, []);
         }
-        map.get(cat)!.push(item);
+        map.get(cat)?.push(item);
       });
     });
 
@@ -149,6 +150,10 @@ export class OrderComponent {
     }
 
     this.customization.set(state);
+  }
+
+  updateNote(note: string): void {
+    this.customization.update(s => ({ ...s, note }));
   }
 
   calculateCustomizationPrice(): number {
@@ -226,5 +231,10 @@ export class OrderComponent {
 
   decrementQuantity(): void {
     this.quantity.update(q => Math.max(1, q - 1));
+  }
+
+  onMenuCardKeydown(event: KeyboardEvent, item: MenuItem): void {
+    if (event.key === ' ') event.preventDefault();
+    if (event.key === 'Enter' || event.key === ' ') this.openCustomizeModal(item);
   }
 }

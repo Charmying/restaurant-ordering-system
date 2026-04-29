@@ -3,11 +3,11 @@
     <label [class]="getLabelClass()">
       {{ label }}
       @if (required) {
-        <span class="text-[rgb(var(--destructive))]" aria-label="required">*</span>
+        <span class="text-[rgb(var(--destructive))]" [attr.aria-label]="'common.requiredField' | translate">*</span>
       }
     </label>
   }
-  <div class="flex gap-0 border-b border-[rgb(var(--border))]" role="tablist" aria-label="language-selection">
+  <div class="flex gap-0 border-b border-[rgb(var(--border))]" role="tablist" [attr.aria-label]="'common.languageSelection' | translate">
     @for (lang of languages(); track lang) {
       <button type="button" role="tab" (click)="switchLanguage(lang)" [disabled]="disabled"
         class="min-w-fit relative outline-none"
@@ -21,12 +21,12 @@
       </button>
     }
   </div>
-  <div [class]="getInputWrapperClass()" role="group" [attr.aria-labelledby]="label ? 'input-label' : null">
+  <div [class]="getInputWrapperClass()" role="group" [attr.aria-label]="label ?? null">
     @if (inputType === 'text') {
       <input type="text" [disabled]="disabled"
         class="w-full px-4 py-2.5 bg-transparent text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] outline-none transition-colors"
         [value]="currentValue()"
-        (input)="onInputChange($any($event.target))"
+        (input)="onInputChange($event)"
         (focus)="onInputFocus()"
         (blur)="onInputBlur()"
         [placeholder]="getPlaceholder()"
@@ -39,7 +39,7 @@
       <textarea [disabled]="disabled"
         class="w-full px-4 py-2.5 bg-transparent text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] outline-none resize-none transition-colors"
         [value]="currentValue()"
-        (input)="onInputChange($any($event.target))"
+        (input)="onInputChange($event)"
         (focus)="onInputFocus()"
         (blur)="onInputBlur()"
         [placeholder]="getPlaceholder()"

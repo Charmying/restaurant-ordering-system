@@ -24,7 +24,7 @@
                 </p>
               </div>
               <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--surface-muted))]/50 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
                 </svg>
               </div>
@@ -36,12 +36,12 @@
                 <p class="text-xs font-medium text-[rgb(var(--text-secondary))]">
                   {{ 'features.tableManagement.stats.available' | translate }}
                 </p>
-                <p class="text-sm sm:text-base lg:text-lg font-bold text-green-600 dark:text-green-400 mt-0.5">
+                <p class="text-sm sm:text-base lg:text-lg font-bold text-[rgb(var(--success-text))] mt-0.5">
                   {{ tableStats().available }}
                 </p>
               </div>
-              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-green-50/80 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--success-bg))] rounded-lg flex items-center justify-center">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--success-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
@@ -53,12 +53,12 @@
                 <p class="text-xs font-medium text-[rgb(var(--text-secondary))]">
                   {{ 'features.tableManagement.stats.occupied' | translate }}
                 </p>
-                <p class="text-sm sm:text-base lg:text-lg font-bold text-orange-600 dark:text-orange-400 mt-0.5">
+                <p class="text-sm sm:text-base lg:text-lg font-bold text-[rgb(var(--warning-text))] mt-0.5">
                   {{ tableStats().occupied }}
                 </p>
               </div>
-              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-orange-50/80 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--warning-bg))] rounded-lg flex items-center justify-center">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--warning-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                 </svg>
               </div>
@@ -75,7 +75,7 @@
                 </p>
               </div>
               <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--accent))]/10 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--accent))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--accent))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"></path>
                 </svg>
               </div>
@@ -86,20 +86,24 @@
     </div>
   </header>
   <main class="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 lg:py-6">
-    <div class="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
+    <div class="grid grid-cols-1 min-[480px]:grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-3 lg:gap-4">
       @for (table of tables(); track table._id) {
         <div (click)="onTableClick(table)"
+          (keydown)="onTableKeydown($event, table)"
+          role="button"
+          tabindex="0"
+          [attr.aria-label]="getTableLabel(table)"
           class="group relative bg-[rgb(var(--surface))]/80 backdrop-blur-sm rounded-lg sm:rounded-xl p-2 sm:p-3 lg:p-4 border transition-all duration-500 hover:shadow-xl hover:scale-[1.02] cursor-pointer overflow-hidden"
           [class]="[
-            table.status === 'available' ? 'border-green-200/60 hover:border-green-300/80 hover:shadow-green-100/20' : '',
-            table.status === 'occupied' ? 'border-orange-200/60 hover:border-orange-300/80 hover:shadow-orange-100/20' : '',
+            table.status === 'available' ? 'border-[rgb(var(--success-border))]/80 hover:border-[rgb(var(--success))]/60' : '',
+            table.status === 'occupied' ? 'border-[rgb(var(--warning-border))]/80 hover:border-[rgb(var(--warning))]/60' : '',
             table.status === 'checkout' ? 'border-[rgb(var(--accent))]/30 hover:border-[rgb(var(--accent))]/50 hover:shadow-[rgb(var(--accent))]/10' : '',
             loadingTables().has(table.tableNumber) ? 'opacity-60 scale-95' : ''
           ]">
           @if (loadingTables().has(table.tableNumber)) {
             <div class="absolute inset-0 bg-[rgb(var(--surface))]/80 rounded-xl sm:rounded-2xl flex items-center justify-center z-10 backdrop-blur-md">
               <div class="flex items-center gap-2">
-                <svg class="animate-spin h-3 w-3 sm:h-4 sm:w-4 text-[rgb(var(--text-secondary))]" fill="none" viewBox="0 0 24 24">
+                <svg aria-hidden="true" class="animate-spin h-3 w-3 sm:h-4 sm:w-4 text-[rgb(var(--text-secondary))]" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
@@ -110,11 +114,11 @@
             </div>
           }
           <div class="text-center mb-3 sm:mb-4">
-            <div class="inline-flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-gradient-to-br from-[rgb(var(--surface-muted))] to-[rgb(var(--surface-muted))] rounded-lg sm:rounded-xl lg:rounded-2xl mb-1.5 sm:mb-2 lg:mb-3 relative overflow-hidden shadow-inner">
+            <div class="inline-flex items-center justify-center w-8 h-8 sm:w-12 sm:h-12 lg:w-16 lg:h-16 bg-linear-to-br from-[rgb(var(--surface-muted))] to-[rgb(var(--surface-muted))] rounded-lg sm:rounded-xl lg:rounded-2xl mb-1.5 sm:mb-2 lg:mb-3 relative overflow-hidden shadow-inner">
               <span class="text-sm sm:text-lg lg:text-xl font-bold text-[rgb(var(--text-primary))] relative z-10">
                 {{ table.tableNumber }}
               </span>
-              <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+              <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
             </div>
             <h3 class="text-sm sm:text-base lg:text-lg font-semibold text-[rgb(var(--text-primary))]">
               {{ 'features.tableManagement.table.number' | translate }} {{ table.tableNumber }}
@@ -123,8 +127,8 @@
           <div class="flex justify-center mb-3 sm:mb-4">
             <span class="px-1.5 sm:px-2 lg:px-3 py-1 sm:py-1.5 lg:py-2 rounded-full text-xs sm:text-sm font-semibold flex items-center gap-1 sm:gap-1.5 transition-all duration-300 shadow-sm"
               [class]="[
-                table.status === 'available' ? 'bg-green-50/80 dark:bg-green-900/20 text-green-700 dark:text-green-400 border border-green-200/60 dark:border-green-800/60' : '',
-                table.status === 'occupied' ? 'bg-orange-50/80 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 border border-orange-200/60 dark:border-orange-800/60' : '',
+                table.status === 'available' ? 'bg-[rgb(var(--success-bg))] text-[rgb(var(--success-text))] border border-[rgb(var(--success-border))]' : '',
+                table.status === 'occupied' ? 'bg-[rgb(var(--warning-bg))] text-[rgb(var(--warning-text))] border border-[rgb(var(--warning-border))]' : '',
                 table.status === 'checkout' ? 'bg-[rgb(var(--accent))]/10 text-[rgb(var(--accent))] border border-[rgb(var(--accent))]/30' : ''
               ]">
               <span class="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-current animate-pulse"></span>
@@ -133,13 +137,13 @@
           </div>
           <div class="space-y-1 sm:space-y-1.5 lg:space-y-2">
             @if (table.status === 'occupied') {
-              <button (click)="$event.stopPropagation(); startCheckout(table)"
+              <button type="button" (click)="$event.stopPropagation(); startCheckout(table)"
                 [disabled]="loadingTables().has(table.tableNumber)"
-                class="w-full px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 bg-orange-600 hover:bg-orange-700 disabled:bg-gray-300 text-white disabled:text-gray-500 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group text-xs sm:text-sm">
+                class="w-full px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 bg-[rgb(var(--warning))] hover:bg-[rgb(var(--warning-hover))] text-[rgb(var(--warning-contrast))] rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group text-xs sm:text-sm">
                 <span class="relative z-10">
                   @if (loadingTables().has(table.tableNumber)) {
                     <span class="inline-flex items-center justify-center gap-1.5">
-                      <svg class="animate-spin h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24">
+                      <svg aria-hidden="true" class="animate-spin h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
@@ -149,20 +153,20 @@
                     {{ 'features.tableManagement.table.actions.startCheckout' | translate }}
                   }
                 </span>
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
               </button>
             } @else if (table.status === 'checkout') {
-              <button (click)="$event.stopPropagation(); onViewCheckoutDetails(table)"
+              <button type="button" (click)="$event.stopPropagation(); onViewCheckoutDetails(table)"
                 class="w-full px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 bg-[rgb(var(--surface-muted))] hover:bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-primary))] rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-sm hover:shadow-md text-xs sm:text-sm">
                 {{ 'features.tableManagement.table.actions.viewDetails' | translate }}
               </button>
             } @else {
-              <button [disabled]="loadingTables().has(table.tableNumber)"
-                class="w-full px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 bg-green-600 hover:bg-green-700 disabled:bg-gray-300 text-white disabled:text-gray-500 rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group text-xs sm:text-sm">
+              <button type="button" [disabled]="loadingTables().has(table.tableNumber)"
+                class="w-full px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 bg-[rgb(var(--success))] hover:bg-[rgb(var(--success-hover))] text-[rgb(var(--success-contrast))] rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed relative overflow-hidden group text-xs sm:text-sm">
                 <span class="relative z-10">
                   @if (loadingTables().has(table.tableNumber)) {
                     <span class="inline-flex items-center justify-center gap-1.5">
-                      <svg class="animate-spin h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24">
+                      <svg aria-hidden="true" class="animate-spin h-3 w-3 sm:h-4 sm:w-4" fill="none" viewBox="0 0 24 24">
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                       </svg>
@@ -172,11 +176,11 @@
                     {{ 'features.tableManagement.table.actions.setToOccupied' | translate }}
                   }
                 </span>
-                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
+                <div class="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
               </button>
             }
             @if (table.status === 'occupied' && table.qrCodeImage) {
-              <button (click)="$event.stopPropagation(); onViewQRCode(table)"
+              <button type="button" (click)="$event.stopPropagation(); onViewQRCode(table)"
                 class="w-full px-2 sm:px-3 lg:px-4 py-1.5 sm:py-2 lg:py-2.5 rounded-lg sm:rounded-xl text-xs sm:text-sm font-medium bg-[rgb(var(--surface-muted))] hover:bg-[rgb(var(--surface-elevated))] text-[rgb(var(--text-secondary))] transition-all duration-300 shadow-sm hover:shadow-md">
                 {{ 'features.tableManagement.table.actions.viewQRCode' | translate }}
               </button>
@@ -200,7 +204,7 @@
     @if (tables().length === 0) {
       <div class="text-center py-8 sm:py-12 lg:py-16">
         <div class="inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 lg:w-20 lg:h-20 bg-[rgb(var(--surface-muted))] rounded-xl sm:rounded-2xl lg:rounded-3xl mb-4 sm:mb-6 lg:mb-8 shadow-inner">
-          <svg class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg aria-hidden="true" class="w-6 h-6 sm:w-8 sm:h-8 lg:w-10 lg:h-10 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
           </svg>
         </div>
@@ -215,7 +219,7 @@
   </main>
   @if (showQRModal() && selectedTable()) {
     <app-modal (close)="onCloseQRModal()" maxHeight="auto">
-      <div class="flex-shrink-0 p-3 sm:p-4 lg:p-6 border-b border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
+      <div class="shrink-0 p-3 sm:p-4 lg:p-6 border-b border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <div class="space-y-0.5">
             <h3 class="text-lg sm:text-xl lg:text-2xl font-semibold text-[rgb(var(--text-primary))]">
@@ -225,9 +229,10 @@
               {{ 'features.tableManagement.qrCode.subtitle' | translate }}
             </p>
           </div>
-          <button (click)="onCloseQRModal()"
+          <button type="button" (click)="onCloseQRModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-1.5 sm:p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all duration-200 group">
-            <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[rgb(var(--text-secondary))] group-hover:text-[rgb(var(--text-primary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-3 h-3 sm:w-4 sm:h-4 lg:w-5 lg:h-5 text-[rgb(var(--text-secondary))] group-hover:text-[rgb(var(--text-primary))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
@@ -236,7 +241,7 @@
       <div class="flex-1 overflow-y-auto min-h-0 p-3 sm:p-4 lg:p-6 text-center space-y-4 sm:space-y-6 lg:space-y-8 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
         @if (selectedTable()!.qrCodeImage) {
           <div class="bg-[rgb(var(--surface-muted))] p-3 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl lg:rounded-3xl inline-block shadow-xl">
-            <img [src]="selectedTable()!.qrCodeImage" alt="QR Code" class="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56 mx-auto rounded-lg sm:rounded-xl lg:rounded-2xl shadow-2xl">
+            <img [src]="selectedTable()!.qrCodeImage" [attr.alt]="'features.tableManagement.qrCode.imageAlt' | translate" loading="lazy" class="w-32 h-32 sm:w-40 sm:h-40 lg:w-48 lg:h-48 xl:w-56 xl:h-56 mx-auto rounded-lg sm:rounded-xl lg:rounded-2xl shadow-2xl">
           </div>
         }
         @if (selectedTable()!.qrCodeUrl) {
@@ -247,11 +252,11 @@
           </div>
         }
         <div class="flex flex-col sm:flex-row gap-1.5 sm:gap-2 lg:gap-3">
-          <button (click)="onCopyQRLink()"
-            class="flex-1 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 bg-green-600 hover:bg-green-700 text-white rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl text-xs sm:text-sm">
+          <button type="button" (click)="onCopyQRLink()"
+            class="flex-1 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 bg-[rgb(var(--success))] hover:bg-[rgb(var(--success-hover))] text-[rgb(var(--success-contrast))] rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl text-xs sm:text-sm">
             {{ 'features.tableManagement.qrCode.copyLink' | translate }}
           </button>
-          <button (click)="onDownloadQRCode()"
+          <button type="button" (click)="onDownloadQRCode()"
             class="flex-1 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 bg-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))] text-white rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl text-xs sm:text-sm">
             {{ 'features.tableManagement.qrCode.downloadImage' | translate }}
           </button>
@@ -261,7 +266,7 @@
   }
   @if (showCheckoutModal() && checkoutTable()) {
     <app-modal (close)="onCloseCheckoutModal()" maxHeight="80vh">
-      <div class="flex-shrink-0 p-4 sm:p-6 lg:p-8 border-b border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
+      <div class="shrink-0 p-4 sm:p-6 lg:p-8 border-b border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <div class="space-y-1">
             <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
@@ -271,9 +276,10 @@
               {{ 'features.tableManagement.checkout.subtitle' | translate }}
             </p>
           </div>
-          <button (click)="onCloseCheckoutModal()"
+          <button type="button" (click)="onCloseCheckoutModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-2 sm:p-2.5 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all duration-200 group">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))] group-hover:text-[rgb(var(--text-primary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))] group-hover:text-[rgb(var(--text-primary))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
@@ -323,7 +329,7 @@
         } @else {
           <div class="text-center py-16">
             <div class="inline-flex items-center justify-center w-20 h-20 bg-[rgb(var(--surface-muted))] rounded-3xl mb-6 shadow-inner">
-              <svg class="w-10 h-10 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg aria-hidden="true" class="w-10 h-10 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
               </svg>
             </div>
@@ -336,7 +342,7 @@
           </div>
         }
       </div>
-      <div class="flex-shrink-0 p-8 border-t border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
+      <div class="shrink-0 p-8 border-t border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))]/80 backdrop-blur-sm">
         @if (checkoutTable()!.orderItems && checkoutTable()!.orderItems.length > 0) {
           <div class="space-y-6">
             <div class="flex items-center justify-between">
@@ -347,12 +353,12 @@
                 {{ formatCurrency(calculateOrderTotal(checkoutTable()!.orderItems)) }}
               </span>
             </div>
-            <button (click)="onCompleteCheckout()"
+            <button type="button" (click)="onCompleteCheckout()"
               [disabled]="loadingTables().has(checkoutTable()!.tableNumber)"
-              class="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 bg-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))] disabled:bg-gray-300 text-white disabled:text-gray-500 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl disabled:cursor-not-allowed">
+              class="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 bg-[rgb(var(--accent))] hover:bg-[rgb(var(--accent-hover))] text-[rgb(var(--accent-contrast))] rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
               @if (loadingTables().has(checkoutTable()!.tableNumber)) {
                 <span class="inline-flex items-center justify-center gap-3">
-                  <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                  <svg aria-hidden="true" class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>
@@ -365,16 +371,16 @@
           </div>
         } @else {
           <div class="space-y-4">
-            <button (click)="onResumeOrdering()"
-              class="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 bg-green-600 hover:bg-green-700 text-white rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl">
+            <button type="button" (click)="onResumeOrdering()"
+              class="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 bg-[rgb(var(--success))] hover:bg-[rgb(var(--success-hover))] text-[rgb(var(--success-contrast))] rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl">
               {{ 'features.tableManagement.checkout.continueOrdering' | translate }}
             </button>
-            <button (click)="onCompleteCheckout()"
+            <button type="button" (click)="onCompleteCheckout()"
               [disabled]="loadingTables().has(checkoutTable()!.tableNumber)"
-              class="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 bg-[rgb(var(--accent))] hover:bg-[rgb(var(--accent))] disabled:bg-gray-300 text-white disabled:text-gray-500 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl disabled:cursor-not-allowed">
+              class="w-full px-4 sm:px-6 lg:px-8 py-3 sm:py-4 lg:py-5 bg-[rgb(var(--accent))] hover:bg-[rgb(var(--accent-hover))] text-[rgb(var(--accent-contrast))] rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed">
               @if (loadingTables().has(checkoutTable()!.tableNumber)) {
                 <span class="inline-flex items-center justify-center gap-3">
-                  <svg class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
+                  <svg aria-hidden="true" class="animate-spin h-5 w-5" fill="none" viewBox="0 0 24 24">
                     <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
                     <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                   </svg>

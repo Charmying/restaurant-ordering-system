@@ -1,10 +1,11 @@
 <div (click)="onBackdropClick()"
   role="dialog"
   aria-modal="true"
+  tabindex="-1"
   class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[rgba(var(--surface-overlay),var(--surface-overlay-opacity))] backdrop-blur-sm animate-fade-in">
   <div (click)="$event.stopPropagation()"
     class="card w-full sm:max-w-lg rounded-3xl overflow-hidden shadow-2xl flex flex-col animate-scale-in"
-    [style.max-height]="maxHeight">
+    [style.max-height]="maxHeight()">
     <ng-content></ng-content>
   </div>
 </div>

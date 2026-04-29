@@ -1,5 +1,5 @@
-import { Component, inject, signal, computed, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
+import { NgClass } from '@angular/common';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { firstValueFrom } from 'rxjs';
 import { ServiceCallService } from '../../../core/services/service-call.service';
@@ -11,9 +11,10 @@ type ToastType = 'info' | 'success' | 'error';
 @Component({
   selector: 'app-service-bell',
   standalone: true,
-  imports: [CommonModule, TranslateModule],
+  imports: [TranslateModule, NgClass],
   templateUrl: './service-bell.component.html',
-  styleUrls: ['./service-bell.component.scss'],
+  styleUrl: './service-bell.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServiceBellComponent implements OnDestroy {
   private readonly serviceCallService = inject(ServiceCallService);
@@ -26,16 +27,16 @@ export class ServiceBellComponent implements OnDestroy {
 
   /* ========================= State ========================= */
 
-  state = signal<BellState>('idle');
-  cooldownRemaining = signal(0);
-  toast = signal<string | null>(null);
-  toastType = signal<ToastType>('info');
+  readonly state = signal<BellState>('idle');
+  readonly cooldownRemaining = signal(0);
+  readonly toast = signal<string | null>(null);
+  readonly toastType = signal<ToastType>('info');
 
   /* ========================= Computed ========================= */
 
-  isVisible = computed(() => this.orderContext.hasValidContext());
+  readonly isVisible = computed(() => this.orderContext.hasValidContext());
 
-  buttonClass = computed(() => {
+  readonly buttonClass = computed(() => {
     switch (this.state()) {
       case 'idle':
         return 'interactive';
@@ -48,7 +49,7 @@ export class ServiceBellComponent implements OnDestroy {
     }
   });
 
-  toastClass = computed(() => {
+  readonly toastClass = computed(() => {
     switch (this.toastType()) {
       case 'success':
         return 'bg-[rgb(var(--success))] text-[rgb(var(--success-contrast))]';

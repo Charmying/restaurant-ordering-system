@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 import { useTheme } from '../../composables/use-theme';
 
 @Component({
   selector: 'app-theme-toggle',
   standalone: true,
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './theme-toggle.component.html',
-  styleUrls: ['./theme-toggle.component.scss'],
+  styleUrl: './theme-toggle.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeToggleComponent {
   protected theme = useTheme();

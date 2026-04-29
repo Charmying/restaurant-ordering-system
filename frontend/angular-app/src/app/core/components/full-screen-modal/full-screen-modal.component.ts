@@ -1,32 +1,39 @@
-import { Component, EventEmitter, HostListener, Input, Output, HostBinding, OnInit, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnDestroy, OnInit, inject, input, output, ChangeDetectionStrategy } from '@angular/core';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-full-screen-modal',
   standalone: true,
-  imports: [],
+  imports: [TranslateModule],
   templateUrl: './full-screen-modal.component.html',
-  styleUrls: ['./full-screen-modal.component.scss'],
+  styleUrl: './full-screen-modal.component.scss',
   host: {
     '[class.fsm-open]': 'true',
+    '[style.position]': '"fixed"',
+    '[style.inset]': '"0"',
+    '[style.z-index]': '"9999"',
   },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FullScreenModalComponent implements OnInit, OnDestroy {
-  @Input() title: string = '';
-  @Input() showBackButton: boolean = true;
-  @Input() closeOnBackdropClick: boolean = true;
-  @Input() showFooterDivider: boolean = true;
-  @Input() showAnimations: boolean = true;
-  @Output() close = new EventEmitter<void>();
+export class FullScreenModalComponent implements OnInit, AfterViewInit, OnDestroy {
+  readonly title = input<string>('');
+  readonly showBackButton = input<boolean>(true);
+  readonly closeOnBackdropClick = input<boolean>(true);
+  readonly showFooterDivider = input<boolean>(true);
+  readonly showAnimations = input<boolean>(true);
+  readonly close = output<void>();
 
-  @HostBinding('style.position') position = 'fixed';
-  @HostBinding('style.inset') inset = '0';
-  @HostBinding('style.z-index') zIndex = '9999';
-
+  private readonly el = inject(ElementRef);
   private previousActiveElement: Element | null = null;
 
   ngOnInit() {
     this.previousActiveElement = document.activeElement;
     document.body.style.overflow = 'hidden';
+  }
+
+  ngAfterViewInit() {
+    const dialog = this.el.nativeElement.querySelector('[role="dialog"]') as HTMLElement | null;
+    dialog?.focus();
   }
 
   ngOnDestroy() {
@@ -38,7 +45,7 @@ export class FullScreenModalComponent implements OnInit, OnDestroy {
   }
 
   onBackdropClick() {
-    if (this.closeOnBackdropClick) {
+    if (this.closeOnBackdropClick()) {
       this.close.emit();
     }
   }

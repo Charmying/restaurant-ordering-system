@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterOutlet } from '@angular/router';
@@ -10,7 +10,8 @@ import { OrderContextService } from '../../features/order/order-context.service'
   standalone: true,
   imports: [RouterOutlet, OrderHeaderComponent],
   templateUrl: './order-layout.component.html',
-  styleUrls: ['./order-layout.component.scss'],
+  styleUrl: './order-layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OrderLayoutComponent {
   private readonly route = inject(ActivatedRoute);

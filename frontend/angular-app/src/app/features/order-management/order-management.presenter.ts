@@ -38,7 +38,7 @@ export class OrderManagementPresenter {
     return item.price * item.quantity;
   }
 
-  static isArray(value: any): boolean {
+  static isArray(value: unknown): boolean {
     return Array.isArray(value);
   }
 }

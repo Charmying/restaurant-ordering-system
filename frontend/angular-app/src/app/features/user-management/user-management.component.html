@@ -12,7 +12,7 @@
             </p>
           </div>
           @if (canManageUsers()) {
-            <button (click)="openAddUserModal()"
+            <button type="button" (click)="openAddUserModal()"
               class="px-4 py-2 bg-[rgb(var(--accent))] text-white rounded-lg sm:rounded-xl hover:bg-[rgb(var(--accent))]/90 transition-all text-sm font-semibold shadow-md">
               {{ 'features.userManagement.actions.add' | translate }}
             </button>
@@ -30,7 +30,7 @@
                 </p>
               </div>
               <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--surface-muted))]/50 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11c1.657 0 3-1.343 3-3S13.657 5 12 5s-3 1.343-3 3 1.343 3 3 3zm0 2c-2.761 0-5 1.567-5 3.5V19h10v-2.5c0-1.933-2.239-3.5-5-3.5z"></path>
                 </svg>
               </div>
@@ -46,8 +46,8 @@
                   {{ stats().managers }}
                 </p>
               </div>
-              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-green-100 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--success-bg))] rounded-lg flex items-center justify-center">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--success-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M12 6a6 6 0 100 12 6 6 0 000-12z"></path>
                 </svg>
               </div>
@@ -63,8 +63,8 @@
                   {{ stats().employees }}
                 </p>
               </div>
-              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--info-bg))] rounded-lg flex items-center justify-center">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--info-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 10a4 4 0 108 0 4 4 0 00-8 0zm-4 10c0-3.314 2.686-6 6-6h4c3.314 0 6 2.686 6 6"></path>
                 </svg>
               </div>
@@ -78,14 +78,14 @@
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       @for (user of users(); track user._id) {
         <div class="bg-[rgb(var(--surface))] border border-[rgb(var(--border))]/60 rounded-2xl p-5 sm:p-6 space-y-4"
-          [class.border-blue-400]="user._id === currentUser()._id">
+          [style.border-color]="user._id === currentUser()._id ? 'rgb(var(--info))' : null">
           <div>
             <div class="flex items-center gap-2">
               <h3 class="text-base sm:text-lg font-semibold text-[rgb(var(--text-primary))]">
                 {{ user.username }}
               </h3>
               @if (user._id === currentUser()._id) {
-                <span class="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-xs font-medium">
+                <span class="px-2 py-0.5 bg-[rgb(var(--info-bg))] text-[rgb(var(--info-text))] rounded text-xs font-medium">
                   {{ 'features.userManagement.badges.me' | translate }}
                 </span>
               }
@@ -97,19 +97,19 @@
           @if (canEditUsername(user) || canChangePassword(user) || canDeleteUser(user)) {
             <div class="space-y-2">
               @if (canEditUsername(user)) {
-                <button (click)="openEditUsernameModal(user)"
+                <button type="button" (click)="openEditUsernameModal(user)"
                   class="w-full px-4 py-2 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl hover:bg-[rgb(var(--surface-elevated))] transition-all text-sm font-medium">
                   {{ 'features.userManagement.actions.editUsername' | translate }}
                 </button>
               }
               @if (canChangePassword(user)) {
-                <button (click)="openChangePasswordModal(user)"
-                  class="w-full px-4 py-2 bg-blue-100 text-blue-600 rounded-xl hover:bg-blue-200 transition-all text-sm font-medium">
+                <button type="button" (click)="openChangePasswordModal(user)"
+                  class="w-full px-4 py-2 bg-[rgb(var(--info-bg))] text-[rgb(var(--info-text))] rounded-xl hover:opacity-80 transition-smooth text-sm font-medium">
                   {{ 'features.userManagement.actions.changePassword' | translate }}
                 </button>
               }
               @if (canDeleteUser(user)) {
-                <button (click)="deleteUser(user)"
+                <button type="button" (click)="deleteUser(user)"
                   class="w-full px-4 py-2 bg-[rgb(var(--destructive-bg))] text-[rgb(var(--destructive))] rounded-xl hover:opacity-80 transition-smooth text-sm font-medium">
                   {{ 'features.userManagement.actions.delete' | translate }}
                 </button>
@@ -125,44 +125,47 @@
       </div>
     }
   </main>
-  @if (showAddUserModal) {
+  @if (showAddUserModal()) {
     <app-modal (close)="closeAddUserModal()" maxHeight="auto">
       <div class="p-6 sm:p-8 space-y-6 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
             {{ 'features.userManagement.modal.addTitle' | translate }}
           </h3>
-          <button (click)="closeAddUserModal()"
+          <button type="button" (click)="closeAddUserModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-1.5 sm:p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
+            <label for="add-username" class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
               {{ 'features.userManagement.form.username' | translate }}
             </label>
-            <input type="text"
+            <input id="add-username" type="text"
               class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+              autocomplete="username"
               [(ngModel)]="userForm.username"
               [placeholder]="'features.userManagement.form.usernamePlaceholder' | translate">
           </div>
           <div>
-            <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
+            <label for="add-password" class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
               {{ 'features.userManagement.form.password' | translate }}
             </label>
-            <input type="password"
+            <input id="add-password" type="password"
               class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+              autocomplete="new-password"
               [(ngModel)]="userForm.password"
               [placeholder]="'features.userManagement.form.passwordPlaceholder' | translate">
           </div>
           <div>
-            <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
+            <label for="add-role" class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
               {{ 'features.userManagement.form.role' | translate }}
             </label>
-            <select class="no-arrow-select w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+            <select id="add-role" class="no-arrow-select w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
               [(ngModel)]="userForm.role">
               @for (role of availableRoles; track role) {
                 <option [value]="role">
@@ -173,11 +176,11 @@
           </div>
         </div>
         <div class="flex gap-3">
-          <button (click)="closeAddUserModal()"
+          <button type="button" (click)="closeAddUserModal()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl hover:bg-[rgb(var(--surface-elevated))] transition-all font-semibold">
             {{ 'features.userManagement.actions.cancel' | translate }}
           </button>
-          <button (click)="saveUser()"
+          <button type="button" (click)="saveUser()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--accent))] text-white rounded-xl hover:bg-[rgb(var(--accent))]/90 transition-all font-semibold shadow-md">
             {{ 'features.userManagement.actions.save' | translate }}
           </button>
@@ -185,44 +188,47 @@
       </div>
     </app-modal>
   }
-  @if (showChangePasswordModal) {
+  @if (showChangePasswordModal()) {
     <app-modal (close)="closeChangePasswordModal()" maxHeight="auto">
       <div class="p-6 sm:p-8 space-y-6 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
             {{ 'features.userManagement.modal.changePasswordTitle' | translate }}
           </h3>
-          <button (click)="closeChangePasswordModal()"
+          <button type="button" (click)="closeChangePasswordModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-1.5 sm:p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
         <div>
-          <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
+          <label for="current-password" class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
             {{ 'features.userManagement.form.currentPassword' | translate }}
           </label>
-          <input type="password"
+          <input id="current-password" type="password"
             class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+            autocomplete="current-password"
             [(ngModel)]="changePasswordForm.currentPassword"
             [placeholder]="'features.userManagement.form.currentPasswordPlaceholder' | translate">
         </div>
         <div>
-          <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
+          <label for="new-password" class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
             {{ 'features.userManagement.form.newPassword' | translate }}
           </label>
-          <input type="password"
+          <input id="new-password" type="password"
             class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+            autocomplete="new-password"
             [(ngModel)]="changePasswordForm.newPassword"
             [placeholder]="'features.userManagement.form.newPasswordPlaceholder' | translate">
         </div>
         <div class="flex gap-3">
-          <button (click)="closeChangePasswordModal()"
+          <button type="button" (click)="closeChangePasswordModal()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl hover:bg-[rgb(var(--surface-elevated))] transition-all font-semibold">
             {{ 'features.userManagement.actions.cancel' | translate }}
           </button>
-          <button (click)="changePassword()"
+          <button type="button" (click)="changePassword()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--accent))] text-white rounded-xl hover:bg-[rgb(var(--accent))]/90 transition-all font-semibold shadow-md">
             {{ 'features.userManagement.actions.confirm' | translate }}
           </button>
@@ -230,35 +236,37 @@
       </div>
     </app-modal>
   }
-  @if (showEditUsernameModal) {
+  @if (showEditUsernameModal()) {
     <app-modal (close)="closeEditUsernameModal()" maxHeight="auto">
       <div class="p-6 sm:p-8 space-y-6 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
             {{ 'features.userManagement.modal.editUsernameTitle' | translate }}
           </h3>
-          <button (click)="closeEditUsernameModal()"
+          <button type="button" (click)="closeEditUsernameModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-1.5 sm:p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
         <div>
-          <label class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
+          <label for="edit-username" class="block text-sm font-medium text-[rgb(var(--text-secondary))] mb-2">
             {{ 'features.userManagement.form.username' | translate }}
           </label>
-          <input type="text"
+          <input id="edit-username" type="text"
             class="w-full px-4 py-3 rounded-xl border border-[rgb(var(--border))] bg-[rgb(var(--surface))] text-[rgb(var(--text-primary))] placeholder-[rgb(var(--text-secondary))] focus:outline-none focus:ring-2 focus:ring-[rgb(var(--accent))]"
+            autocomplete="username"
             [(ngModel)]="editUsernameForm.username"
             [placeholder]="'features.userManagement.form.usernamePlaceholder' | translate">
         </div>
         <div class="flex gap-3">
-          <button (click)="closeEditUsernameModal()"
+          <button type="button" (click)="closeEditUsernameModal()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl hover:bg-[rgb(var(--surface-elevated))] transition-all font-semibold">
             {{ 'features.userManagement.actions.cancel' | translate }}
           </button>
-          <button (click)="saveUsername()"
+          <button type="button" (click)="saveUsername()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--accent))] text-white rounded-xl hover:bg-[rgb(var(--accent))]/90 transition-all font-semibold shadow-md">
             {{ 'features.userManagement.actions.save' | translate }}
           </button>
@@ -267,16 +275,17 @@
     </app-modal>
   }
 </div>
-  @if (showDeleteModal) {
+  @if (showDeleteModal()) {
     <app-modal (close)="closeDeleteModal()" maxHeight="auto">
       <div class="p-6 sm:p-8 space-y-6 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
             {{ 'features.userManagement.modal.deleteTitle' | translate }}
           </h3>
-          <button (click)="closeDeleteModal()"
+          <button type="button" (click)="closeDeleteModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-1.5 sm:p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
@@ -285,11 +294,11 @@
           {{ 'features.userManagement.confirmDelete' | translate: { username: userToDelete?.username } }}
         </p>
         <div class="flex gap-3">
-          <button (click)="closeDeleteModal()"
+          <button type="button" (click)="closeDeleteModal()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--surface-muted))] text-[rgb(var(--text-primary))] rounded-xl hover:bg-[rgb(var(--surface-elevated))] transition-all font-semibold">
             {{ 'features.userManagement.actions.cancel' | translate }}
           </button>
-          <button (click)="confirmDelete()"
+          <button type="button" (click)="confirmDelete()"
             class="flex-1 px-4 py-3 bg-[rgb(var(--destructive))] text-white rounded-xl hover:opacity-90 transition-all font-semibold">
             {{ 'features.userManagement.actions.delete' | translate }}
           </button>
@@ -297,25 +306,26 @@
       </div>
     </app-modal>
   }
-  @if (showAlertModal) {
+  @if (showAlertModal()) {
     <app-modal (close)="closeAlertModal()" maxHeight="auto">
       <div class="p-6 sm:p-8 space-y-6 bg-[rgb(var(--surface))]/60 backdrop-blur-sm">
         <div class="flex items-center justify-between">
           <h3 class="text-xl sm:text-2xl font-semibold text-[rgb(var(--text-primary))]">
             {{ 'common.notification' | translate }}
           </h3>
-          <button (click)="closeAlertModal()"
+          <button type="button" (click)="closeAlertModal()"
+            [attr.aria-label]="'common.close' | translate"
             class="p-1.5 sm:p-2 rounded-full hover:bg-[rgb(var(--surface-muted))] transition-all">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-[rgb(var(--text-secondary))]" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
             </svg>
           </button>
         </div>
         <p class="text-sm text-[rgb(var(--text-secondary))]">
-          {{ alertMessage }}
+          {{ alertMessage() }}
         </p>
         <div class="flex justify-end">
-          <button (click)="closeAlertModal()"
+          <button type="button" (click)="closeAlertModal()"
             class="px-6 py-3 bg-[rgb(var(--accent))] text-white rounded-xl hover:bg-[rgb(var(--accent))]/90 transition-all font-semibold shadow-md">
             {{ 'common.ok' | translate }}
           </button>

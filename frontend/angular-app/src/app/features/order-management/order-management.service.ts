@@ -53,8 +53,7 @@ export class OrderManagementService {
         pendingOrders: this.sortByCreatedAt(pending.map(order => this.normalizeOrder(order))),
         servedOrders: this.sortByCreatedAt(served.map(order => this.normalizeOrder(order)))
       }));
-    } catch (error) {
-      console.error('Failed to load orders', error);
+    } catch {
     }
   }
 
@@ -68,8 +67,7 @@ export class OrderManagementService {
         pendingOrders: current.pendingOrders.filter(item => item._id !== order._id),
         servedOrders: [normalized, ...current.servedOrders]
       }));
-    } catch (error) {
-      console.error('Failed to serve order', error);
+    } catch {
     }
   }
 

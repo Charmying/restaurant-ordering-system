@@ -1,4 +1,4 @@
-import { Component, inject, signal, computed, OnInit, OnDestroy, ElementRef, HostListener, DestroyRef } from '@angular/core';
+import { Component, inject, signal, computed, OnInit, OnDestroy, ElementRef, HostListener, DestroyRef, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { firstValueFrom } from 'rxjs';
@@ -10,7 +10,8 @@ import { EventsWsService } from '../../../services/events-ws.service';
   standalone: true,
   imports: [TranslateModule],
   templateUrl: './service-call-notification.component.html',
-  styleUrls: ['./service-call-notification.component.scss'],
+  styleUrl: './service-call-notification.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ServiceCallNotificationComponent implements OnInit, OnDestroy {
   private readonly serviceCallService = inject(ServiceCallService);
@@ -23,14 +24,14 @@ export class ServiceCallNotificationComponent implements OnInit, OnDestroy {
 
   /* ========================= State ========================= */
 
-  isOpen = signal(false);
-  isRinging = signal(false);
-  pendingCalls = signal<ServiceCallResponse[]>([]);
-  handlingId = signal<string | null>(null);
+  readonly isOpen = signal(false);
+  readonly isRinging = signal(false);
+  readonly pendingCalls = signal<ServiceCallResponse[]>([]);
+  readonly handlingId = signal<string | null>(null);
 
   /* ========================= Computed ========================= */
 
-  pendingCount = computed(() => this.pendingCalls().length);
+  readonly pendingCount = computed(() => this.pendingCalls().length);
 
   /* ========================= Lifecycle ========================= */
 
@@ -72,8 +73,8 @@ export class ServiceCallNotificationComponent implements OnInit, OnDestroy {
     try {
       await firstValueFrom(this.serviceCallService.handle(id));
       this.pendingCalls.update((calls) => calls.filter((c) => c._id !== id));
-    } catch (err) {
-      console.error('Failed to handle service call', err);
+    } catch {
+      // error handled by API layer
     } finally {
       this.handlingId.set(null);
     }
@@ -85,8 +86,10 @@ export class ServiceCallNotificationComponent implements OnInit, OnDestroy {
 
     if (mins < 1) return this.translate.instant('features.serviceCallNotification.time.justNow');
     if (mins < 60) return this.translate.instant('features.serviceCallNotification.time.minutesAgo', { count: mins });
-    return this.translate.instant('features.serviceCallNotification.time.hoursAgo', {
-      count: Math.floor(mins / 60),
+    const hours = Math.floor(mins / 60);
+    if (hours < 24) return this.translate.instant('features.serviceCallNotification.time.hoursAgo', { count: hours });
+    return this.translate.instant('features.serviceCallNotification.time.daysAgo', {
+      count: Math.floor(hours / 24),
     });
   }
 
@@ -96,8 +99,8 @@ export class ServiceCallNotificationComponent implements OnInit, OnDestroy {
     try {
       const calls = await firstValueFrom(this.serviceCallService.findPending());
       this.pendingCalls.set(calls);
-    } catch (err) {
-      console.error('Failed to load pending service calls', err);
+    } catch {
+      // error handled by API layer
     }
   }
 

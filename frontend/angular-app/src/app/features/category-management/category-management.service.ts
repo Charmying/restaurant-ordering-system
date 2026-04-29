@@ -39,8 +39,7 @@ export class CategoryManagementService {
         ...current,
         categories: Array.isArray(result) ? result : categories
       }));
-    } catch (error) {
-      console.error('Failed to update categories', error);
+    } catch {
       this.state.update(current => ({
         ...current,
         categories: previous
@@ -57,8 +56,7 @@ export class CategoryManagementService {
         ...current,
         categories: Array.isArray(result) ? result : []
       }));
-    } catch (error) {
-      console.error('Failed to load categories', error);
+    } catch {
     }
   }
 

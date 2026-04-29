@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { MessageBoardService } from './message-board.service';
@@ -10,9 +10,10 @@ import { ModalComponent } from '../../core/components/modal/modal.component';
 @Component({
   selector: 'app-message-board',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ModalComponent],
+  imports: [FormsModule, TranslateModule, ModalComponent, DatePipe],
   templateUrl: './message-board.component.html',
-  styleUrls: ['./message-board.component.scss'],
+  styleUrl: './message-board.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MessageBoardComponent {
   private readonly messageService = inject(MessageBoardService);
@@ -25,11 +26,11 @@ export class MessageBoardComponent {
   readonly unpinnedMessages = this.messageService.unpinnedMessages;
   readonly stats = this.messageService.stats;
 
-  messageContent = '';
-  editingMessage: MessageBoardItem | null = null;
-  showDeleteModal = false;
-  showDeleteAllModal = false;
-  messageToDelete: MessageBoardItem | null = null;
+  readonly messageContent = signal('');
+  readonly editingMessage = signal<MessageBoardItem | null>(null);
+  readonly showDeleteModal = signal(false);
+  readonly showDeleteAllModal = signal(false);
+  readonly messageToDelete = signal<MessageBoardItem | null>(null);
 
   private get isAuthenticated(): boolean {
     return !!this.authService.user();
@@ -38,29 +39,30 @@ export class MessageBoardComponent {
   /* ========================= Actions ========================= */
 
   sendMessage(): void {
-    const content = this.messageContent.trim();
+    const content = this.messageContent().trim();
     if (!content) return;
     if (!this.isAuthenticated) return;
 
-    if (this.editingMessage) {
-      this.messageService.updateMessage(this.editingMessage._id, content);
-      this.messageContent = '';
-      this.editingMessage = null;
+    const editingMsg = this.editingMessage();
+    if (editingMsg) {
+      this.messageService.updateMessage(editingMsg._id, content);
+      this.messageContent.set('');
+      this.editingMessage.set(null);
       return;
     }
 
     this.messageService.createMessage(content);
-    this.messageContent = '';
+    this.messageContent.set('');
   }
 
   editMessage(message: MessageBoardItem): void {
-    this.editingMessage = message;
-    this.messageContent = message.content;
+    this.editingMessage.set(message);
+    this.messageContent.set(message.content);
   }
 
   cancelEdit(): void {
-    this.editingMessage = null;
-    this.messageContent = '';
+    this.editingMessage.set(null);
+    this.messageContent.set('');
   }
 
   togglePinMessage(message: MessageBoardItem): void {
@@ -68,24 +70,25 @@ export class MessageBoardComponent {
   }
 
   deleteMessage(message: MessageBoardItem): void {
-    this.messageToDelete = message;
-    this.showDeleteModal = true;
+    this.messageToDelete.set(message);
+    this.showDeleteModal.set(true);
   }
 
   confirmDelete(): void {
-    if (this.messageToDelete) {
-      this.messageService.deleteMessage(this.messageToDelete._id);
+    const toDelete = this.messageToDelete();
+    if (toDelete) {
+      this.messageService.deleteMessage(toDelete._id);
     }
     this.closeDeleteModal();
   }
 
   closeDeleteModal(): void {
-    this.showDeleteModal = false;
-    this.messageToDelete = null;
+    this.showDeleteModal.set(false);
+    this.messageToDelete.set(null);
   }
 
   deleteAllMessages(): void {
-    this.showDeleteAllModal = true;
+    this.showDeleteAllModal.set(true);
   }
 
   confirmDeleteAll(): void {
@@ -94,6 +97,6 @@ export class MessageBoardComponent {
   }
 
   closeDeleteAllModal(): void {
-    this.showDeleteAllModal = false;
+    this.showDeleteAllModal.set(false);
   }
 }

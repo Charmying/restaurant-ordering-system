@@ -26,8 +26,7 @@ export class UserManagementService {
         ...current,
         users
       }));
-    } catch (error) {
-      console.error('Failed to load users', error);
+    } catch {
     }
   }
 
@@ -43,8 +42,7 @@ export class UserManagementService {
         users: [user, ...current.users]
       }));
       return user;
-    } catch (error) {
-      console.error('Failed to create user', error);
+    } catch {
       return null;
     }
   }
@@ -56,13 +54,11 @@ export class UserManagementService {
         ...current,
         users: current.users.filter(user => user._id !== id)
       }));
-    } catch (error) {
-      console.error('Failed to delete user', error);
+    } catch {
     }
   }
 
   async updateUsername(_id: string, _username: string): Promise<boolean> {
-    console.warn('Backend does not support username updates yet.');
     return false;
   }
 
@@ -73,8 +69,7 @@ export class UserManagementService {
         newPassword: form.newPassword
       }));
       return true;
-    } catch (error) {
-      console.error('Failed to change password', error);
+    } catch {
       return false;
     }
   }

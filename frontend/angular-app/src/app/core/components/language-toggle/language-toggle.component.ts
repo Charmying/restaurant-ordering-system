@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
 import { TranslateModule } from '@ngx-translate/core';
 import { LanguageService } from '../../services';
 
@@ -7,7 +7,8 @@ import { LanguageService } from '../../services';
   standalone: true,
   imports: [TranslateModule],
   templateUrl: './language-toggle.component.html',
-  styleUrls: ['./language-toggle.component.scss'],
+  styleUrl: './language-toggle.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LanguageToggleComponent {
   protected lang = inject(LanguageService);

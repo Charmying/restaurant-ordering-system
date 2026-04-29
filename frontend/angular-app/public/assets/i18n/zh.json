@@ -2,6 +2,10 @@
   "layout": {
     "header": {
       "title": "餐廳點餐系統"
+    },
+    "sidebar": {
+      "open": "開啟選單",
+      "close": "關閉選單"
     }
   },
   "common": {
@@ -12,7 +16,13 @@
     "total": "總計",
     "note": "備註",
     "notification": "通知",
-    "ok": "確定"
+    "ok": "確定",
+    "error": "操作失敗，請稍後再試",
+    "requiredField": "必填欄位",
+    "languageSelection": "語言選擇",
+    "close": "關閉",
+    "remove": "移除",
+    "back": "返回"
   },
   "language": {
     "current": {
@@ -27,12 +37,14 @@
         "subtitle": "簡單、快速、優雅"
       },
       "entry": {
-        "customer": "顧客點餐",
-        "customer.description": "掃描 QR Code 開始點餐",
-        "customer.comingSoon": "即將推出",
-        "admin": "管理後台",
-        "admin.description": "管理菜單與訂單系統",
-        "admin.comingSoon": "即將推出"
+        "customer": {
+          "title": "顧客點餐",
+          "description": "掃描 QR Code 開始點餐"
+        },
+        "admin": {
+          "title": "管理後台",
+          "description": "管理菜單與訂單系統"
+        }
       }
     },
     "order": {
@@ -55,6 +67,8 @@
       "openCart": "開啟購物車",
       "clearCart": "清空購物車",
       "removeItem": "移除項目",
+      "decreaseQuantity": "減少數量",
+      "increaseQuantity": "增加數量",
       "storeInfo": "店家資訊",
       "removeItemConfirm": "您確定要移除此項目嗎？",
       "checkoutPage": {
@@ -115,7 +129,8 @@
         "title": "桌號 {{tableNumber}} QR Code",
         "subtitle": "顧客可掃描此 QR Code 進入點餐系統",
         "copyLink": "複製連結",
-        "downloadImage": "下載圖片"
+        "downloadImage": "下載圖片",
+        "imageAlt": "QR Code"
       },
       "checkout": {
         "title": "桌號 {{tableNumber}} 結帳",
@@ -200,7 +215,8 @@
         "required": "必選",
         "optionList": "選項列表",
         "single": "單選",
-        "multiple": "多選"
+        "multiple": "多選",
+        "imagePreview": "圖片預覽"
       },
       "placeholders": {
         "name": "例：珍珠奶茶",
@@ -437,7 +453,8 @@
       "time": {
         "justNow": "剛剛",
         "minutesAgo": "{{count}} 分鐘前",
-        "hoursAgo": "{{count}} 小時前"
+        "hoursAgo": "{{count}} 小時前",
+        "daysAgo": "{{count}} 天前"
       }
     },
     "login": {
@@ -469,6 +486,10 @@
         "reports": "營業報表",
         "users": "使用者管理"
       }
+    },
+    "themeToggle": {
+      "switchToDark": "切換深色模式",
+      "switchToLight": "切換淺色模式"
     }
   }
 }

@@ -68,8 +68,7 @@ export class AuthService {
       const raw = localStorage.getItem(this.USER_KEY);
       if (!raw) return null;
       return JSON.parse(raw) as AuthUser;
-    } catch (error) {
-      console.warn('[Auth] Failed to parse stored user', error);
+    } catch {
       return null;
     }
   }

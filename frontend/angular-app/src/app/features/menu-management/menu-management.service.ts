@@ -90,8 +90,7 @@ export class MenuManagementService {
       }));
       this.categoryService.refreshCategories();
       return { success: true };
-    } catch (error) {
-      console.error('Failed to save menu item:', error);
+    } catch {
       return { success: false, error: 'common.error' };
     }
   }
@@ -105,8 +104,7 @@ export class MenuManagementService {
       }));
       this.categoryService.refreshCategories();
       return { success: true };
-    } catch (error) {
-      console.error('Failed to delete menu item:', error);
+    } catch {
       return { success: false, error: 'common.error' };
     }
   }
@@ -118,8 +116,7 @@ export class MenuManagementService {
         ...current,
         menuItems: items,
       }));
-    } catch (error) {
-      console.error('Failed to load menu items', error);
+    } catch {
     }
   }
 

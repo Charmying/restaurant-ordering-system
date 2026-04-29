@@ -1,5 +1,4 @@
-import { Component, Input, Output, EventEmitter, forwardRef, signal, computed, effect } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input, forwardRef, signal, computed, effect, output, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { TranslateModule } from '@ngx-translate/core';
 import { LocalizedString, SupportedLanguage, SUPPORTED_LANGUAGES, LANGUAGE_LABELS } from '../../types/i18n.types';
@@ -9,9 +8,9 @@ import { useTheme } from '../../../core/composables/use-theme';
 @Component({
   selector: 'app-localized-input',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule],
+  imports: [FormsModule, TranslateModule],
   templateUrl: './localized-input.component.html',
-  styleUrls: ['./localized-input.component.scss'],
+  styleUrl: './localized-input.component.scss',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -19,6 +18,7 @@ import { useTheme } from '../../../core/composables/use-theme';
       multi: true,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LocalizedInputComponent implements ControlValueAccessor {
   protected readonly theme = useTheme();
@@ -35,9 +35,9 @@ export class LocalizedInputComponent implements ControlValueAccessor {
   @Input() errorMessage: string | null = null;
   @Input() maxLength: number | null = null;
 
-  @Output() valueChange = new EventEmitter<LocalizedString>();
-  @Output() blur = new EventEmitter<void>();
-  @Output() focus = new EventEmitter<void>();
+  readonly valueChange = output<LocalizedString>();
+  readonly blur = output<void>();
+  readonly focus = output<void>();
 
   /* ========================= State ========================= */
 
@@ -128,7 +128,8 @@ export class LocalizedInputComponent implements ControlValueAccessor {
     }
   }
 
-  protected onInputChange(target: HTMLInputElement | HTMLTextAreaElement): void {
+  protected onInputChange(event: Event): void {
+    const target = event.target as HTMLInputElement | HTMLTextAreaElement;
     const newValue = target.value;
     const updated = { ...this.value(), [this.activeTab()]: newValue };
     this.value.set(updated);

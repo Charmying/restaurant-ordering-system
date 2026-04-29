@@ -24,7 +24,7 @@
                 </p>
               </div>
               <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--surface-muted))]/50 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--text-secondary))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 12h14M5 16h14"></path>
                 </svg>
               </div>
@@ -36,12 +36,12 @@
                 <p class="text-xs font-medium text-[rgb(var(--text-secondary))]">
                   {{ 'features.orderManagement.stats.pending' | translate }}
                 </p>
-                <p class="text-sm sm:text-base lg:text-lg font-bold text-orange-600 dark:text-orange-400 mt-0.5">
+                <p class="text-sm sm:text-base lg:text-lg font-bold text-[rgb(var(--warning-text))] mt-0.5">
                   {{ orderStats().pending }}
                 </p>
               </div>
-              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-orange-50/80 dark:bg-orange-900/20 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--warning-bg))] rounded-lg flex items-center justify-center">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--warning-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v6l4 2"></path>
                 </svg>
               </div>
@@ -53,12 +53,12 @@
                 <p class="text-xs font-medium text-[rgb(var(--text-secondary))]">
                   {{ 'features.orderManagement.stats.served' | translate }}
                 </p>
-                <p class="text-sm sm:text-base lg:text-lg font-bold text-green-600 dark:text-green-400 mt-0.5">
+                <p class="text-sm sm:text-base lg:text-lg font-bold text-[rgb(var(--success-text))] mt-0.5">
                   {{ orderStats().served }}
                 </p>
               </div>
-              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-green-50/80 dark:bg-green-900/20 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--success-bg))] rounded-lg flex items-center justify-center">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--success-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path>
                 </svg>
               </div>
@@ -75,7 +75,7 @@
                 </p>
               </div>
               <div class="w-4 h-4 sm:w-6 sm:h-6 lg:w-8 lg:h-8 bg-[rgb(var(--accent))]/10 rounded-lg flex items-center justify-center">
-                <svg class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--accent))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg aria-hidden="true" class="w-2 h-2 sm:w-3 sm:h-3 lg:w-4 lg:h-4 text-[rgb(var(--accent))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8V6m0 10v2"></path>
                 </svg>
               </div>
@@ -97,7 +97,7 @@
               {{ orderStats().pending }} {{ 'features.orderManagement.stats.pending' | translate }}
             </p>
           </div>
-          <span class="px-2.5 py-1 text-orange-700 dark:text-orange-400 rounded-full text-xs font-semibold border border-orange-200/60 dark:border-orange-800/60">
+          <span class="px-2.5 py-1 text-[rgb(var(--warning-text))] rounded-full text-xs font-semibold border border-[rgb(var(--warning-border))]">
             {{ pendingOrders().length }}
           </span>
         </div>
@@ -113,7 +113,7 @@
                     {{ order.createdAt | date:'HH:mm' }}
                   </p>
                 </div>
-                <span class="px-2 py-1 bg-orange-50/80 dark:bg-orange-900/20 text-orange-700 dark:text-orange-400 rounded-full text-xs font-semibold">
+                <span class="px-2 py-1 bg-[rgb(var(--warning-bg))] text-[rgb(var(--warning-text))] rounded-full text-xs font-semibold">
                   {{ 'features.orderManagement.status.pending' | translate }}
                 </span>
               </div>
@@ -144,7 +144,7 @@
                 <span class="text-sm font-semibold text-[rgb(var(--text-primary))]">
                   {{ 'common.total' | translate }} {{ formatCurrency(order.total) }}
                 </span>
-                <button (click)="onServeOrder(order)"
+                <button type="button" (click)="onServeOrder(order)"
                   class="px-4 py-2 bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] rounded-lg text-xs sm:text-sm font-semibold transition-all duration-300 hover:shadow-lg active:scale-[0.98]">
                   {{ 'features.orderManagement.actions.serve' | translate }}
                 </button>
@@ -154,8 +154,8 @@
         </div>
         @if (!pendingOrders().length) {
           <div class="text-center py-8 sm:py-10">
-            <div class="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-orange-50/80 dark:bg-orange-900/20 rounded-xl mb-3">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--warning-bg))] rounded-xl mb-3">
+              <svg aria-hidden="true" class="w-5 h-5 sm:w-6 sm:h-6 text-[rgb(var(--warning-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3"></path>
               </svg>
             </div>
@@ -175,7 +175,7 @@
               {{ orderStats().served }} {{ 'features.orderManagement.stats.served' | translate }}
             </p>
           </div>
-          <span class="px-2.5 py-1 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold border border-green-200/60 dark:border-green-800/60">
+          <span class="px-2.5 py-1 text-[rgb(var(--success-text))] rounded-full text-xs font-semibold border border-[rgb(var(--success-border))]">
             {{ servedOrders().length }}
           </span>
         </div>
@@ -191,7 +191,7 @@
                     {{ order.createdAt | date:'HH:mm' }}
                   </p>
                 </div>
-                <span class="px-2 py-1 bg-green-50/80 dark:bg-green-900/20 text-green-700 dark:text-green-400 rounded-full text-xs font-semibold">
+                <span class="px-2 py-1 bg-[rgb(var(--success-bg))] text-[rgb(var(--success-text))] rounded-full text-xs font-semibold">
                   {{ 'features.orderManagement.status.served' | translate }}
                 </span>
               </div>
@@ -231,8 +231,8 @@
         </div>
         @if (!servedOrders().length) {
           <div class="text-center py-8 sm:py-10">
-            <div class="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-green-50/80 dark:bg-green-900/20 rounded-xl mb-3">
-              <svg class="w-5 h-5 sm:w-6 sm:h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div class="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 bg-[rgb(var(--success-bg))] rounded-xl mb-3">
+              <svg aria-hidden="true" class="w-5 h-5 sm:w-6 sm:h-6 text-[rgb(var(--success-text))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path>
               </svg>
             </div>

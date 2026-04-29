@@ -49,8 +49,7 @@ export class TableManagementService {
           .map(table => this.normalizeTable(table))
           .sort((a, b) => parseInt(a.tableNumber) - parseInt(b.tableNumber))
       }));
-    } catch (error) {
-      console.error('Failed to load tables', error);
+    } catch {
     }
   }
 
@@ -142,8 +141,7 @@ export class TableManagementService {
       );
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { openQrModal: true });
-    } catch (error) {
-      console.error('Failed to activate table', error);
+    } catch {
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -161,8 +159,7 @@ export class TableManagementService {
         { ...normalized, orderItems },
         { openCheckoutModal: true }
       );
-    } catch (error) {
-      console.error('Failed to start checkout', error);
+    } catch {
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -175,8 +172,7 @@ export class TableManagementService {
       );
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { closeCheckoutModal: true });
-    } catch (error) {
-      console.error('Failed to complete checkout', error);
+    } catch {
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -190,8 +186,7 @@ export class TableManagementService {
       );
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { closeCheckoutModal: true, openQrModal: true });
-    } catch (error) {
-      console.error('Failed to resume ordering', error);
+    } catch {
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -201,8 +196,7 @@ export class TableManagementService {
     try {
       const orders = await firstValueFrom(this.api.get<Array<{ items: Table['orderItems'] }>>(`/tables/${tableNumber}/orders`));
       return orders.flatMap(order => order.items ?? []);
-    } catch (error) {
-      console.error('Failed to load table orders', error);
+    } catch {
       return [];
     }
   }
@@ -267,15 +261,15 @@ export class TableManagementService {
     switch (status) {
       case 'available':
         return {
-          bg: 'bg-emerald-50 dark:bg-emerald-900/20',
-          text: 'text-emerald-700 dark:text-emerald-400',
-          border: 'border-emerald-200 dark:border-emerald-800'
+          bg: 'bg-[rgb(var(--success-bg))]',
+          text: 'text-[rgb(var(--success-text))]',
+          border: 'border-[rgb(var(--success-border))]'
         };
       case 'occupied':
         return {
-          bg: 'bg-amber-50 dark:bg-amber-900/20',
-          text: 'text-amber-700 dark:text-amber-400',
-          border: 'border-amber-200 dark:border-amber-800'
+          bg: 'bg-[rgb(var(--warning-bg))]',
+          text: 'text-[rgb(var(--warning-text))]',
+          border: 'border-[rgb(var(--warning-border))]'
         };
       case 'checkout':
         return {
@@ -285,9 +279,9 @@ export class TableManagementService {
         };
       default:
         return {
-          bg: 'bg-gray-50 dark:bg-gray-900/20',
-          text: 'text-gray-700 dark:text-gray-400',
-          border: 'border-gray-200 dark:border-gray-800'
+          bg: 'bg-[rgb(var(--surface-muted))]',
+          text: 'text-[rgb(var(--text-secondary))]',
+          border: 'border-[rgb(var(--border))]'
         };
     }
   }
