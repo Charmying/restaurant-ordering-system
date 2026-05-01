@@ -29,6 +29,7 @@ export class StoreInfoComponent {
 
   readonly storeInfoItems = this.storeInfoService.items;
   readonly totalCount = this.storeInfoService.totalCount;
+  readonly loadError = this.storeInfoService.loadError;
 
   /* ========================= Dialog State ========================= */
 
@@ -97,7 +98,11 @@ export class StoreInfoComponent {
     this.showDeleteInfoModal.set(true);
   }
 
-  async confirmDelete(): Promise<void> {
+  confirmDelete(): void {
+    void this._confirmDelete();
+  }
+
+  private async _confirmDelete(): Promise<void> {
     const item = this.infoToDelete();
     if (!item) return;
 
@@ -106,6 +111,8 @@ export class StoreInfoComponent {
       await this.storeInfoService.deleteInfo(item._id);
       this.closeDeleteModal();
     } catch {
+      this.validationMessage.set(this.translateService.instant('common.error'));
+      this.showValidationModal.set(true);
     } finally {
       this.isDeleting.set(false);
     }
@@ -118,7 +125,11 @@ export class StoreInfoComponent {
 
   /* ========================= Form Actions ========================= */
 
-  async saveInfo(): Promise<void> {
+  saveInfo(): void {
+    void this._saveInfo();
+  }
+
+  private async _saveInfo(): Promise<void> {
     const form = this.infoForm();
 
     if (!form.label?.zh?.trim()) {

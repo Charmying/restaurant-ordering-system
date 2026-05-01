@@ -25,6 +25,9 @@ export class BusinessReportsComponent {
   readonly reportDateRange = this.reportsService.reportDateRange;
   readonly customStartDate = this.reportsService.customStartDate;
   readonly customEndDate = this.reportsService.customEndDate;
+  readonly isLoading = this.reportsService.isLoading;
+  readonly loadError = this.reportsService.loadError;
+  readonly actionError = this.reportsService.actionError;
 
   /* ========================= Computed ========================= */
 
@@ -111,8 +114,12 @@ export class BusinessReportsComponent {
     this.showResetModal.set(false);
   }
 
-  async resetReports(): Promise<void> {
-    if (!this.resetPassword) {
+  resetReports(): void {
+    void this._resetReports();
+  }
+
+  private async _resetReports(): Promise<void> {
+    if (!this.resetPassword().trim()) {
       this.showAlert('features.businessReports.validation.resetPassword');
       return;
     }
@@ -131,5 +138,13 @@ export class BusinessReportsComponent {
 
   closeAlertModal(): void {
     this.showAlertModal.set(false);
+  }
+
+  retryLoadReports(): void {
+    this.reportsService.retryLoad();
+  }
+
+  dismissActionError(): void {
+    this.reportsService.clearActionError();
   }
 }

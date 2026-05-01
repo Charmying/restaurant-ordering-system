@@ -35,7 +35,7 @@
             [placeholder]="'features.login.form.passwordPlaceholder' | translate">
         </div>
         @if (loginError()) {
-          <div class="badge badge-error">
+          <div class="badge badge-error" role="alert">
             {{ loginError() | translate }}
           </div>
         }

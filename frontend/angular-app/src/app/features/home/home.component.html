@@ -1,5 +1,6 @@
-<div class="flex flex-col items-center justify-center px-6 py-16 bg-surface">
-  <div class="max-w-5xl w-full text-center space-y-20 animate-fade-in">
+<div class="home-shell flex flex-col items-center justify-center px-6 py-16 bg-surface">
+  <div class="home-shell__aurora" aria-hidden="true"></div>
+  <div class="max-w-5xl w-full text-center space-y-20 animate-fade-in relative z-10">
     <div class="space-y-6">
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight leading-tight text-primary">
         {{ 'features.home.hero.title' | translate }}
@@ -9,7 +10,7 @@
       </p>
     </div>
     <div class="grid sm:grid-cols-2 gap-6 max-w-3xl mx-auto">
-      <button type="button" routerLink="/order" class="card card-interactive rounded-3xl p-12">
+      <button type="button" routerLink="/order" class="home-entry card card-interactive rounded-3xl p-12">
         <div class="space-y-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg mx-auto bg-linear-to-br from-[rgb(var(--accent))] to-[rgb(var(--accent-hover))]">
             <svg aria-hidden="true" class="w-7 h-7 text-[rgb(var(--accent-contrast))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -24,7 +25,7 @@
           </p>
         </div>
       </button>
-      <button type="button" routerLink="/login" class="card card-interactive rounded-3xl p-12">
+      <button type="button" routerLink="/login" class="home-entry card card-interactive rounded-3xl p-12">
         <div class="space-y-4">
           <div class="w-14 h-14 rounded-2xl flex items-center justify-center shadow-lg mx-auto bg-linear-to-br from-[rgb(var(--accent))] to-[rgb(var(--accent-hover))]">
             <svg aria-hidden="true" class="w-7 h-7 text-[rgb(var(--accent-contrast))]" fill="none" stroke="currentColor" viewBox="0 0 24 24">

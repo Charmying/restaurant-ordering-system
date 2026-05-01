@@ -102,9 +102,13 @@ export class CheckoutComponent implements OnDestroy {
     }
   }
 
+  onSubmitOrder(): void {
+    void this.submitOrder();
+  }
+
   retrySubmit(): void {
     this.errorMessage.set(null);
-    this.submitOrder();
+    void this.submitOrder();
   }
 
   goToMenu(): void {

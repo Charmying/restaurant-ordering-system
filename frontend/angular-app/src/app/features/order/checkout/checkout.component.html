@@ -107,7 +107,7 @@
         <span class="text-xl font-bold text-[rgb(var(--primary))]">NT$ {{ getDisplayTotal() | number:'1.0-0' }}</span>
       </div>
     </div>
-    <button id="checkout-submit-button" type="button" (click)="submitOrder()" [disabled]="!canSubmit()"
+    <button id="checkout-submit-button" type="button" (click)="onSubmitOrder()" [disabled]="!canSubmit()"
       class="btn btn-primary w-full py-4 rounded-2xl text-lg" [attr.aria-busy]="submitting()">
       @if (submitting()) {
         {{ 'features.order.checkoutPage.submitting' | translate }}

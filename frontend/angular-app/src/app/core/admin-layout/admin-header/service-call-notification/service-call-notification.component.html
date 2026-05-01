@@ -56,9 +56,11 @@
               </div>
               <button type="button" (click)="handleCall(call._id, $event)"
                 [disabled]="handlingId() === call._id"
-                class="px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 active:scale-[0.95] bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] hover:shadow-md disabled:opacity-50 disabled:cursor-wait shrink-0">
+                [class]="getHandleCallBtnClass(call._id)">
                 @if (handlingId() === call._id) {
                   {{ 'features.serviceCallNotification.handling' | translate }}
+                } @else if (handleErrorId() === call._id) {
+                  {{ 'common.actionError' | translate }}
                 } @else {
                   {{ 'features.serviceCallNotification.handle' | translate }}
                 }

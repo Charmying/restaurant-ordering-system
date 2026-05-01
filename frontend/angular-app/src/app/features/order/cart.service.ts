@@ -22,7 +22,11 @@ export class CartService {
   constructor() {
     effect(() => {
       const data = JSON.stringify(this.cartItems());
-      localStorage.setItem(this.STORAGE_KEY, data);
+      try {
+        localStorage.setItem(this.STORAGE_KEY, data);
+      } catch {
+        // Ignore storage failures to keep cart interactions available.
+      }
     });
 
     this.#loadFromStorage();
@@ -122,6 +126,11 @@ export class CartService {
       }
     } catch {
       this.cartItems.set([]);
+      try {
+        localStorage.removeItem(this.STORAGE_KEY);
+      } catch {
+        // ignore
+      }
     }
   }
 }

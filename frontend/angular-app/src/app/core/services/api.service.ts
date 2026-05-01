@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpContext, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Observable, catchError, map, throwError } from 'rxjs';
+import { Observable, TimeoutError, catchError, map, throwError, timeout } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 
 export interface ApiResponse<T> {
@@ -18,30 +18,32 @@ export interface ApiRequestOptions {
   providedIn: 'root',
 })
 export class ApiService {
+  private readonly REQUEST_TIMEOUT_MS = 15000;
+
   constructor(private readonly http: HttpClient) {}
 
   get<T>(path: string, options?: ApiRequestOptions): Observable<T> {
     return this.http
       .get<ApiResponse<T>>(this.buildUrl(path), options)
-      .pipe(map(this.unwrapResponse), catchError(this.handleError));
+      .pipe(timeout(this.REQUEST_TIMEOUT_MS), map(this.unwrapResponse), catchError(this.handleError));
   }
 
   post<T>(path: string, body?: unknown, options?: ApiRequestOptions): Observable<T> {
     return this.http
       .post<ApiResponse<T>>(this.buildUrl(path), body ?? {}, options)
-      .pipe(map(this.unwrapResponse), catchError(this.handleError));
+      .pipe(timeout(this.REQUEST_TIMEOUT_MS), map(this.unwrapResponse), catchError(this.handleError));
   }
 
   put<T>(path: string, body?: unknown, options?: ApiRequestOptions): Observable<T> {
     return this.http
       .put<ApiResponse<T>>(this.buildUrl(path), body ?? {}, options)
-      .pipe(map(this.unwrapResponse), catchError(this.handleError));
+      .pipe(timeout(this.REQUEST_TIMEOUT_MS), map(this.unwrapResponse), catchError(this.handleError));
   }
 
   delete<T>(path: string, options?: ApiRequestOptions): Observable<T> {
     return this.http
       .delete<ApiResponse<T>>(this.buildUrl(path), options)
-      .pipe(map(this.unwrapResponse), catchError(this.handleError));
+      .pipe(timeout(this.REQUEST_TIMEOUT_MS), map(this.unwrapResponse), catchError(this.handleError));
   }
 
   private buildUrl(path: string): string {
@@ -57,5 +59,11 @@ export class ApiService {
     return response as T;
   }
 
-  private readonly handleError = (error: unknown): Observable<never> => throwError(() => error);
+  private readonly handleError = (error: unknown): Observable<never> => {
+    if (error instanceof TimeoutError) {
+      return throwError(() => new Error('Request timeout'));
+    }
+
+    return throwError(() => error);
+  };
 }

@@ -20,6 +20,32 @@
     </div>
   </header>
   <main class="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 lg:py-6">
+    @if (loadError()) {
+      <div role="alert" class="mb-4 flex items-center justify-between gap-3 rounded-xl border border-[rgb(var(--destructive))]/30 bg-[rgb(var(--destructive-bg))] px-4 py-3 text-sm text-[rgb(var(--destructive))]">
+        <span>{{ loadError()! | translate }}</span>
+        <button type="button" (click)="retryLoadReports()"
+          class="shrink-0 rounded-lg border border-[rgb(var(--destructive))]/40 px-3 py-1 text-xs font-semibold transition-colors hover:bg-[rgb(var(--destructive))]/10">
+          {{ 'common.retry' | translate }}
+        </button>
+      </div>
+    }
+    @if (actionError()) {
+      <div role="alert" class="mb-4 flex items-center justify-between gap-3 rounded-xl border border-[rgb(var(--destructive))]/30 bg-[rgb(var(--destructive-bg))] px-4 py-3 text-sm text-[rgb(var(--destructive))]">
+        <span>{{ actionError()! | translate }}</span>
+        <button type="button" (click)="dismissActionError()"
+          [attr.aria-label]="'common.close' | translate"
+          class="shrink-0 p-1 rounded-lg hover:bg-[rgb(var(--destructive))]/10 transition-colors">
+          <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    }
+    @if (isLoading()) {
+      <div class="mb-4 rounded-xl border border-[rgb(var(--border))]/60 bg-[rgb(var(--surface-elevated))] px-4 py-3 text-sm text-[rgb(var(--text-secondary))]">
+        {{ 'common.processing' | translate }}
+      </div>
+    }
     <div class="space-y-6">
       <div class="bg-[rgb(var(--surface))] border border-[rgb(var(--border))]/60 rounded-2xl p-4 sm:p-6">
         <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">

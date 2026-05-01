@@ -31,7 +31,7 @@
         (blur)="onInputBlur()"
         [placeholder]="getPlaceholder()"
         [attr.maxlength]="maxLength"
-        [attr.aria-label]="'localization.language.' + activeTab()"
+        [attr.aria-label]="languageLabels()[activeTab()]"
         [attr.aria-invalid]="hasError()"
         [attr.aria-describedby]="errorMessage ? 'error-message' : helpText ? 'help-text' : null" />
     }
@@ -45,7 +45,7 @@
         [placeholder]="getPlaceholder()"
         [rows]="rows"
         [attr.maxlength]="maxLength"
-        [attr.aria-label]="'localization.language.' + activeTab()"
+        [attr.aria-label]="languageLabels()[activeTab()]"
         [attr.aria-invalid]="hasError()"
         [attr.aria-describedby]="errorMessage ? 'error-message' : helpText ? 'help-text' : null"></textarea>
     }

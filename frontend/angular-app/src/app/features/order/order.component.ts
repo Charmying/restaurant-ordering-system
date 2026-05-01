@@ -46,9 +46,11 @@ export class OrderComponent {
   /* ========================= Data ========================= */
 
   readonly menuItems = this.orderMenuService.menuItems;
+  readonly isMenuLoading = this.orderMenuService.isLoading;
+  readonly menuErrorMessage = this.orderMenuService.errorMessage;
 
   readonly storeInfoItems = computed(() =>
-    this.storeInfoService.items().filter(item => !item.isStoreName)
+    this.storeInfoService.items().filter((item) => !item.isStoreName)
   );
 
   /* ========================= Computed Derived State ========================= */
@@ -56,9 +58,9 @@ export class OrderComponent {
   readonly categories = computed(() => {
     const set = new Set<string>();
 
-    this.menuItems().forEach(item => {
+    this.menuItems().forEach((item) => {
       const cats = Array.isArray(item.category) ? item.category : [item.category];
-      cats.forEach(c => set.add(c));
+      cats.forEach((c) => set.add(c));
     });
 
     return [SpecialCategory.ALL, ...Array.from(set)];
@@ -69,18 +71,20 @@ export class OrderComponent {
       return this.menuItems();
     }
 
-    return this.menuItems().filter(item =>
-      Array.isArray(item.category) ? item.category.includes(this.selectedCategory()) : item.category === this.selectedCategory()
+    return this.menuItems().filter((item) =>
+      Array.isArray(item.category)
+        ? item.category.includes(this.selectedCategory())
+        : item.category === this.selectedCategory()
     );
   });
 
   readonly itemsByCategory = computed(() => {
     const map = new Map<string, MenuItem[]>();
 
-    this.menuItems().forEach(item => {
+    this.menuItems().forEach((item) => {
       const cats = Array.isArray(item.category) ? item.category : [item.category];
 
-      cats.forEach(cat => {
+      cats.forEach((cat) => {
         if (!map.has(cat)) {
           map.set(cat, []);
         }
@@ -112,12 +116,17 @@ export class OrderComponent {
   }
 
   getOptionButtonClass(field: CustomField, option: CustomOption): string {
+    const selected = this.isOptionSelected(field, option);
+
+    return selected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] shadow-md' : 'bg-surface-elevated text-primary';
+  }
+
+  isOptionSelected(field: CustomField, option: CustomOption): boolean {
     const fieldName = this.getLocalizedValue(field.name);
     const value = this.customization().selections[fieldName];
     const optionLabel = this.getLocalizedValue(option.label);
-    const selected = field.type === 'single' ? value === optionLabel : Array.isArray(value) && value.includes(optionLabel);
 
-    return selected ? 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))] shadow-md' : 'bg-surface-elevated text-primary';
+    return field.type === 'single' ? value === optionLabel : Array.isArray(value) && value.includes(optionLabel);
   }
 
   /* ========================= Actions ========================= */
@@ -138,22 +147,30 @@ export class OrderComponent {
   }
 
   onSelectOption(field: CustomField, option: CustomOption): void {
-    const state = structuredClone(this.customization());
     const fieldName = this.getLocalizedValue(field.name);
     const optionLabel = this.getLocalizedValue(option.label);
 
-    if (field.type === 'single') {
-      state.selections[fieldName] = optionLabel;
-    } else {
-      const current = (state.selections[fieldName] as string[]) ?? [];
-      state.selections[fieldName] = current.includes(optionLabel) ? current.filter(v => v !== optionLabel) : [...current, optionLabel];
-    }
+    this.customization.update((state) => {
+      const nextSelections = { ...state.selections };
 
-    this.customization.set(state);
+      if (field.type === 'single') {
+        nextSelections[fieldName] = optionLabel;
+      } else {
+        const current = (nextSelections[fieldName] as string[]) ?? [];
+        nextSelections[fieldName] = current.includes(optionLabel)
+          ? current.filter((v) => v !== optionLabel)
+          : [...current, optionLabel];
+      }
+
+      return {
+        ...state,
+        selections: nextSelections,
+      };
+    });
   }
 
   updateNote(note: string): void {
-    this.customization.update(s => ({ ...s, note }));
+    this.customization.update((s) => ({ ...s, note }));
   }
 
   calculateCustomizationPrice(): number {
@@ -163,13 +180,13 @@ export class OrderComponent {
     let price = 0;
     const customizations = this.customization().selections;
 
-    item.customFields?.forEach(field => {
+    item.customFields?.forEach((field) => {
       const fieldName = this.getLocalizedValue(field.name);
       const selected = customizations[fieldName];
       const options = field.type === 'single' ? [selected] : (Array.isArray(selected) ? selected : []);
 
-      options.forEach(optionLabel => {
-        const option = field.options.find(o => this.getLocalizedValue(o.label) === optionLabel);
+      options.forEach((optionLabel) => {
+        const option = field.options.find((o) => this.getLocalizedValue(o.label) === optionLabel);
         if (option?.price) {
           price += option.price;
         }
@@ -195,17 +212,19 @@ export class OrderComponent {
     const customizations = Object.entries(this.customization().selections)
       .filter(([_, value]) => value !== undefined && value !== '' && (Array.isArray(value) ? value.length > 0 : true))
       .map(([fieldName, selectedOptions]) => {
-        const field = item.customFields?.find(f => this.getLocalizedValue(f.name) === fieldName);
+        const field = item.customFields?.find((f) => this.getLocalizedValue(f.name) === fieldName);
         const options = Array.isArray(selectedOptions) ? selectedOptions : [selectedOptions];
 
         return {
           fieldName,
           selectedOptions: options,
           fieldId: field ? JSON.stringify(field.name) : undefined,
-          optionIds: field ? options.map(opt => {
-            const option = field.options.find(o => this.getLocalizedValue(o.label) === opt);
-            return option ? JSON.stringify(option.label) : opt;
-          }) : undefined,
+          optionIds: field
+            ? options.map((opt) => {
+                const option = field.options.find((o) => this.getLocalizedValue(o.label) === opt);
+                return option ? JSON.stringify(option.label) : opt;
+              })
+            : undefined,
         };
       });
 
@@ -225,12 +244,16 @@ export class OrderComponent {
     this.closeCustomizeModal();
   }
 
+  retryLoadMenu(): void {
+    void this.orderMenuService.loadMenu();
+  }
+
   incrementQuantity(): void {
-    this.quantity.update(q => q + 1);
+    this.quantity.update((q) => q + 1);
   }
 
   decrementQuantity(): void {
-    this.quantity.update(q => Math.max(1, q - 1));
+    this.quantity.update((q) => Math.max(1, q - 1));
   }
 
   onMenuCardKeydown(event: KeyboardEvent, item: MenuItem): void {

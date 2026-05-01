@@ -7,7 +7,6 @@ import { ThemeToggleComponent } from '../../components/theme-toggle/theme-toggle
 import { FullScreenModalComponent } from '../../components/full-screen-modal/full-screen-modal.component';
 import { ServiceBellComponent } from '../../../features/order/service-bell/service-bell.component';
 import { CartService } from '../../../features/order/cart.service';
-import { MenuItemResolver } from '../../../features/order/menu-item.resolver';
 import { CartItem } from '../../../features/order/cart.types';
 import { StoreInfoService } from '../../../features/store-info/store-info.service';
 

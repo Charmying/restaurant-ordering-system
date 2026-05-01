@@ -21,15 +21,17 @@ export class OrderContextService {
   }
 
   setFromQueryParams(table: string | number | null, token: string | null): void {
-    const t = table !== null && table !== undefined ? String(table) : null;
-    this.tableNumber.set(t);
-    this.token.set(token ?? null);
+    const sanitizedTable = this.sanitizeTable(table);
+    const sanitizedToken = this.sanitizeToken(token);
+
+    this.tableNumber.set(sanitizedTable);
+    this.token.set(sanitizedToken);
     this.persistTableOnly();
   }
 
   setTableAndToken(tableNumber: string, token: string): void {
-    this.tableNumber.set(tableNumber);
-    this.token.set(token);
+    this.tableNumber.set(this.sanitizeTable(tableNumber));
+    this.token.set(this.sanitizeToken(token));
     this.persistTableOnly();
   }
 
@@ -71,11 +73,42 @@ export class OrderContextService {
   private loadTableFromStorage(): void {
     try {
       const table = sessionStorage.getItem(TABLE_STORAGE_KEY);
-      if (table != null && table !== '') {
-        this.tableNumber.set(table);
+      const sanitizedTable = this.sanitizeTable(table);
+      if (sanitizedTable != null && sanitizedTable !== '') {
+        this.tableNumber.set(sanitizedTable);
       }
     } catch {
-      sessionStorage.removeItem(TABLE_STORAGE_KEY);
+      try {
+        sessionStorage.removeItem(TABLE_STORAGE_KEY);
+      } catch {
+        // ignore
+      }
     }
+  }
+
+  private sanitizeTable(table: string | number | null | undefined): string | null {
+    if (table === null || table === undefined) {
+      return null;
+    }
+
+    const normalized = String(table).trim();
+    if (!/^\d{1,4}$/.test(normalized)) {
+      return null;
+    }
+
+    return normalized;
+  }
+
+  private sanitizeToken(token: string | null | undefined): string | null {
+    if (!token) {
+      return null;
+    }
+
+    const normalized = token.trim();
+    if (!/^[A-Za-z0-9_-]{12,512}$/.test(normalized)) {
+      return null;
+    }
+
+    return normalized;
   }
 }

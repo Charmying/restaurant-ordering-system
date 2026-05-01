@@ -1,6 +1,6 @@
 @if (isVisible()) {
   <div class="relative">
-    <button type="button" (click)="callService()"
+    <button type="button" (click)="onCallService()"
       [disabled]="state() !== 'idle'"
       [ngClass]="buttonClass()"
       class="relative p-2 sm:p-2.5 rounded-full transition-all duration-200 active:scale-95"

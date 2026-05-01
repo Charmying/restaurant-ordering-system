@@ -22,6 +22,9 @@ export class OrderManagementComponent {
   readonly pendingOrders = this.orderService.pendingOrders;
   readonly servedOrders = this.orderService.servedOrders;
   readonly orderStats = this.orderService.orderStats;
+  readonly isLoading = this.orderService.isLoading;
+  readonly loadError = this.orderService.loadError;
+  readonly serveError = this.orderService.serveError;
 
   formatCurrency(amount: number): string {
     return OrderManagementPresenter.formatCurrency(amount);
@@ -44,6 +47,14 @@ export class OrderManagementComponent {
   }
 
   onServeOrder(order: Order): void {
-    this.orderService.serveOrder(order);
+    void this.orderService.serveOrder(order);
+  }
+
+  retryLoadOrders(): void {
+    this.orderService.retryLoad();
+  }
+
+  dismissServeError(): void {
+    this.orderService.clearServeError();
   }
 }

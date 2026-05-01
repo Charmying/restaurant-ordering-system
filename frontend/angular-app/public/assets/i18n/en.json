@@ -22,7 +22,12 @@
     "languageSelection": "Language selection",
     "close": "Close",
     "remove": "Remove",
-    "back": "Back"
+    "back": "Back",
+    "loadError": "Failed to load data, please try again",
+    "actionError": "Operation failed, please try again",
+    "retry": "Retry",
+    "copied": "Copied!",
+    "copyFailed": "Copy failed"
   },
   "language": {
     "current": {

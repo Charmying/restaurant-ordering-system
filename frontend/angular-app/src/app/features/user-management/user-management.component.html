@@ -75,6 +75,26 @@
     </div>
   </header>
   <main class="px-2 sm:px-3 lg:px-4 py-3 sm:py-4 lg:py-6">
+    @if (loadError()) {
+      <div role="alert" class="mb-4 flex items-center gap-3 rounded-xl border border-[rgb(var(--destructive))]/30 bg-[rgb(var(--destructive-bg))] px-4 py-3 text-sm text-[rgb(var(--destructive))]">
+        <svg class="w-4 h-4 shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+        </svg>
+        <span>{{ loadError()! | translate }}</span>
+      </div>
+    }
+    @if (actionError()) {
+      <div role="alert" class="mb-4 flex items-center justify-between gap-3 rounded-xl border border-[rgb(var(--destructive))]/30 bg-[rgb(var(--destructive-bg))] px-4 py-3 text-sm text-[rgb(var(--destructive))]">
+        <span>{{ actionError()! | translate }}</span>
+        <button type="button" (click)="dismissActionError()"
+          [attr.aria-label]="'common.close' | translate"
+          class="shrink-0 p-1 rounded-lg hover:bg-[rgb(var(--destructive))]/10 transition-colors">
+          <svg class="w-4 h-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    }
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       @for (user of users(); track user._id) {
         <div class="bg-[rgb(var(--surface))] border border-[rgb(var(--border))]/60 rounded-2xl p-5 sm:p-6 space-y-4"

@@ -25,6 +25,8 @@ export class MessageBoardComponent {
   readonly pinnedMessages = this.messageService.pinnedMessages;
   readonly unpinnedMessages = this.messageService.unpinnedMessages;
   readonly stats = this.messageService.stats;
+  readonly loadError = this.messageService.loadError;
+  readonly actionError = this.messageService.actionError;
 
   readonly messageContent = signal('');
   readonly editingMessage = signal<MessageBoardItem | null>(null);
@@ -45,13 +47,13 @@ export class MessageBoardComponent {
 
     const editingMsg = this.editingMessage();
     if (editingMsg) {
-      this.messageService.updateMessage(editingMsg._id, content);
+      void this.messageService.updateMessage(editingMsg._id, content);
       this.messageContent.set('');
       this.editingMessage.set(null);
       return;
     }
 
-    this.messageService.createMessage(content);
+    void this.messageService.createMessage(content);
     this.messageContent.set('');
   }
 
@@ -66,7 +68,7 @@ export class MessageBoardComponent {
   }
 
   togglePinMessage(message: MessageBoardItem): void {
-    this.messageService.togglePinMessage(message._id);
+    void this.messageService.togglePinMessage(message._id);
   }
 
   deleteMessage(message: MessageBoardItem): void {
@@ -77,7 +79,7 @@ export class MessageBoardComponent {
   confirmDelete(): void {
     const toDelete = this.messageToDelete();
     if (toDelete) {
-      this.messageService.deleteMessage(toDelete._id);
+      void this.messageService.deleteMessage(toDelete._id);
     }
     this.closeDeleteModal();
   }
@@ -92,11 +94,19 @@ export class MessageBoardComponent {
   }
 
   confirmDeleteAll(): void {
-    this.messageService.deleteAllMessages();
+    void this.messageService.deleteAllMessages();
     this.closeDeleteAllModal();
   }
 
   closeDeleteAllModal(): void {
     this.showDeleteAllModal.set(false);
+  }
+
+  retryLoadMessages(): void {
+    this.messageService.retryLoad();
+  }
+
+  dismissActionError(): void {
+    this.messageService.clearActionError();
   }
 }

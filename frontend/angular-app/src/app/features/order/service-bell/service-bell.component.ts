@@ -22,6 +22,7 @@ export class ServiceBellComponent implements OnDestroy {
   private readonly translate = inject(TranslateService);
 
   private cooldownTimer: ReturnType<typeof setInterval> | null = null;
+  private readonly stateTimers: ReturnType<typeof setTimeout>[] = [];
 
   readonly COOLDOWN_SECONDS = 30;
 
@@ -64,11 +65,17 @@ export class ServiceBellComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.clearCooldown();
+    this.stateTimers.forEach((t) => clearTimeout(t));
+    this.stateTimers.length = 0;
   }
 
   /* ========================= Actions ========================= */
 
-  async callService(): Promise<void> {
+  onCallService(): void {
+    void this.callService();
+  }
+
+  private async callService(): Promise<void> {
     if (this.state() !== 'idle') return;
 
     const tableStr = this.orderContext.getTableNumber();
@@ -88,17 +95,17 @@ export class ServiceBellComponent implements OnDestroy {
       this.state.set('success');
       this.showToast(this.translate.instant('features.serviceBell.called'), 'success');
 
-      setTimeout(() => {
+      this.stateTimers.push(setTimeout(() => {
         this.state.set('cooldown');
         this.startCooldown();
         this.hideToast();
-      }, 2000);
+      }, 2000));
     } catch {
       this.showToast(this.translate.instant('features.serviceBell.callFailed'), 'error');
-      setTimeout(() => {
+      this.stateTimers.push(setTimeout(() => {
         this.state.set('idle');
         this.hideToast();
-      }, 3000);
+      }, 3000));
     }
   }
 

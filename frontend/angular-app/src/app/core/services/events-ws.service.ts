@@ -1,4 +1,4 @@
-import { Injectable, OnDestroy } from '@angular/core';
+import { Injectable, OnDestroy, signal } from '@angular/core';
 import { Observable, Subject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { EVENTS_WS_ORIGIN } from '../config/api.config';
@@ -10,6 +10,7 @@ import { io, Socket } from 'socket.io-client';
 export class EventsWsService implements OnDestroy {
   private socket: Socket | null = null;
   private readonly destroy$ = new Subject<void>();
+  readonly wsConnected = signal(false);
   private readonly orderCreated$ = new Subject<unknown>();
   private readonly orderServed$ = new Subject<unknown>();
   private readonly orderCompleted$ = new Subject<unknown>();
@@ -76,6 +77,18 @@ export class EventsWsService implements OnDestroy {
       autoConnect: true,
     });
 
+    this.socket.on('connect', () => {
+      this.wsConnected.set(true);
+    });
+
+    this.socket.on('disconnect', () => {
+      this.wsConnected.set(false);
+    });
+
+    this.socket.on('connect_error', () => {
+      this.wsConnected.set(false);
+    });
+
     this.socket.on('order:created', (payload: unknown) => {
       this.orderCreated$.next(payload);
     });
@@ -103,8 +116,6 @@ export class EventsWsService implements OnDestroy {
     this.socket.on('menu.deleted', (payload: unknown) => {
       this.menuDeleted$.next(payload);
     });
-    this.socket.on('connect_error', () => {
-    });
   }
 
   private disconnect(): void {
@@ -112,6 +123,7 @@ export class EventsWsService implements OnDestroy {
       this.socket.removeAllListeners();
       this.socket.disconnect();
       this.socket = null;
+      this.wsConnected.set(false);
     }
   }
 }

@@ -19,6 +19,8 @@ export class CategoryManagementComponent {
 
   readonly categories = this.categoryService.categories;
   readonly totalCount = this.categoryService.totalCount;
+  readonly loadError = this.categoryService.loadError;
+  readonly actionError = this.categoryService.actionError;
 
   readonly draggedCategoryIndex = signal<number | null>(null);
   readonly dragOverIndex = signal<number | null>(null);
@@ -66,6 +68,10 @@ export class CategoryManagementComponent {
   onCategoryDragEnd(): void {
     this.draggedCategoryIndex.set(null);
     this.dragOverIndex.set(null);
+  }
+
+  dismissActionError(): void {
+    this.categoryService.clearActionError();
   }
 
   getCategoryLabelKey(category: string): string {

@@ -28,6 +28,15 @@ export class ServiceCallNotificationComponent implements OnInit, OnDestroy {
   readonly isRinging = signal(false);
   readonly pendingCalls = signal<ServiceCallResponse[]>([]);
   readonly handlingId = signal<string | null>(null);
+  readonly handleErrorId = signal<string | null>(null);
+
+  getHandleCallBtnClass(id: string): string {
+    const base = 'px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-200 active:scale-[0.95] hover:shadow-md disabled:opacity-50 disabled:cursor-wait shrink-0';
+    const color = this.handleErrorId() === id
+      ? 'bg-red-600 text-white'
+      : 'bg-[rgb(var(--primary))] text-[rgb(var(--primary-contrast))]';
+    return `${base} ${color}`;
+  }
 
   /* ========================= Computed ========================= */
 
@@ -70,11 +79,12 @@ export class ServiceCallNotificationComponent implements OnInit, OnDestroy {
     if (this.handlingId()) return;
 
     this.handlingId.set(id);
+    this.handleErrorId.set(null);
     try {
       await firstValueFrom(this.serviceCallService.handle(id));
       this.pendingCalls.update((calls) => calls.filter((c) => c._id !== id));
     } catch {
-      // error handled by API layer
+      this.handleErrorId.set(id);
     } finally {
       this.handlingId.set(null);
     }

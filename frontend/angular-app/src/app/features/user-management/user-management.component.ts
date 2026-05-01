@@ -52,6 +52,8 @@ export class UserManagementComponent {
     managers: this.users().filter(user => user.role === 'manager').length,
     employees: this.users().filter(user => user.role === 'employee').length
   }));
+  readonly loadError = this.userService.loadError;
+  readonly actionError = this.userService.actionError;
 
   /* ========================= Permissions ========================= */
 
@@ -106,7 +108,11 @@ export class UserManagementComponent {
     this.showAddUserModal.set(false);
   }
 
-  async saveUser(): Promise<void> {
+  saveUser(): void {
+    void this._saveUser();
+  }
+
+  private async _saveUser(): Promise<void> {
     if (!this.userForm.username || !this.userForm.password) {
       this.showAlert('features.userManagement.validation.required');
       return;
@@ -130,7 +136,11 @@ export class UserManagementComponent {
     this.showEditUsernameModal.set(false);
   }
 
-  async saveUsername(): Promise<void> {
+  saveUsername(): void {
+    void this._saveUsername();
+  }
+
+  private async _saveUsername(): Promise<void> {
     const username = this.editUsernameForm.username.trim();
     if (!username) {
       this.showAlert('features.userManagement.validation.usernameRequired');
@@ -153,7 +163,11 @@ export class UserManagementComponent {
     this.showChangePasswordModal.set(false);
   }
 
-  async changePassword(): Promise<void> {
+  changePassword(): void {
+    void this._changePassword();
+  }
+
+  private async _changePassword(): Promise<void> {
     if (!this.changePasswordForm.currentPassword) {
       this.showAlert('features.userManagement.validation.currentPasswordRequired');
       return;
@@ -180,9 +194,17 @@ export class UserManagementComponent {
     this.showDeleteModal.set(true);
   }
 
-  async confirmDelete(): Promise<void> {
+  confirmDelete(): void {
+    void this._confirmDelete();
+  }
+
+  private async _confirmDelete(): Promise<void> {
     if (this.userToDelete) {
-      await this.userService.deleteUser(this.userToDelete._id);
+      const deleted = await this.userService.deleteUser(this.userToDelete._id);
+      if (!deleted) {
+        this.showAlert('features.userManagement.errors.actionFailed');
+        return;
+      }
       this.userToDelete = null;
     }
     this.showDeleteModal.set(false);
@@ -196,6 +218,10 @@ export class UserManagementComponent {
   showAlert(messageKey: string): void {
     this.alertMessage.set(this.translateService.instant(messageKey));
     this.showAlertModal.set(true);
+  }
+
+  dismissActionError(): void {
+    this.userService.clearActionError();
   }
 
   closeAlertModal(): void {

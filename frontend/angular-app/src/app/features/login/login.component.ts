@@ -24,6 +24,8 @@ export class LoginComponent {
   readonly loginError = signal('');
   readonly isSubmitting = signal(false);
 
+  private readonly USERNAME_REGEX = /^[A-Za-z0-9_-]{3,32}$/;
+
   async login() {
     const username = this.username().trim();
     const password = this.password();
@@ -34,12 +36,24 @@ export class LoginComponent {
       return;
     }
 
+    if (!this.USERNAME_REGEX.test(username) || password.length < 8 || password.length > 128) {
+      this.loginError.set('features.login.errors.invalidCredentials');
+      return;
+    }
+
     this.isSubmitting.set(true);
     try {
       await firstValueFrom(this.authService.login(username, password));
       await this.router.navigate(['/dashboard']);
-    } catch {
-      this.loginError.set('features.login.errors.invalidCredentials');
+    } catch (error) {
+      const body =
+        error && typeof error === 'object' && 'error' in error
+          ? (error as { error?: { message?: string } }).error
+          : null;
+      const message = body?.message;
+      this.loginError.set(
+        message === 'Invalid credentials' ? 'features.login.errors.invalidCredentials' : 'common.error',
+      );
     } finally {
       this.isSubmitting.set(false);
     }

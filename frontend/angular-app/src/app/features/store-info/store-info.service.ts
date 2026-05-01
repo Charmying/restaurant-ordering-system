@@ -24,6 +24,7 @@ export class StoreInfoService implements OnDestroy {
 
   readonly items = computed(() => this.getSortedItems(this.state().items));
   readonly totalCount = computed(() => this.state().items.length);
+  readonly loadError = signal<string | null>(null);
 
   readonly storeName = computed(() => {
     const lang = this.languageService.currentLang() as SupportedLanguage;
@@ -37,45 +38,37 @@ export class StoreInfoService implements OnDestroy {
 
   async addInfo(label: LocalizedString, value: LocalizedString): Promise<StoreInfoItem | null> {
     const nextOrder = this.getNextOrder();
-    try {
-      const newItem = await firstValueFrom(
-        this.api.post<StoreInfoItem>('/store-info', {
-          label,
-          value,
-          order: nextOrder,
-          isStoreName: false,
-          isDeletable: true,
-        })
-      );
+    const newItem = await firstValueFrom(
+      this.api.post<StoreInfoItem>('/store-info', {
+        label,
+        value,
+        order: nextOrder,
+        isStoreName: false,
+        isDeletable: true,
+      })
+    );
 
-      this.state.update(current => ({
-        ...current,
-        items: [...current.items, newItem],
-      }));
+    this.state.update(current => ({
+      ...current,
+      items: [...current.items, newItem],
+    }));
 
-      this.notifyOtherTabs();
-      return newItem;
-    } catch {
-      return null;
-    }
+    this.notifyOtherTabs();
+    return newItem;
   }
 
   async updateInfo(id: string, label: LocalizedString, value: LocalizedString): Promise<StoreInfoItem | null> {
-    try {
-      const updated = await firstValueFrom(
-        this.api.put<StoreInfoItem>(`/store-info/${id}`, { label, value })
-      );
+    const updated = await firstValueFrom(
+      this.api.put<StoreInfoItem>(`/store-info/${id}`, { label, value })
+    );
 
-      this.state.update(current => ({
-        ...current,
-        items: current.items.map(item => (item._id === id ? updated : item)),
-      }));
+    this.state.update(current => ({
+      ...current,
+      items: current.items.map(item => (item._id === id ? updated : item)),
+    }));
 
-      this.notifyOtherTabs();
-      return updated;
-    } catch {
-      return null;
-    }
+    this.notifyOtherTabs();
+    return updated;
   }
 
   async deleteInfo(id: string): Promise<void> {
@@ -130,6 +123,7 @@ export class StoreInfoService implements OnDestroy {
   }
 
   private async loadStoreInfo(): Promise<void> {
+    this.loadError.set(null);
     try {
       const items = await firstValueFrom(this.api.get<StoreInfoItem[]>('/store-info'));
       this.state.update(current => ({
@@ -137,6 +131,7 @@ export class StoreInfoService implements OnDestroy {
         items,
       }));
     } catch {
+      this.loadError.set('common.loadError');
     }
   }
 

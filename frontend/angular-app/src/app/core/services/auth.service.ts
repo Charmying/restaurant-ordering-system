@@ -46,30 +46,71 @@ export class AuthService {
   }
 
   getAccessToken(): string | null {
-    return localStorage.getItem(this.ACCESS_TOKEN_KEY);
+    return this.readLocalStorage(this.ACCESS_TOKEN_KEY);
+  }
+
+  getRefreshToken(): string | null {
+    return this.readLocalStorage(this.REFRESH_TOKEN_KEY);
+  }
+
+  refreshAccessToken(): Observable<AuthSession> {
+    const refreshToken = this.getRefreshToken();
+    if (!refreshToken) {
+      throw new Error('Missing refresh token');
+    }
+
+    return this.api.post<AuthSession>('/auth/refresh', { refreshToken }).pipe(
+      tap((session) => {
+        this.persistSession(session);
+      }),
+    );
   }
 
   clearSession(): void {
-    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    localStorage.removeItem(this.USER_KEY);
+    this.removeLocalStorage(this.ACCESS_TOKEN_KEY);
+    this.removeLocalStorage(this.REFRESH_TOKEN_KEY);
+    this.removeLocalStorage(this.USER_KEY);
     this.userSignal.set(null);
   }
 
   private persistSession(session: AuthSession): void {
-    localStorage.setItem(this.ACCESS_TOKEN_KEY, session.accessToken);
-    localStorage.setItem(this.REFRESH_TOKEN_KEY, session.refreshToken);
-    localStorage.setItem(this.USER_KEY, JSON.stringify(session.user));
+    this.writeLocalStorage(this.ACCESS_TOKEN_KEY, session.accessToken);
+    this.writeLocalStorage(this.REFRESH_TOKEN_KEY, session.refreshToken);
+    this.writeLocalStorage(this.USER_KEY, JSON.stringify(session.user));
     this.userSignal.set(session.user);
   }
 
   private loadStoredUser(): AuthUser | null {
     try {
-      const raw = localStorage.getItem(this.USER_KEY);
+      const raw = this.readLocalStorage(this.USER_KEY);
       if (!raw) return null;
       return JSON.parse(raw) as AuthUser;
     } catch {
       return null;
+    }
+  }
+
+  private readLocalStorage(key: string): string | null {
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
+
+  private writeLocalStorage(key: string, value: string): void {
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      // Ignore storage failures to avoid breaking the UI in private mode.
+    }
+  }
+
+  private removeLocalStorage(key: string): void {
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      // Ignore storage failures to keep logout flows resilient.
     }
   }
 }

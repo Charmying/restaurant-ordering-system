@@ -22,7 +22,12 @@
     "languageSelection": "語言選擇",
     "close": "關閉",
     "remove": "移除",
-    "back": "返回"
+    "back": "返回",
+    "loadError": "載入資料失敗，請稍後再試",
+    "actionError": "操作失敗，請稍後再試",
+    "retry": "重試",
+    "copied": "已複製！",
+    "copyFailed": "複製失敗"
   },
   "language": {
     "current": {

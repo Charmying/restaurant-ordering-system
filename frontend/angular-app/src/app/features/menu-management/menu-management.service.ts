@@ -24,6 +24,9 @@ export class MenuManagementService {
 
   readonly allCategoryValue = ALL_CATEGORIES_SENTINEL;
 
+  readonly isLoading = signal(false);
+  readonly loadError = signal<string | null>(null);
+
   readonly menuItems = computed(() => this.state().menuItems);
   readonly selectedCategory = computed(() => this.state().selectedCategory);
   readonly menuCategories = computed(() => [ALL_CATEGORIES_SENTINEL, ...this.getSortedCategories()]);
@@ -110,6 +113,8 @@ export class MenuManagementService {
   }
 
   private async loadMenuItems(): Promise<void> {
+    this.isLoading.set(true);
+    this.loadError.set(null);
     try {
       const items = await firstValueFrom(this.api.get<MenuItem[]>('/menu/admin/all'));
       this.state.update(current => ({
@@ -117,7 +122,14 @@ export class MenuManagementService {
         menuItems: items,
       }));
     } catch {
+      this.loadError.set('common.loadError');
+    } finally {
+      this.isLoading.set(false);
     }
+  }
+
+  retryLoad(): void {
+    void this.loadMenuItems();
   }
 
   private updateMenuItem(form: MenuItem): void {

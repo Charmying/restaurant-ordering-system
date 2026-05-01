@@ -16,6 +16,8 @@ export class CategoryManagementService {
 
   readonly categories = computed(() => this.state().categories);
   readonly totalCount = computed(() => this.state().categories.length);
+  readonly loadError = signal<string | null>(null);
+  readonly actionError = signal<string | null>(null);
 
   constructor() {
     void this.loadCategories();
@@ -25,6 +27,7 @@ export class CategoryManagementService {
   }
 
   async setCategories(categories: string[]): Promise<void> {
+    this.actionError.set(null);
     const previous = this.state().categories;
     this.state.update(current => ({
       ...current,
@@ -44,6 +47,7 @@ export class CategoryManagementService {
         ...current,
         categories: previous
       }));
+      this.actionError.set('common.actionError');
     }
   }
 
@@ -52,15 +56,21 @@ export class CategoryManagementService {
       const result = await firstValueFrom(
         this.api.get<string[]>('/categories/order')
       );
+      this.loadError.set(null);
       this.state.update(current => ({
         ...current,
         categories: Array.isArray(result) ? result : []
       }));
     } catch {
+      this.loadError.set('common.loadError');
     }
   }
 
   refreshCategories(): void {
     void this.loadCategories();
+  }
+
+  clearActionError(): void {
+    this.actionError.set(null);
   }
 }

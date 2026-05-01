@@ -19,6 +19,10 @@ export class TableManagementService {
     checkoutTable: null
   });
 
+  readonly isLoading = signal(false);
+  readonly loadError = signal<string | null>(null);
+  readonly lastActionError = signal<string | null>(null);
+
   readonly tables = computed(() => this.state().tables);
   readonly selectedTable = computed(() => this.state().selectedTable);
   readonly loadingTables = computed(() => this.state().loadingTables);
@@ -41,6 +45,8 @@ export class TableManagementService {
   }
 
   private async loadTables(): Promise<void> {
+    this.isLoading.set(true);
+    this.loadError.set(null);
     try {
       const tables = await firstValueFrom(this.api.get<Table[]>('/tables'));
       this.state.update(current => ({
@@ -50,10 +56,22 @@ export class TableManagementService {
           .sort((a, b) => parseInt(a.tableNumber) - parseInt(b.tableNumber))
       }));
     } catch {
+      this.loadError.set('common.loadError');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
+  retryLoad(): void {
+    void this.loadTables();
+  }
+
+  clearActionError(): void {
+    this.lastActionError.set(null);
+  }
+
   toggleTableStatus(table: Table): void {
+    this.lastActionError.set(null);
     const tableNumber = table.tableNumber;
 
     this.addLoadingTable(tableNumber);
@@ -62,6 +80,7 @@ export class TableManagementService {
   }
 
   startCheckout(table: Table): void {
+    this.lastActionError.set(null);
     const tableNumber = table.tableNumber;
 
     this.addLoadingTable(tableNumber);
@@ -70,6 +89,7 @@ export class TableManagementService {
   }
 
   completeCheckout(table: Table): void {
+    this.lastActionError.set(null);
     const tableNumber = table.tableNumber;
 
     this.addLoadingTable(tableNumber);
@@ -111,6 +131,7 @@ export class TableManagementService {
   }
 
   resumeOrdering(table: Table): void {
+    this.lastActionError.set(null);
     this.addLoadingTable(table.tableNumber);
 
     void this.resetAndReactivate(table.tableNumber);
@@ -142,6 +163,7 @@ export class TableManagementService {
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { openQrModal: true });
     } catch {
+      this.lastActionError.set('common.actionError');
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -160,6 +182,7 @@ export class TableManagementService {
         { openCheckoutModal: true }
       );
     } catch {
+      this.lastActionError.set('common.actionError');
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -173,6 +196,7 @@ export class TableManagementService {
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { closeCheckoutModal: true });
     } catch {
+      this.lastActionError.set('common.actionError');
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -187,6 +211,7 @@ export class TableManagementService {
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { closeCheckoutModal: true, openQrModal: true });
     } catch {
+      this.lastActionError.set('common.actionError');
     } finally {
       this.removeLoadingTable(tableNumber);
     }
