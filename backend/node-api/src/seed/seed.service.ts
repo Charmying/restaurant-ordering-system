@@ -5,7 +5,7 @@ import { Model } from 'mongoose';
 import { User, UserDocument } from '../modules/users/schemas/user.schema';
 import { Table, TableDocument } from '../modules/tables/schemas/table.schema';
 import { StoreInfo, StoreInfoDocument } from '../modules/store-info/schemas/store-info.schema';
-import { TableStatus } from 'src/modules/tables/enums/table-status.enum';
+import { TableStatus } from '../modules/tables/enums/table-status.enum';
 
 @Injectable()
 export class SeedService implements OnModuleInit {
