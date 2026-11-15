@@ -32,6 +32,9 @@ export class BusinessReportsService {
   readonly reportDateRange = computed(() => this.state().reportDateRange);
   readonly customStartDate = computed(() => this.state().customStartDate);
   readonly customEndDate = computed(() => this.state().customEndDate);
+  readonly isLoading = signal(false);
+  readonly loadError = signal<string | null>(null);
+  readonly actionError = signal<string | null>(null);
 
   constructor() {
     void this.fetchReports();
@@ -64,12 +67,13 @@ export class BusinessReportsService {
   }
 
   async resetReports(): Promise<boolean> {
+    this.actionError.set(null);
     try {
       await firstValueFrom(this.api.post('/orders/reset'));
       await this.fetchReports();
       return true;
-    } catch (error) {
-      console.error('Failed to reset reports', error);
+    } catch {
+      this.actionError.set('common.actionError');
       return false;
     }
   }
@@ -89,9 +93,14 @@ export class BusinessReportsService {
       if (this.state().customEndDate) params['endDate'] = this.state().customEndDate;
     }
 
+    this.isLoading.set(true);
+    this.loadError.set(null);
     try {
+      type OrderItem = { menuItemId?: string; name: string; price: number; quantity: number; subtotal?: number };
+      type ReportOrder = { items: OrderItem[] };
+      type ReportSummary = { totalRevenue: number; totalOrders: number; avgOrderValue: number };
       const response = await firstValueFrom(
-        this.api.get<{ orders: any[]; summary: { totalRevenue: number; totalOrders: number; avgOrderValue: number } }>(
+        this.api.get<{ orders: ReportOrder[]; summary: ReportSummary }>(
           '/orders/reports',
           { params }
         )
@@ -99,9 +108,19 @@ export class BusinessReportsService {
 
       const report = this.buildReport(response.orders ?? [], response.summary);
       this.setReport(report);
-    } catch (error) {
-      console.error('Failed to load business reports', error);
+    } catch {
+      this.loadError.set('common.loadError');
+    } finally {
+      this.isLoading.set(false);
     }
+  }
+
+  retryLoad(): void {
+    void this.fetchReports();
+  }
+
+  clearActionError(): void {
+    this.actionError.set(null);
   }
 
   private buildReport(orders: Array<{ items: Array<{ menuItemId?: string; name: string; price: number; quantity: number; subtotal?: number }> }>, summary?: { totalRevenue: number; totalOrders: number; avgOrderValue: number }): BusinessReport {

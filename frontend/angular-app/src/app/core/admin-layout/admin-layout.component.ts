@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AdminHeaderComponent } from './admin-header/admin-header.component';
 
@@ -7,6 +7,7 @@ import { AdminHeaderComponent } from './admin-header/admin-header.component';
   standalone: true,
   imports: [RouterOutlet, AdminHeaderComponent],
   templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss'],
+  styleUrl: './admin-layout.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AdminLayoutComponent {}

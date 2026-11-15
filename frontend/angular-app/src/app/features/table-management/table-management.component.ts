@@ -1,5 +1,4 @@
-import { Component, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { ModalComponent } from '../../core/components/modal/modal.component';
@@ -12,8 +11,9 @@ import { OrderItemResolverService } from '../../shared/services/order-item-resol
 @Component({
   selector: 'app-table-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, ModalComponent],
+  imports: [FormsModule, TranslateModule, ModalComponent],
   templateUrl: './table-management.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TableManagementComponent {
   private readonly tableService = inject(TableManagementService);
@@ -29,20 +29,11 @@ export class TableManagementComponent {
   readonly showQRModal = this.tableService.showQRModal;
   readonly showCheckoutModal = this.tableService.showCheckoutModal;
   readonly checkoutTable = this.tableService.checkoutTable;
-
-  /* ========================= Computed ========================= */
-
-  readonly availableTables = computed(() =>
-    this.tables().filter(table => table.status === 'available')
-  );
-
-  readonly occupiedTables = computed(() =>
-    this.tables().filter(table => table.status === 'occupied')
-  );
-
-  readonly checkoutTables = computed(() =>
-    this.tables().filter(table => table.status === 'checkout')
-  );
+  readonly isLoading = this.tableService.isLoading;
+  readonly loadError = this.tableService.loadError;
+  readonly lastActionError = this.tableService.lastActionError;
+  readonly copyState = signal<'idle' | 'copied' | 'error'>('idle');
+  private copyResetHandle: ReturnType<typeof setTimeout> | null = null;
 
   /* ========================= UI Presenters ========================= */
 
@@ -86,6 +77,16 @@ export class TableManagementComponent {
     }
   }
 
+  onTableKeydown(event: KeyboardEvent, table: Table): void {
+    if (event.key === ' ') event.preventDefault();
+    if (event.key === 'Enter' || event.key === ' ') this.onTableClick(table);
+  }
+
+  getTableLabel(table: Table): string {
+    const label = this.translateService.instant('features.tableManagement.table.number');
+    return `${label} ${table.tableNumber}`;
+  }
+
   startCheckout(table: Table): void {
     this.tableService.startCheckout(table);
   }
@@ -102,12 +103,22 @@ export class TableManagementComponent {
     const table = this.selectedTable();
     if (!table?.qrCodeUrl) return;
 
+    if (this.copyResetHandle !== null) {
+      clearTimeout(this.copyResetHandle);
+      this.copyResetHandle = null;
+    }
+
     try {
       await navigator.clipboard.writeText(table.qrCodeUrl);
-      console.log('QR Code link copied to clipboard');
-    } catch (err) {
-      console.error('Failed to copy QR Code link:', err);
+      this.copyState.set('copied');
+    } catch {
+      this.copyState.set('error');
     }
+
+    this.copyResetHandle = setTimeout(() => {
+      this.copyState.set('idle');
+      this.copyResetHandle = null;
+    }, 2500);
   }
 
   onDownloadQRCode(): void {
@@ -138,7 +149,24 @@ export class TableManagementComponent {
     this.tableService.closeQRModal();
   }
 
+  getCopyBtnClass(): string {
+    const base = 'flex-1 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 text-[rgb(var(--success-contrast))] rounded-lg sm:rounded-xl font-semibold transition-all duration-300 active:scale-[0.98] shadow-lg hover:shadow-xl text-xs sm:text-sm disabled:opacity-80 disabled:cursor-default';
+    switch (this.copyState()) {
+      case 'copied': return `${base} bg-green-600 hover:bg-green-700`;
+      case 'error': return `${base} bg-[rgb(var(--destructive))] hover:bg-[rgb(var(--destructive))]/90`;
+      default: return `${base} bg-[rgb(var(--success))] hover:bg-[rgb(var(--success-hover))]`;
+    }
+  }
+
   onCloseCheckoutModal(): void {
     this.tableService.closeCheckoutModal();
+  }
+
+  retryLoadTables(): void {
+    this.tableService.retryLoad();
+  }
+
+  dismissActionError(): void {
+    this.tableService.clearActionError();
   }
 }

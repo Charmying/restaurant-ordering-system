@@ -92,7 +92,7 @@ export class OrderItemResolverService {
       if (typeof parsed === 'object' && parsed.zh && parsed.en) {
         return parsed.zh === fieldName.zh && parsed.en === fieldName.en;
       }
-    } catch { }
+    } catch { /* key is not valid JSON, continue with string comparison */ }
 
     if (JSON.stringify(fieldName) === key) return true;
 
@@ -107,7 +107,7 @@ export class OrderItemResolverService {
       if (typeof parsed === 'object' && parsed.zh && parsed.en) {
         return parsed.zh === optionLabel.zh && parsed.en === optionLabel.en;
       }
-    } catch { }
+    } catch { /* value is not valid JSON, continue with string comparison */ }
 
     if (JSON.stringify(optionLabel) === value) return true;
 

@@ -14,24 +14,28 @@ export class UserManagementService {
   });
 
   readonly users = computed(() => this.state().users);
+  readonly loadError = signal<string | null>(null);
+  readonly actionError = signal<string | null>(null);
 
   constructor() {
     void this.loadUsers();
   }
 
   async loadUsers(): Promise<void> {
+    this.loadError.set(null);
     try {
       const users = await firstValueFrom(this.api.get<UserItem[]>('/users'));
       this.state.update(current => ({
         ...current,
         users
       }));
-    } catch (error) {
-      console.error('Failed to load users', error);
+    } catch {
+      this.loadError.set('common.loadError');
     }
   }
 
   async createUser(form: UserForm): Promise<UserItem | null> {
+    this.actionError.set(null);
     try {
       const user = await firstValueFrom(this.api.post<UserItem>('/users', {
         username: form.username,
@@ -43,40 +47,48 @@ export class UserManagementService {
         users: [user, ...current.users]
       }));
       return user;
-    } catch (error) {
-      console.error('Failed to create user', error);
+    } catch {
+      this.actionError.set('common.actionError');
       return null;
     }
   }
 
-  async deleteUser(id: string): Promise<void> {
+  async deleteUser(id: string): Promise<boolean> {
+    this.actionError.set(null);
     try {
       await firstValueFrom(this.api.delete(`/users/${id}`));
       this.state.update(current => ({
         ...current,
         users: current.users.filter(user => user._id !== id)
       }));
-    } catch (error) {
-      console.error('Failed to delete user', error);
+      return true;
+    } catch {
+      this.actionError.set('common.actionError');
+      return false;
     }
   }
 
   async updateUsername(_id: string, _username: string): Promise<boolean> {
-    console.warn('Backend does not support username updates yet.');
+    this.actionError.set('features.userManagement.errors.usernameNotSupported');
     return false;
   }
 
   async changePassword(form: ChangePasswordForm): Promise<boolean> {
+    this.actionError.set(null);
     try {
       await firstValueFrom(this.api.put(`/users/${form.userId}/password`, {
         currentPassword: form.currentPassword,
         newPassword: form.newPassword
       }));
       return true;
-    } catch (error) {
-      console.error('Failed to change password', error);
+    } catch {
+      this.actionError.set('common.actionError');
       return false;
     }
+  }
+
+  clearActionError(): void {
+    this.actionError.set(null);
   }
 
   getRoleName(role: UserRole): string {

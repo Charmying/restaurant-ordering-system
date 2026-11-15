@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { DashboardLayout } from './dashboard.layout';
 
@@ -7,6 +7,7 @@ import { DashboardLayout } from './dashboard.layout';
   standalone: true,
   imports: [RouterOutlet, DashboardLayout],
   templateUrl: './dashboard.shell.html',
-  styleUrls: ['./dashboard.shell.scss'],
+  styleUrl: './dashboard.shell.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardShell {}

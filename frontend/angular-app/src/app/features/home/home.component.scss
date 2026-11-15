@@ -1,0 +1,25 @@
+.home-shell {
+	position: relative;
+	overflow: hidden;
+	min-height: calc(100vh - 73px);
+}
+
+.home-shell__aurora {
+	position: absolute;
+	inset: -20% -10% auto -10%;
+	height: 60%;
+	pointer-events: none;
+	background:
+		radial-gradient(44rem 28rem at 12% 22%, rgba(var(--accent), 0.14), transparent 70%),
+		radial-gradient(36rem 24rem at 84% 16%, rgba(var(--accent-hover), 0.12), transparent 74%);
+	filter: blur(6px);
+}
+
+.home-entry {
+	backdrop-filter: saturate(140%) blur(8px);
+	border: 1px solid rgba(var(--border), 0.72);
+}
+
+[data-theme='dark'] .home-entry {
+	border-color: rgba(var(--border), 0.9);
+}

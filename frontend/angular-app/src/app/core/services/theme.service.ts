@@ -18,7 +18,7 @@ export class ThemeService {
 
   #applyTheme(theme: Theme) {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem(KEY, theme);
+    this.#writeStorage(theme);
   }
 
   toggle() {
@@ -33,9 +33,29 @@ export class ThemeService {
   }
 
   #load(): Theme {
-    const saved = localStorage.getItem(KEY);
+    const saved = this.#readStorage();
     if (saved === 'light' || saved === 'dark') return saved;
 
-    return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    return 'light';
+  }
+
+  #readStorage(): string | null {
+    try {
+      return localStorage.getItem(KEY);
+    } catch {
+      return null;
+    }
+  }
+
+  #writeStorage(theme: Theme): void {
+    try {
+      localStorage.setItem(KEY, theme);
+    } catch {
+      // Ignore storage failures to keep theme toggling functional.
+    }
   }
 }

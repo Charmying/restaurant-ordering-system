@@ -24,7 +24,7 @@ export class TableManagementPresenter {
     return OrderUtil.calculateOrderTotal(orderItems);
   }
 
-  static isArray(value: any): boolean {
+  static isArray(value: unknown): boolean {
     return Array.isArray(value);
   }
 }

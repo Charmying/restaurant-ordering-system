@@ -4,7 +4,6 @@ export function getLocalizedValue(value: LocalizedString | string | undefined | 
   if (!value) return '';
   if (typeof value === 'string') return value;
   if (typeof value === 'object') return (value[lang]?.trim() ? value[lang] : value.zh?.trim() ? value.zh : value.en?.trim() ? value.en : '').trim();
-  console.warn('getLocalizedValue: unexpected value type', typeof value, value);
   return '';
 }
 

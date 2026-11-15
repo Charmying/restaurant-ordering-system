@@ -17,6 +17,9 @@ export class OrderManagementService {
 
   readonly pendingOrders = computed(() => this.state().pendingOrders);
   readonly servedOrders = computed(() => this.state().servedOrders);
+  readonly isLoading = signal(false);
+  readonly loadError = signal<string | null>(null);
+  readonly serveError = signal<string | null>(null);
 
   readonly orderStats = computed(() => {
     const pending = this.state().pendingOrders;
@@ -40,6 +43,8 @@ export class OrderManagementService {
   }
 
   private async loadOrders(): Promise<void> {
+    this.isLoading.set(true);
+    this.loadError.set(null);
     try {
       const { pending, served } = await firstValueFrom(
         forkJoin({
@@ -53,12 +58,15 @@ export class OrderManagementService {
         pendingOrders: this.sortByCreatedAt(pending.map(order => this.normalizeOrder(order))),
         servedOrders: this.sortByCreatedAt(served.map(order => this.normalizeOrder(order)))
       }));
-    } catch (error) {
-      console.error('Failed to load orders', error);
+    } catch {
+      this.loadError.set('common.loadError');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
   async serveOrder(order: Order): Promise<void> {
+    this.serveError.set(null);
     try {
       const updated = await firstValueFrom(this.api.put<Order>(`/orders/${order._id}/serve`));
       const normalized = this.normalizeOrder(updated);
@@ -68,9 +76,17 @@ export class OrderManagementService {
         pendingOrders: current.pendingOrders.filter(item => item._id !== order._id),
         servedOrders: [normalized, ...current.servedOrders]
       }));
-    } catch (error) {
-      console.error('Failed to serve order', error);
+    } catch {
+      this.serveError.set('common.actionError');
     }
+  }
+
+  retryLoad(): void {
+    void this.loadOrders();
+  }
+
+  clearServeError(): void {
+    this.serveError.set(null);
   }
 
   async refreshOrders(): Promise<void> {

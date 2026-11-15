@@ -19,6 +19,10 @@ export class TableManagementService {
     checkoutTable: null
   });
 
+  readonly isLoading = signal(false);
+  readonly loadError = signal<string | null>(null);
+  readonly lastActionError = signal<string | null>(null);
+
   readonly tables = computed(() => this.state().tables);
   readonly selectedTable = computed(() => this.state().selectedTable);
   readonly loadingTables = computed(() => this.state().loadingTables);
@@ -41,6 +45,8 @@ export class TableManagementService {
   }
 
   private async loadTables(): Promise<void> {
+    this.isLoading.set(true);
+    this.loadError.set(null);
     try {
       const tables = await firstValueFrom(this.api.get<Table[]>('/tables'));
       this.state.update(current => ({
@@ -49,12 +55,23 @@ export class TableManagementService {
           .map(table => this.normalizeTable(table))
           .sort((a, b) => parseInt(a.tableNumber) - parseInt(b.tableNumber))
       }));
-    } catch (error) {
-      console.error('Failed to load tables', error);
+    } catch {
+      this.loadError.set('common.loadError');
+    } finally {
+      this.isLoading.set(false);
     }
   }
 
+  retryLoad(): void {
+    void this.loadTables();
+  }
+
+  clearActionError(): void {
+    this.lastActionError.set(null);
+  }
+
   toggleTableStatus(table: Table): void {
+    this.lastActionError.set(null);
     const tableNumber = table.tableNumber;
 
     this.addLoadingTable(tableNumber);
@@ -63,6 +80,7 @@ export class TableManagementService {
   }
 
   startCheckout(table: Table): void {
+    this.lastActionError.set(null);
     const tableNumber = table.tableNumber;
 
     this.addLoadingTable(tableNumber);
@@ -71,6 +89,7 @@ export class TableManagementService {
   }
 
   completeCheckout(table: Table): void {
+    this.lastActionError.set(null);
     const tableNumber = table.tableNumber;
 
     this.addLoadingTable(tableNumber);
@@ -112,6 +131,7 @@ export class TableManagementService {
   }
 
   resumeOrdering(table: Table): void {
+    this.lastActionError.set(null);
     this.addLoadingTable(table.tableNumber);
 
     void this.resetAndReactivate(table.tableNumber);
@@ -142,8 +162,8 @@ export class TableManagementService {
       );
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { openQrModal: true });
-    } catch (error) {
-      console.error('Failed to activate table', error);
+    } catch {
+      this.lastActionError.set('common.actionError');
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -161,8 +181,8 @@ export class TableManagementService {
         { ...normalized, orderItems },
         { openCheckoutModal: true }
       );
-    } catch (error) {
-      console.error('Failed to start checkout', error);
+    } catch {
+      this.lastActionError.set('common.actionError');
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -175,8 +195,8 @@ export class TableManagementService {
       );
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { closeCheckoutModal: true });
-    } catch (error) {
-      console.error('Failed to complete checkout', error);
+    } catch {
+      this.lastActionError.set('common.actionError');
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -190,8 +210,8 @@ export class TableManagementService {
       );
       const normalized = this.normalizeTable(updated);
       this.updateTableState(normalized, { closeCheckoutModal: true, openQrModal: true });
-    } catch (error) {
-      console.error('Failed to resume ordering', error);
+    } catch {
+      this.lastActionError.set('common.actionError');
     } finally {
       this.removeLoadingTable(tableNumber);
     }
@@ -201,8 +221,7 @@ export class TableManagementService {
     try {
       const orders = await firstValueFrom(this.api.get<Array<{ items: Table['orderItems'] }>>(`/tables/${tableNumber}/orders`));
       return orders.flatMap(order => order.items ?? []);
-    } catch (error) {
-      console.error('Failed to load table orders', error);
+    } catch {
       return [];
     }
   }
@@ -267,15 +286,15 @@ export class TableManagementService {
     switch (status) {
       case 'available':
         return {
-          bg: 'bg-emerald-50 dark:bg-emerald-900/20',
-          text: 'text-emerald-700 dark:text-emerald-400',
-          border: 'border-emerald-200 dark:border-emerald-800'
+          bg: 'bg-[rgb(var(--success-bg))]',
+          text: 'text-[rgb(var(--success-text))]',
+          border: 'border-[rgb(var(--success-border))]'
         };
       case 'occupied':
         return {
-          bg: 'bg-amber-50 dark:bg-amber-900/20',
-          text: 'text-amber-700 dark:text-amber-400',
-          border: 'border-amber-200 dark:border-amber-800'
+          bg: 'bg-[rgb(var(--warning-bg))]',
+          text: 'text-[rgb(var(--warning-text))]',
+          border: 'border-[rgb(var(--warning-border))]'
         };
       case 'checkout':
         return {
@@ -285,9 +304,9 @@ export class TableManagementService {
         };
       default:
         return {
-          bg: 'bg-gray-50 dark:bg-gray-900/20',
-          text: 'text-gray-700 dark:text-gray-400',
-          border: 'border-gray-200 dark:border-gray-800'
+          bg: 'bg-[rgb(var(--surface-muted))]',
+          text: 'text-[rgb(var(--text-secondary))]',
+          border: 'border-[rgb(var(--border))]'
         };
     }
   }

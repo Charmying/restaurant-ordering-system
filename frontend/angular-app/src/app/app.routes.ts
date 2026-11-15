@@ -6,6 +6,8 @@ import { OrderComponent } from './features/order/order.component';
 import { LoginComponent } from './features/login/login.component';
 import { AdminLayoutComponent } from './core/admin-layout/admin-layout.component';
 import { DashboardShell } from './features/dashboard/dashboard.shell';
+import { authGuard } from './core/guards/auth.guard';
+import { alreadyLoggedInGuard } from './core/guards/already-logged-in.guard';
 
 export const routes: Routes = [
   {
@@ -35,6 +37,7 @@ export const routes: Routes = [
   {
     path: 'login',
     component: NormalLayoutComponent,
+    canActivate: [alreadyLoggedInGuard],
     children: [
       {
         path: '',
@@ -45,6 +48,7 @@ export const routes: Routes = [
   {
     path: 'dashboard',
     component: AdminLayoutComponent,
+    canActivate: [authGuard],
     children: [
       {
         path: '',
@@ -90,5 +94,9 @@ export const routes: Routes = [
         ]
       }
     ]
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];

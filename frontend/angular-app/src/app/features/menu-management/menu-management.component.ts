@@ -1,5 +1,4 @@
-import { Component, inject, signal, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, signal, computed, ChangeDetectionStrategy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FullScreenModalComponent } from '../../core/components/full-screen-modal/full-screen-modal.component';
@@ -19,9 +18,10 @@ import { MENU_MANAGEMENT_FORM_PLACEHOLDERS } from '../../shared/constants/placeh
 @Component({
   selector: 'app-menu-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, TranslateModule, FullScreenModalComponent, ModalComponent, LocalizedInputComponent],
+  imports: [FormsModule, TranslateModule, FullScreenModalComponent, ModalComponent, LocalizedInputComponent],
   templateUrl: './menu-management.component.html',
-  styleUrls: ['./menu-management.component.scss'],
+  styleUrl: './menu-management.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MenuManagementComponent {
   private readonly menuService = inject(MenuManagementService);
@@ -34,6 +34,8 @@ export class MenuManagementComponent {
   readonly selectedCategory = this.menuService.selectedCategory;
   readonly filteredMenuItems = this.menuService.filteredMenuItems;
   readonly allCategoryValue = this.menuService.allCategoryValue;
+  readonly isLoading = this.menuService.isLoading;
+  readonly loadError = this.menuService.loadError;
 
   /* ========================= Dialog State ========================= */
 
@@ -44,6 +46,8 @@ export class MenuManagementComponent {
 
   readonly showDeleteModal = signal(false);
   readonly itemToDelete = signal<MenuItem | null>(null);
+  readonly deleteError = signal('');
+  readonly isDeleting = signal(false);
 
   readonly newField = signal<MenuCustomField>(this.menuService.createEmptyCustomField());
   readonly newOption = signal<MenuCustomOption>({ label: createEmptyLocalizedString(), price: null });
@@ -102,6 +106,10 @@ export class MenuManagementComponent {
     this.menuService.setSelectedCategory(category);
   }
 
+  retryLoadMenu(): void {
+    this.menuService.retryLoad();
+  }
+
   getCategoryLabelKey(category: string): string {
     return getCategoryI18nKey(category);
   }
@@ -141,7 +149,11 @@ export class MenuManagementComponent {
     this.formError.set('');
   }
 
-  async saveMenuItem(): Promise<void> {
+  saveMenuItem(): void {
+    void this._saveMenuItem();
+  }
+
+  private async _saveMenuItem(): Promise<void> {
     const result = await this.menuService.saveMenuItem(this.menuForm(), this.isEditMode());
     if (!result.success) {
       const errorKey = result.error || 'common.noData';
@@ -158,10 +170,21 @@ export class MenuManagementComponent {
     this.showDeleteModal.set(true);
   }
 
-  async confirmDelete(): Promise<void> {
+  confirmDelete(): void {
+    void this._confirmDelete();
+  }
+
+  private async _confirmDelete(): Promise<void> {
     const item = this.itemToDelete();
-    if (item) {
-      await this.menuService.deleteMenuItem(item._id);
+    if (!item) return;
+    this.isDeleting.set(true);
+    this.deleteError.set('');
+    const result = await this.menuService.deleteMenuItem(item._id);
+    this.isDeleting.set(false);
+    if (!result.success) {
+      const errorKey = result.error || 'common.error';
+      this.deleteError.set(this.translateService.instant(errorKey));
+      return;
     }
     this.closeDeleteModal();
   }
@@ -169,6 +192,8 @@ export class MenuManagementComponent {
   closeDeleteModal(): void {
     this.showDeleteModal.set(false);
     this.itemToDelete.set(null);
+    this.deleteError.set('');
+    this.isDeleting.set(false);
   }
 
   /* ========================= Custom Field Actions ========================= */

@@ -16,6 +16,8 @@ export class MessageBoardService {
   readonly messages = computed(() => this.state().messages);
   readonly pinnedMessages = computed(() => MessageBoardPresenter.getPinnedMessages(this.state().messages));
   readonly unpinnedMessages = computed(() => MessageBoardPresenter.getUnpinnedMessages(this.state().messages));
+  readonly loadError = signal<string | null>(null);
+  readonly actionError = signal<string | null>(null);
   readonly stats = computed(() => ({
     total: this.state().messages.length,
     pinned: this.state().messages.filter(item => item.isPinned).length,
@@ -27,6 +29,7 @@ export class MessageBoardService {
   }
 
   async createMessage(content: string): Promise<void> {
+    this.actionError.set(null);
     try {
       const message = await firstValueFrom(
         this.api.post<MessageBoardItem>('/messages', { content })
@@ -35,12 +38,13 @@ export class MessageBoardService {
         ...current,
         messages: [message, ...current.messages]
       }));
-    } catch (error) {
-      console.error('Failed to create message', error);
+    } catch {
+      this.actionError.set('common.actionError');
     }
   }
 
   async updateMessage(id: string, content: string): Promise<void> {
+    this.actionError.set(null);
     try {
       const updated = await firstValueFrom(
         this.api.put<MessageBoardItem>(`/messages/${id}`, { content })
@@ -51,8 +55,8 @@ export class MessageBoardService {
           item._id === id ? updated : item
         )
       }));
-    } catch (error) {
-      console.error('Failed to update message', error);
+    } catch {
+      this.actionError.set('common.actionError');
     }
   }
 
@@ -60,6 +64,7 @@ export class MessageBoardService {
     const target = this.state().messages.find(item => item._id === id);
     if (!target) return;
 
+    this.actionError.set(null);
     try {
       const updated = await firstValueFrom(
         this.api.put<MessageBoardItem>(`/messages/${id}/${target.isPinned ? 'unpin' : 'pin'}`)
@@ -70,44 +75,55 @@ export class MessageBoardService {
           item._id === id ? updated : item
         )
       }));
-    } catch (error) {
-      console.error('Failed to toggle pin', error);
+    } catch {
+      this.actionError.set('common.actionError');
     }
   }
 
   async deleteMessage(id: string): Promise<void> {
+    this.actionError.set(null);
     try {
       await firstValueFrom(this.api.delete(`/messages/${id}`));
       this.state.update(current => ({
         ...current,
         messages: current.messages.filter(item => item._id !== id)
       }));
-    } catch (error) {
-      console.error('Failed to delete message', error);
+    } catch {
+      this.actionError.set('common.actionError');
     }
   }
 
   async deleteAllMessages(): Promise<void> {
+    this.actionError.set(null);
     try {
       await firstValueFrom(this.api.delete('/messages/all'));
       this.state.update(current => ({
         ...current,
         messages: []
       }));
-    } catch (error) {
-      console.error('Failed to delete all messages', error);
+    } catch {
+      this.actionError.set('common.actionError');
     }
   }
 
+  retryLoad(): void {
+    void this.loadMessages();
+  }
+
+  clearActionError(): void {
+    this.actionError.set(null);
+  }
+
   private async loadMessages(): Promise<void> {
+    this.loadError.set(null);
     try {
       const messages = await firstValueFrom(this.api.get<MessageBoardItem[]>('/messages'));
       this.state.update(current => ({
         ...current,
         messages: MessageBoardPresenter.sortByCreatedAtDesc(messages)
       }));
-    } catch (error) {
-      console.error('Failed to load messages', error);
+    } catch {
+      this.loadError.set('common.loadError');
     }
   }
 }
